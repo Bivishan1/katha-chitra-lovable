@@ -1,5 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const links = [
   { to: "/work", label: "Work" },
@@ -10,9 +10,43 @@ const links = [
 
 export default function SiteHeader() {
    const [open, setOpen] = useState(false);
+   const [hidden, setHidden] = useState(false);
+  const lastScrollY = useRef(0);
+  const scrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => {
+    const onScroll = () => {
+      if (open) return;
+      const currentY = window.scrollY;
+      if (scrollTimer.current) {
+        clearTimeout(scrollTimer.current);
+        scrollTimer.current = null;
+      }
+      // Scrolling down and past threshold → hide
+      if (currentY > lastScrollY.current && currentY > 80) {
+        setHidden(true);
+      } else if (currentY < lastScrollY.current) {
+        // Scrolling up → show immediately
+        setHidden(false);
+      }
+      lastScrollY.current = currentY;
+      // After scroll stops, show header
+      scrollTimer.current = setTimeout(() => {
+        setHidden(false);
+      }, 150);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (scrollTimer.current) clearTimeout(scrollTimer.current);
+    };
+  }, [open]);
+
+
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 md:px-10 py-4 md:py-6 flex justify-between items-center mix-blend-difference text-foreground">
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 md:px-10 py-4 md:py-6 flex justify-between items-center mix-blend-difference text-foreground transition-transform duration-500 ${hidden ? "-translate-y-full" : "translate-y-0"}`}
+      >
         <Link to="/" className="flex items-baseline gap-2 sm:gap-3" onClick={() => setOpen(false)}>
           <span style={{ fontFamily: "var(--font-display)" }} className="text-lg sm:text-xl md:text-2xl font-bold tracking-tighter uppercase">
             Katha Chitra
