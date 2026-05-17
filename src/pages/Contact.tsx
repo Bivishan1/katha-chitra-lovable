@@ -1,0 +1,295 @@
+import { useEffect, useState } from "react";
+import type { FormEvent } from "react";
+import  SiteHeader from "../components/SiteHeader";
+
+const projectTypes = [
+  "Commercial",
+  "Branded Content",
+  "Music Video",
+  "Documentary",
+  "Digital Campaign",
+  "Other",
+];
+
+function setMetaTag(selector: string, attribute: string, content: string) {
+  let element = document.head.querySelector(selector) as HTMLMetaElement | null;
+
+  if (!element) {
+    element = document.createElement("meta");
+
+    if (selector.includes("property=")) {
+      const property = selector.match(/property="([^"]+)"/)?.[1];
+      if (property) element.setAttribute("property", property);
+    }
+
+    if (selector.includes("name=")) {
+      const name = selector.match(/name="([^"]+)"/)?.[1];
+      if (name) element.setAttribute("name", name);
+    }
+
+    document.head.appendChild(element);
+  }
+
+  element.setAttribute(attribute, content);
+}
+
+export default function Contact() {
+  const [form, setForm] = useState({
+    name: "",
+    company: "",
+    email: "",
+    type: "Commercial",
+    budget: "",
+    message: "",
+  });
+
+  useEffect(() => {
+    document.title = "Contact — Katha Chitra";
+
+    setMetaTag(
+      'meta[name="description"]',
+      "content",
+      "Start a project with Katha Chitra. Reach our Kathmandu studio for commercials, branded content, music videos, documentaries and digital campaigns."
+    );
+
+    setMetaTag(
+      'meta[property="og:title"]',
+      "content",
+      "Contact — Katha Chitra"
+    );
+
+    setMetaTag(
+      'meta[property="og:description"]',
+      "content",
+      "Let's tell your story. Reach out to our Kathmandu studio."
+    );
+
+    setMetaTag('meta[property="og:url"]', "content", "/contact");
+
+    let canonical = document.head.querySelector(
+      'link[rel="canonical"]'
+    ) as HTMLLinkElement | null;
+
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.rel = "canonical";
+      document.head.appendChild(canonical);
+    }
+
+    canonical.href = "/contact";
+  }, []);
+
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const subject = encodeURIComponent(
+      `[${form.type}] ${form.name} — ${form.company || "Inquiry"}`
+    );
+
+    const body = encodeURIComponent(
+      `Name: ${form.name}
+Company: ${form.company}
+Email: ${form.email}
+Project type: ${form.type}
+Budget: ${form.budget}
+
+${form.message}`
+    );
+
+    window.location.href = `mailto:hello@kathachitra.com?subject=${subject}&body=${body}`;
+  };
+
+  return (
+    <div className="min-h-screen">
+      <SiteHeader />
+
+      <section className="pt-32 sm:pt-40 md:pt-48 pb-12 sm:pb-16 px-4 sm:px-6 md:px-10">
+        <div className="max-w-7xl mx-auto">
+         <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-accent mb-4 sm:mb-6">Get in touch</p>
+          <h1 style={{ fontFamily: "var(--font-display)" }} className="text-5xl sm:text-7xl md:text-9xl uppercase tracking-tighter leading-[0.85]">
+            Start the <br />
+            <span className="italic font-light text-accent">story.</span>
+          </h1>
+        </div>
+      </section>
+
+       <section className="px-4 sm:px-6 md:px-10 pb-20 sm:pb-24">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-10 sm:gap-12 md:gap-16">
+          {/* Info */}
+          <aside className="md:col-span-4 space-y-10">
+            <div>
+              <p className="text-[11px] uppercase tracking-widest text-accent mb-3">
+                Studio
+              </p>
+
+              <p className="text-foreground/80 leading-relaxed">
+                Jhamsikhel, Lalitpur
+                <br />
+                Kathmandu, Nepal
+              </p>
+            </div>
+
+            <div>
+              <p className="text-[11px] uppercase tracking-widest text-accent mb-3">
+                Email
+              </p>
+
+              <a
+                href="mailto:hello@kathachitra.com"
+                className="text-foreground hover:text-accent"
+              >
+                hello@kathachitra.com
+              </a>
+            </div>
+
+            <div>
+              <p className="text-[11px] uppercase tracking-widest text-accent mb-3">
+                Phone
+              </p>
+
+              <a
+                href="tel:+97714123456"
+                className="text-foreground hover:text-accent"
+              >
+                +977 1 412 3456
+              </a>
+            </div>
+
+            <div>
+              <p className="text-[11px] uppercase tracking-widest text-accent mb-3">
+                Follow
+              </p>
+
+              <div className="flex flex-col gap-1 text-foreground/80">
+                <a href="#" className="hover:text-accent">
+                  Instagram
+                </a>
+                <a href="#" className="hover:text-accent">
+                  Vimeo
+                </a>
+                <a href="#" className="hover:text-accent">
+                  YouTube
+                </a>
+              </div>
+            </div>
+          </aside>
+
+          {/* Form */}
+          <form onSubmit={onSubmit} className="md:col-span-8 space-y-6 sm:space-y-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+              <Field
+                label="Name"
+                value={form.name}
+                onChange={(value) => setForm({ ...form, name: value })}
+                required
+              />
+
+              <Field
+                label="Company"
+                value={form.company}
+                onChange={(value) => setForm({ ...form, company: value })}
+              />
+
+              <Field
+                label="Email"
+                type="email"
+                value={form.email}
+                onChange={(value) => setForm({ ...form, email: value })}
+                required
+              />
+
+              <Field
+                label="Budget (USD)"
+                value={form.budget}
+                onChange={(value) => setForm({ ...form, budget: value })}
+                placeholder="e.g. 10–25k"
+              />
+            </div>
+
+            <div>
+              <label className="block text-[11px] uppercase tracking-widest text-muted-foreground mb-3">
+                Project type
+              </label>
+
+              <div className="flex flex-wrap gap-2">
+                {projectTypes.map((projectType) => (
+                  <button
+                    type="button"
+                    key={projectType}
+                    onClick={() => setForm({ ...form, type: projectType })}
+                    className={`text-xs uppercase tracking-widest px-4 py-2 border transition-colors ${
+                      form.type === projectType
+                        ? "border-accent bg-accent text-accent-foreground"
+                        : "border-border text-foreground/70 hover:border-accent hover:text-accent"
+                    }`}
+                  >
+                    {projectType}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[11px] uppercase tracking-widest text-muted-foreground mb-3">
+                Tell us about the project
+              </label>
+
+              <textarea
+                required
+                rows={6}
+                value={form.message}
+                onChange={(e) =>
+                  setForm({ ...form, message: e.target.value })
+                }
+                className="w-full bg-transparent border border-border px-4 py-3 text-foreground focus:outline-none focus:border-accent transition-colors"
+              />
+            </div>
+
+            <button
+              type="submit"
+              style={{ fontFamily: "var(--font-display)" }}
+              className="group inline-flex items-center gap-3 text-xl sm:text-2xl md:text-3xl uppercase tracking-tight text-accent border-b border-accent pb-2 hover:gap-6 transition-all"
+            >
+              Send inquiry <span aria-hidden="true">→</span>
+            </button>
+          </form>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+type FieldProps = {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  type?: string;
+  required?: boolean;
+  placeholder?: string;
+};
+
+function Field({
+  label,
+  value,
+  onChange,
+  type = "text",
+  required = false,
+  placeholder,
+}: FieldProps) {
+  return (
+    <div>
+      <label className="block text-[11px] uppercase tracking-widest text-muted-foreground mb-3">
+        {label} {required && <span className="text-accent">*</span>}
+      </label>
+
+      <input
+        type={type}
+        value={value}
+        required={required}
+        placeholder={placeholder}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full bg-transparent border-b border-border py-2 text-foreground focus:outline-none focus:border-accent transition-colors"
+      />
+    </div>
+  );
+}

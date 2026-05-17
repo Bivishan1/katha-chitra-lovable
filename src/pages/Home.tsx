@@ -1,0 +1,240 @@
+import { useEffect } from "react";
+import heroImage from "../assets/hero-showreel.jpg";
+import  SiteHeader from "../components/SiteHeader";
+import SiteFooter from "../components/SiteFooter";
+import { WorkTile } from "../components/WorkTile";
+import { projects } from "../data/projects";
+import { Link } from "react-router-dom";
+
+function setMetaTag(selector: string, attribute: string, content: string) {
+  let element = document.head.querySelector(selector) as HTMLMetaElement | null;
+
+  if (!element) {
+    element = document.createElement("meta");
+
+    if (selector.includes("property=")) {
+      const property = selector.match(/property="([^"]+)"/)?.[1];
+      if (property) element.setAttribute("property", property);
+    }
+
+    if (selector.includes("name=")) {
+      const name = selector.match(/name="([^"]+)"/)?.[1];
+      if (name) element.setAttribute("name", name);
+    }
+
+    document.head.appendChild(element);
+  }
+
+  element.setAttribute(attribute, content);
+}
+
+export default function Home() {
+  const featured = projects.slice(0, 3);
+
+  useEffect(() => {
+    document.title = "Katha Chitra — Nepali Video Production House";
+
+    setMetaTag(
+      'meta[name="description"]',
+      "content",
+      "Kathmandu-based film and media production company crafting commercials, branded content, music videos, documentaries, and digital campaigns."
+    );
+
+    setMetaTag(
+      'meta[property="og:title"]',
+      "content",
+      "Katha Chitra — Nepali Video Production House"
+    );
+
+    setMetaTag(
+      'meta[property="og:description"]',
+      "content",
+      "Cinematic storytelling from the heart of the Himalayas."
+    );
+
+    setMetaTag('meta[property="og:url"]', "content", "/");
+
+    let canonical = document.head.querySelector(
+      'link[rel="canonical"]'
+    ) as HTMLLinkElement | null;
+
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.rel = "canonical";
+      document.head.appendChild(canonical);
+    }
+
+    canonical.href = "/";
+
+    const schemaId = "katha-chitra-schema";
+    let schema = document.getElementById(schemaId) as HTMLScriptElement | null;
+
+    if (!schema) {
+      schema = document.createElement("script");
+      schema.id = schemaId;
+      schema.type = "application/ld+json";
+      document.head.appendChild(schema);
+    }
+
+    schema.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "Katha Chitra",
+      url: "/",
+      description:
+        "Nepali full-service film and media production company specializing in commercials, branded content, music videos, documentaries, and digital campaigns.",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Lalitpur",
+        addressRegion: "Bagmati",
+        addressCountry: "NP",
+      },
+      email: "hello@kathachitra.com",
+    });
+  }, []);
+
+  return (
+    <div className="min-h-screen">
+      <SiteHeader />
+
+      {/* Hero */}
+      <section className="relative min-h-screen flex flex-col justify-end px-4 sm:px-6 md:px-10 pb-12 sm:pb-16 md:pb-20 overflow-hidden">
+        <img
+          src={heroImage}
+          alt="Misty Himalayan valley at dusk"
+          width={1920}
+          height={1088}
+          className="absolute inset-0 w-full h-full object-cover opacity-70"
+        />
+
+        <div className="absolute inset-0 bg-linear-gradient-to-b from-background/40 via-background/10 to-background" />
+
+        <div className="relative z-10 max-w-6xl">
+           <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] sm:tracking-[0.4em] text-accent mb-4 sm:mb-6">
+            Est. Kathmandu · MMXIV
+          </p>
+
+          <h1
+            style={{ fontFamily: "var(--font-display)" }}
+            className="text-[18vw] sm:text-[14vw] md:text-[9vw] leading-[0.85] uppercase tracking-tighter font-bold"
+          >
+            Stories <br />
+            From The{" "}
+            <span className="text-accent italic font-light">Peak</span>
+          </h1>
+
+           <p className="mt-6 sm:mt-10 max-w-md text-xs sm:text-sm leading-relaxed text-foreground/80 border-l border-accent pl-4 sm:pl-6 uppercase tracking-wider">
+            A full-service film &amp; media production house translating
+            Himalayan soul into global visual narratives.
+          </p>
+        </div>
+
+         <div className="absolute bottom-4 sm:bottom-8 right-4 sm:right-6 md:right-10 z-10 text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-foreground/60">
+          Showreel · 2025 →
+        </div>
+      </section>
+
+      {/* Selected Work */}
+      <section className="py-20 sm:py-24 md:py-32 px-4 sm:px-6 md:px-10">
+        <div className="flex flex-wrap gap-4 justify-between items-end mb-10 sm:mb-16">
+          <div>
+           <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-accent mb-3 sm:mb-4">01 — Selected Work</p>
+            <h2 style={{ fontFamily: "var(--font-display)" }} className="text-3xl sm:text-4xl md:text-6xl uppercase tracking-tight">
+              Recent Frames
+            </h2>
+          </div>
+
+            <Link to="/work" className="text-[10px] sm:text-xs uppercase tracking-widest text-accent border-b border-accent pb-1 hover:opacity-70">
+            All projects →
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-6">
+          {featured[0] && (
+            <div className="md:col-span-8">
+              <WorkTile project={featured[0]} />
+            </div>
+          )}
+
+          {featured[1] && (
+            <div className="md:col-span-4 md:mt-24">
+              <WorkTile project={featured[1]} />
+            </div>
+          )}
+
+          {featured[2] && (
+            <div className="md:col-span-5 md:-mt-12">
+              <WorkTile project={featured[2]} />
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Services teaser */}
+       <section className="bg-secondary text-secondary-foreground py-20 sm:py-24 md:py-32 px-4 sm:px-6 md:px-10">
+        <div className="max-w-6xl mx-auto">
+         <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-accent mb-3 sm:mb-4">02 — Capabilities</p>
+          <h2 style={{ fontFamily: "var(--font-display)" }} className="text-3xl sm:text-4xl md:text-6xl uppercase tracking-tight mb-10 sm:mb-16">
+            What we make.
+          </h2>
+
+          <ul className="divide-y divide-border">
+            {[
+              "Commercials",
+              "Branded Content",
+              "Documentaries",
+              "Music Videos",
+              "Digital Campaigns",
+            ].map((service, index) => (
+             <li key={service} className="py-5 sm:py-6 md:py-8 flex items-center justify-between gap-4 group">
+                <span style={{ fontFamily: "var(--font-display)" }} className="text-2xl sm:text-3xl md:text-5xl uppercase tracking-tight group-hover:text-accent transition-colors">
+                  {service}
+                </span>
+
+                <span className="text-[10px] sm:text-xs uppercase tracking-widest text-muted-foreground shrink-0">
+                  0{index + 1}
+                </span>
+              </li>
+            ))}
+          </ul>
+
+          <Link
+            to="/services"
+            className="inline-block mt-12 text-xs uppercase tracking-widest text-accent border-b border-accent pb-1 hover:opacity-70"
+          >
+            Explore services →
+          </Link>
+        </div>
+      </section>
+
+      {/* About teaser */}
+        <section className="py-20 sm:py-24 md:py-32 px-4 sm:px-6 md:px-10">
+        <div className="max-w-4xl mx-auto text-center">
+          <p style={{ fontFamily: "var(--font-nepali)" }} className="text-xl sm:text-2xl text-accent mb-4 sm:mb-6">कथा चित्र</p>
+          <p style={{ fontFamily: "var(--font-display)" }} className="text-2xl sm:text-3xl md:text-5xl uppercase leading-tight tracking-tight text-balance">
+            A house built on the foundation of{" "}
+            <span className="italic font-light text-accent">
+              narrative truth
+            </span>
+            .
+          </p>
+
+          <p className="mt-8 text-foreground/70 max-w-xl mx-auto leading-relaxed">
+            We blend cinematic craft with cultural depth to create work that
+            resonates across borders — from intimate documentaries to
+            large-scale brand campaigns.
+          </p>
+
+          <a
+            href="/about"
+            className="inline-block mt-10 text-xs uppercase tracking-widest text-accent border-b border-accent pb-1 hover:opacity-70"
+          >
+            Inside the studio →
+          </a>
+        </div>
+      </section>
+
+      <SiteFooter />
+    </div>
+  );
+}
