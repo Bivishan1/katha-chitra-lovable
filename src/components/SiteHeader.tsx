@@ -11,12 +11,15 @@ const links = [
 export default function SiteHeader() {
    const [open, setOpen] = useState(false);
    const [hidden, setHidden] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
   const lastScrollY = useRef(0);
   const scrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
     const onScroll = () => {
+        const currentY = window.scrollY;
+      setScrolled(currentY > 10);
       if (open) return;
-      const currentY = window.scrollY;
+      
       if (scrollTimer.current) {
         clearTimeout(scrollTimer.current);
         scrollTimer.current = null;
@@ -45,23 +48,29 @@ export default function SiteHeader() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 md:px-10 py-4 md:py-6 flex justify-between items-center mix-blend-difference text-foreground transition-transform duration-500 ${hidden ? "-translate-y-full" : "translate-y-0"}`}
+        className={`fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 md:px-10 flex justify-between items-center text-foreground transition-all duration-500 ${
+          hidden ? "-translate-y-full" : "translate-y-0"
+        } ${
+          scrolled
+            ? "py-3 md:py-4 bg-background/85 backdrop-blur-xl border-b border-border shadow-[0_8px_30px_-12px_rgba(0,0,0,0.5)]"
+            : "py-4 md:py-6 bg-background/40 backdrop-blur-md border-b border-transparent"
+        }`}
       >
         <Link to="/" className="flex items-baseline gap-2 sm:gap-3" onClick={() => setOpen(false)}>
-          <span style={{ fontFamily: "var(--font-display)" }} className="text-lg sm:text-xl md:text-2xl font-bold tracking-tighter uppercase">
+           <span style={{ fontFamily: "var(--font-display)" }} className="text-lg sm:text-xl md:text-2xl font-bold tracking-tighter uppercase text-foreground">
             Katha Chitra
           </span>
-          <span style={{ fontFamily: "var(--font-nepali)" }} className="hidden sm:inline text-sm opacity-50">
+          <span style={{ fontFamily: "var(--font-nepali)" }} className="hidden sm:inline text-sm text-accent/80">
             कथा चित्र
           </span>
         </Link>
-        <div className="hidden md:flex gap-10 text-[11px] font-medium uppercase tracking-[0.2em]">
+        <div className="hidden md:flex gap-8 lg:gap-10 text-[11px] font-medium uppercase tracking-[0.2em] text-foreground/80">
           {links.map((l) => (
             <NavLink
               key={l.to}
               to={l.to}
               className={({ isActive }) =>
-                `${isActive ? "text-accent" : "hover:text-accent"} transition-colors duration-300`
+                `relative hover:text-accent transition-colors duration-300 after:absolute after:left-0 after:-bottom-1 after:h-px after:w-0 after:bg-accent after:transition-all after:duration-300 hover:after:w-full ${isActive ? "text-accent" : ""}`
               }
             >
               {l.label}

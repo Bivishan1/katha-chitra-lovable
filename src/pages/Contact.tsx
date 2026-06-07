@@ -79,25 +79,56 @@ export default function Contact() {
     canonical.href = "/contact";
   }, []);
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  // new web3forms form template
+const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
-    const subject = encodeURIComponent(
-      `[${form.type}] ${form.name} — ${form.company || "Inquiry"}`
+  try {
+    const response = await fetch(
+      "https://api.web3forms.com/submit",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
+          name: form.name,
+          company: form.company,
+          email: form.email,
+          budget: form.budget,
+          type: form.type,
+          message: form.message,
+
+          subject: `[${form.type}] ${form.name} — ${
+            form.company || "Inquiry"
+          }`,
+        }),
+      }
     );
 
-    const body = encodeURIComponent(
-      `Name: ${form.name}
-Company: ${form.company}
-Email: ${form.email}
-Project type: ${form.type}
-Budget: ${form.budget}
+    const result = await response.json();
 
-${form.message}`
-    );
+    if (result.success) {
+      alert("Inquiry sent successfully!");
 
-    window.location.href = `mailto:hello@kathachitra.com?subject=${subject}&body=${body}`;
-  };
+      setForm({
+        name: "",
+        company: "",
+        email: "",
+        budget: "",
+        type: projectTypes[0],
+        message: "",
+      });
+    } else {
+      alert("Failed to send inquiry.");
+    }
+  } catch (error) {
+    console.error(error);
+    alert("Something went wrong.");
+  }
+};
 
   return (
     <div className="min-h-screen">
