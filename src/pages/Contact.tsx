@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
-import  SiteHeader from "../components/SiteHeader";
+import SiteHeader from "../components/SiteHeader";
 
 const projectTypes = [
   "Commercial",
@@ -49,25 +49,25 @@ export default function Contact() {
     setMetaTag(
       'meta[name="description"]',
       "content",
-      "Start a project with Katha Chitra. Reach our Kathmandu studio for commercials, branded content, music videos, documentaries and digital campaigns."
+      "Start a project with Katha Chitra. Reach our Kathmandu studio for commercials, branded content, music videos, documentaries and digital campaigns.",
     );
 
     setMetaTag(
       'meta[property="og:title"]',
       "content",
-      "Contact — Katha Chitra"
+      "Contact — Katha Chitra",
     );
 
     setMetaTag(
       'meta[property="og:description"]',
       "content",
-      "Let's tell your story. Reach out to our Kathmandu studio."
+      "Let's tell your story. Reach out to our Kathmandu studio.",
     );
 
     setMetaTag('meta[property="og:url"]', "content", "/contact");
 
     let canonical = document.head.querySelector(
-      'link[rel="canonical"]'
+      'link[rel="canonical"]',
     ) as HTMLLinkElement | null;
 
     if (!canonical) {
@@ -80,13 +80,11 @@ export default function Contact() {
   }, []);
 
   // new web3forms form template
-const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  try {
-    const response = await fetch(
-      "https://api.web3forms.com/submit",
-      {
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -101,34 +99,31 @@ const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
           type: form.type,
           message: form.message,
 
-          subject: `[${form.type}] ${form.name} — ${
-            form.company || "Inquiry"
-          }`,
+          subject: `[${form.type}] ${form.name} — ${form.company || "Inquiry"}`,
         }),
-      }
-    );
-
-    const result = await response.json();
-
-    if (result.success) {
-      alert("Inquiry sent successfully!");
-
-      setForm({
-        name: "",
-        company: "",
-        email: "",
-        budget: "",
-        type: projectTypes[0],
-        message: "",
       });
-    } else {
-      alert("Failed to send inquiry.");
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert("Inquiry sent successfully!");
+
+        setForm({
+          name: "",
+          company: "",
+          email: "",
+          budget: "",
+          type: projectTypes[0],
+          message: "",
+        });
+      } else {
+        alert("Failed to send inquiry.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong.");
     }
-  } catch (error) {
-    console.error(error);
-    alert("Something went wrong.");
-  }
-};
+  };
 
   return (
     <div className="min-h-screen">
@@ -136,15 +131,20 @@ const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
 
       <section className="pt-32 sm:pt-40 md:pt-48 pb-12 sm:pb-16 px-4 sm:px-6 md:px-10">
         <div className="max-w-7xl mx-auto">
-         <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-accent mb-4 sm:mb-6">Get in touch</p>
-          <h1 style={{ fontFamily: "var(--font-display)" }} className="text-5xl sm:text-7xl md:text-9xl uppercase tracking-tighter leading-[0.85]">
+          <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-accent mb-4 sm:mb-6">
+            Get in touch
+          </p>
+          <h1
+            style={{ fontFamily: "var(--font-display)" }}
+            className="text-5xl sm:text-7xl md:text-9xl uppercase tracking-tighter leading-[0.85]"
+          >
             Start the <br />
             <span className="italic font-light text-accent">story.</span>
           </h1>
         </div>
       </section>
 
-       <section className="px-4 sm:px-6 md:px-10 pb-20 sm:pb-24">
+      <section className="px-4 sm:px-6 md:px-10 pb-20 sm:pb-24">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-10 sm:gap-12 md:gap-16">
           {/* Info */}
           <aside className="md:col-span-4 space-y-10">
@@ -206,7 +206,10 @@ const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
           </aside>
 
           {/* Form */}
-          <form onSubmit={onSubmit} className="md:col-span-8 space-y-6 sm:space-y-8">
+          <form
+            onSubmit={onSubmit}
+            className="md:col-span-8 space-y-6 sm:space-y-8"
+          >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
               <Field
                 label="Name"
@@ -269,12 +272,16 @@ const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
                 required
                 rows={6}
                 value={form.message}
-                onChange={(e) =>
-                  setForm({ ...form, message: e.target.value })
-                }
+                onChange={(e) => setForm({ ...form, message: e.target.value })}
                 className="w-full bg-transparent border border-border px-4 py-3 text-foreground focus:outline-none focus:border-accent transition-colors"
               />
             </div>
+            <input
+              type="checkbox"
+              name="botcheck"
+              className="hidden"
+              style={{ display: "none" }}
+            />
 
             <button
               type="submit"
