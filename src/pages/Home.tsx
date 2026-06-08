@@ -6,6 +6,7 @@ import SiteFooter from "../components/SiteFooter";
 import { WorkTile } from "../components/WorkTile";
 import { projects } from "../data/projects";
 import { Link } from "react-router-dom";
+import { Reveal } from "../components/Reveal";
 
 function setMetaTag(selector: string, attribute: string, content: string) {
   let element = document.head.querySelector(selector) as HTMLMetaElement | null;
@@ -164,36 +165,44 @@ export default function Home() {
 
       {/* Selected Work */}
      {/* Selected Work — slides up over hero */}
-      <section className="relative z-10 bg-background py-20 sm:py-24 md:py-32 px-4 sm:px-6 md:px-10 shadow-[0_-30px_60px_-20px_rgba(0,0,0,0.6)]">
+      <section className="relative z-10 bg-background py-20 sm:py-24 md:py-16 px-4 sm:px-6 md:px-10 shadow-[0_-30px_60px_-20px_rgba(0,0,0,0.6)]">
         <div className="flex flex-wrap gap-4 justify-between items-end mb-10 sm:mb-16">
-          <div>
+          <Reveal direction="left">
            <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-accent mb-3 sm:mb-4">01 — Selected Work</p>
             <h2 style={{ fontFamily: "var(--font-display)" }} className="text-3xl sm:text-4xl md:text-6xl uppercase tracking-tight">
               Recent Frames
             </h2>
-          </div>
-
+            </Reveal>
+          <Reveal direction="right" delay={150}>
             <Link to="/work" className="text-[10px] sm:text-xs uppercase tracking-widest text-accent border-b border-accent pb-1 hover:opacity-70">
-            All projects →
-          </Link>
+              All projects →
+            </Link>
+          </Reveal>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-6">
           {featured[0] && (
+           
             <div className="md:col-span-8">
+               <Reveal direction="left" delay={250}>
               <WorkTile project={featured[0]} />
+              </Reveal>
             </div>
           )}
 
           {featured[1] && (
             <div className="md:col-span-4 md:mt-24  md:sticky md:top-24 md:self-end">
+              <Reveal direction="right" delay={300}>
               <WorkTile project={featured[1]} />
+              </Reveal>
             </div>
           )}
 
           {featured[2] && (
             <div className="md:col-span-5 md:-mt-12">
-              <WorkTile project={featured[2]} />
+              <Reveal direction="fade" delay={350}>
+                <WorkTile project={featured[2]} />
+              </Reveal>
             </div>
           )}
         </div>
@@ -202,12 +211,16 @@ export default function Home() {
       {/* Services teaser */}
        {/* Services teaser — sticky reveal layer 2 */}
       <div className="relative h-screen">
-        <section className="sticky top-0 h-screen overflow-hidden bg-secondary text-secondary-foreground flex items-center px-4 sm:px-6 md:px-10 scroll-mt-24">
+        <section id= "capabilities" className="sticky top-0 h-screen overflow-hidden bg-secondary text-secondary-foreground flex items-center px-4 sm:px-6 md:px-10 scroll-mt-24">
         <div className="w-full">
-         <p id="capabilities" className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-accent mb-3 sm:mb-4">02 — Capabilities</p>
-           <h2 style={{ fontFamily: "var(--font-display)" }} className="text-3xl sm:text-4xl md:text-6xl uppercase tracking-tight mb-6 sm:mb-10">
-            What we make.
-          </h2>
+        <Reveal direction="left">
+            <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-accent mb-3 sm:mb-4">02 — Capabilities</p>
+          </Reveal>
+          <Reveal direction="left" delay={120}>
+            <h2 style={{ fontFamily: "var(--font-display)" }} className="text-3xl sm:text-4xl md:text-6xl uppercase tracking-tight mb-6 sm:mb-10">
+              What we make.
+            </h2>
+          </Reveal>
 
           <ul className="divide-y divide-border">
             {[
@@ -217,29 +230,35 @@ export default function Home() {
               "Music Videos",
               "Digital Campaigns",
             ].map((s, index) => (
-             <li key={s} className="py-3 sm:py-4 md:py-5 flex items-center justify-between gap-4 group">
-                <span style={{ fontFamily: "var(--font-display)" }} className="text-2xl sm:text-3xl md:text-4xl uppercase tracking-tight group-hover:text-accent transition-colors">
-                  {s}
-                </span>
-
-                <span className="text-[10px] sm:text-xs uppercase tracking-widest text-muted-foreground shrink-0">
-                  0{index + 1}
-                </span>
-              </li>
+             <Reveal as="li" key={s} direction="up" delay={index * 90}>
+                <div className="py-3 sm:py-4 md:py-5 flex items-center justify-between gap-4 group">
+                  <span style={{ fontFamily: "var(--font-display)" }} className="text-2xl sm:text-3xl md:text-4xl uppercase tracking-tight group-hover:text-accent transition-colors">
+                    {s}
+                  </span>
+                  <span className="text-[10px] sm:text-xs uppercase tracking-widest text-muted-foreground shrink-0">
+                    0{index + 1}
+                  </span>
+                </div>
+              </Reveal>
             ))}
           </ul>
 
-           <Link to="/services" className="inline-block mt-8 text-xs uppercase tracking-widest text-accent border-b border-accent pb-1 hover:opacity-70">
-            Explore services →
-          </Link>
+           <Reveal direction="up" delay={200}>
+            <Link to="/services" className="inline-block mt-8 text-xs uppercase tracking-widest text-accent border-b border-accent pb-1 hover:opacity-70">
+              Explore services →
+            </Link>
+          </Reveal>
         </div>
       </section>
       </div>
 
       {/* About teaser — slides up over services */}
-      <section className="relative z-10 bg-background py-20 sm:py-24 md:py-32 px-4 sm:px-6 md:px-10 shadow-[0_-30px_60px_-20px_rgba(0,0,0,0.6)]">
+      <section className="relative z-10 bg-background py-20 sm:py-24 md:py-16 px-4 sm:px-6 md:px-10 shadow-[0_-30px_60px_-20px_rgba(0,0,0,0.6)]">
         <div className="max-w-4xl mx-auto text-center">
+          <Reveal direction = "fade" delay ={200}>
           <p style={{ fontFamily: "var(--font-nepali)" }} className="text-xl sm:text-2xl text-accent mb-4 sm:mb-6">कथा चित्र</p>
+          </Reveal>
+            <Reveal direction = "left" delay ={290}>
           <p style={{ fontFamily: "var(--font-display)" }} className="text-2xl sm:text-3xl md:text-5xl uppercase leading-tight tracking-tight text-balance">
             A house built on the foundation of{" "}
             <span className="italic font-light text-accent">
@@ -247,19 +266,23 @@ export default function Home() {
             </span>
             .
           </p>
-
+          </Reveal>
+            <Reveal direction = "right" delay ={400}>
           <p className="mt-8 text-foreground/70 max-w-xl mx-auto leading-relaxed">
             We blend cinematic craft with cultural depth to create work that
             resonates across borders — from intimate documentaries to
             large-scale brand campaigns.
           </p>
+          </Reveal>
 
-          <a
-            href="/about"
-            className="inline-block mt-10 text-xs uppercase tracking-widest text-accent border-b border-accent pb-1 hover:opacity-70"
-          >
-            Inside the studio →
-          </a>
+          <Reveal direction="up" delay={200}>
+            <Link
+              to="/about"
+              className="inline-block mt-10 text-xs uppercase tracking-widest text-accent border-b border-accent pb-1 hover:opacity-70"
+            >
+              Inside the studio →
+            </Link>
+          </Reveal>
         </div>
       </section>
 
