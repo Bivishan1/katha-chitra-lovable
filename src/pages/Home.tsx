@@ -31,6 +31,10 @@ function setMetaTag(selector: string, attribute: string, content: string) {
 
 export default function Home() {
   const featured = projects.slice(0, 3);
+   const scrollToCapabilities = () => {
+    const el = document.getElementById("capabilities");
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   useEffect(() => {
     document.title = "Katha Chitra — Nepali Video Production House";
@@ -120,23 +124,36 @@ export default function Home() {
         <div className="absolute inset-0 bg-linear-to-b from-background/60 via-background/30 to-background" />
 
         <div className="relative z-10 max-w-6xl">
-           <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] sm:tracking-[0.4em] text-accent mb-4 sm:mb-6">
+           <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] sm:tracking-[0.4em] text-accent mb-4 sm:mb-6 animate-[slideInLeft_0.9s_ease-out_0.1s_both]">
             Est. Kathmandu · MMXIV
           </p>
 
           <h1
             style={{ fontFamily: "var(--font-display)" }}
-            className="text-[18vw] sm:text-[14vw] md:text-[9vw] leading-[0.85] uppercase tracking-tighter font-bold"
+            className="text-[18vw] sm:text-[14vw] md:text-[9vw] leading-[0.85] uppercase tracking-tighter font-bold overflow-hidden"
           >
-            Stories <br />
-            From The{" "}
-            <span className="text-accent italic font-light">Peak</span>
+            <span className="block animate-[slideInLeft_1s_cubic-bezier(0.22,1,0.36,1)_0.25s_both]">Stories</span>
+            <span className="block animate-[slideInRight_1s_cubic-bezier(0.22,1,0.36,1)_0.55s_both]">
+              From The <span className="text-accent italic font-light">Peak</span>
+            </span>
           </h1>
 
-           <p className="mt-6 sm:mt-10 max-w-md text-xs sm:text-sm leading-relaxed text-foreground/80 border-l border-accent pl-4 sm:pl-6 uppercase tracking-wider">
+           <p className="mt-6 sm:mt-10 max-w-md text-xs sm:text-sm leading-relaxed text-foreground/80 border-l border-accent pl-4 sm:pl-6 uppercase tracking-wider animate-[slideInUp_0.9s_ease-out_0.95s_both]">
             A full-service film &amp; media production house translating
             Himalayan soul into global visual narratives.
           </p>
+          {/* new learn more button  */}
+          <div className="mt-8 sm:mt-10 animate-[slideInUp_0.9s_ease-out_1.2s_both]">
+            <button
+              type="button"
+              onClick={scrollToCapabilities}
+              className="group inline-flex items-center gap-3 text-[10px] sm:text-xs uppercase tracking-[0.3em] px-5 py-3 bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
+            >
+              Learn More
+              <span className="inline-block transition-transform group-hover:translate-y-1">↓</span>
+            </button>
+          </div>
+          {/* new learn more button close  */}
         </div>
 
          <div className="absolute bottom-4 sm:bottom-8 right-4 sm:right-6 md:right-10 z-10 text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-foreground/60">
@@ -185,9 +202,9 @@ export default function Home() {
       {/* Services teaser */}
        {/* Services teaser — sticky reveal layer 2 */}
       <div className="relative h-screen">
-        <section className="sticky top-0 h-screen overflow-hidden bg-secondary text-secondary-foreground flex items-center px-4 sm:px-6 md:px-10">
+        <section className="sticky top-0 h-screen overflow-hidden bg-secondary text-secondary-foreground flex items-center px-4 sm:px-6 md:px-10 scroll-mt-24">
         <div className="w-full">
-         <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-accent mb-3 sm:mb-4">02 — Capabilities</p>
+         <p id="capabilities" className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-accent mb-3 sm:mb-4">02 — Capabilities</p>
            <h2 style={{ fontFamily: "var(--font-display)" }} className="text-3xl sm:text-4xl md:text-6xl uppercase tracking-tight mb-6 sm:mb-10">
             What we make.
           </h2>
