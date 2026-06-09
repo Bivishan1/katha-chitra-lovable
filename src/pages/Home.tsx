@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 // import heroImage from "../assets/hero-showreel.jpg";
-import showReel from "../assets/website_cover _video.mp4";
+import showReel from "../assets/hero-720p.mp4";
 import  SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
 import { WorkTile } from "../components/WorkTile";
@@ -112,7 +112,7 @@ export default function Home() {
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
           poster=''
           aria-label="Katha Chitra showreel"
           className="absolute inset-0 w-full h-full object-cover opacity-80"
