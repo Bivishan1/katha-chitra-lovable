@@ -105,8 +105,8 @@ export default function Home() {
 
       {/* Hero */}
        {/* Hero — sticky reveal layer 1 */}
-      <div className="relative h-screen">
-        <section className="sticky top-0 h-screen flex flex-col justify-end px-4 sm:px-6 md:px-10 pb-12 sm:pb-16 md:pb-20 overflow-hidden">
+      {/* <div className="relative h-screen"> */}
+        <section className="sticky top-0 h-screen z-0 flex flex-col justify-end px-4 sm:px-6 md:px-10 pb-12 sm:pb-16 md:pb-20 overflow-hidden">
          <video
           autoPlay
           muted
@@ -161,11 +161,11 @@ export default function Home() {
           Showreel · 2025 →
         </div>
       </section>
-      </div>
+      {/* </div> */}
 
       {/* Selected Work */}
      {/* Selected Work — slides up over hero */}
-      <section className="relative z-10 bg-background py-20 sm:py-24 md:py-16 px-4 sm:px-6 md:px-10 shadow-[0_-30px_60px_-20px_rgba(0,0,0,0.6)]">
+      <section className="relative z-20 bg-background py-20 sm:py-24 md:py-16 px-4 sm:px-6 md:px-10 shadow-[0_-30px_60px_-20px_rgba(0,0,0,0.6)]">
         <div className="flex flex-wrap gap-4 justify-between items-end mb-10 sm:mb-16">
           <Reveal direction="left">
            <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-accent mb-3 sm:mb-4">01 — Selected Work</p>
@@ -210,8 +210,8 @@ export default function Home() {
 
       {/* Services teaser */}
        {/* Services teaser — sticky reveal layer 2 */}
-      <div className="relative h-screen">
-        <section id= "capabilities" className="sticky top-0 h-screen overflow-hidden bg-secondary text-secondary-foreground flex items-center px-4 sm:px-6 md:px-10 scroll-mt-24">
+      {/* <div className="relative h-screen"> */}
+        <section id= "capabilities" className="sticky top-0 h-screen z-10 overflow-hidden bg-secondary text-secondary-foreground flex items-center px-4 sm:px-6 md:px-10 scroll-mt-24">
         <div className="w-full">
         <Reveal direction="left">
             <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-accent mb-3 sm:mb-4">02 — Capabilities</p>
@@ -250,10 +250,10 @@ export default function Home() {
           </Reveal>
         </div>
       </section>
-      </div>
+      {/* </div> */}
 
       {/* About teaser — slides up over services */}
-      <section className="relative z-10 bg-background py-20 sm:py-24 md:py-16 px-4 sm:px-6 md:px-10 shadow-[0_-30px_60px_-20px_rgba(0,0,0,0.6)]">
+      <section className="relative z-30 bg-background py-20 sm:py-24 md:py-16 px-4 sm:px-6 md:px-10 shadow-[0_-30px_60px_-20px_rgba(0,0,0,0.6)]">
         <div className="max-w-4xl mx-auto text-center">
           <Reveal direction = "fade" delay ={200}>
           <p style={{ fontFamily: "var(--font-nepali)" }} className="text-xl sm:text-2xl text-accent mb-4 sm:mb-6">कथा चित्र</p>
@@ -285,8 +285,9 @@ export default function Home() {
           </Reveal>
         </div>
       </section>
-
+<section id= "capabilities" className="sticky top-0 h-screen z-10 overflow-hidden bg-secondary text-secondary-foreground flex items-center px-4 sm:px-6 md:px-10 scroll-mt-24">
       <SiteFooter />
+    </section>
     </div>
   );
 }
