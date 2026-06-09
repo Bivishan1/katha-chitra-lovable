@@ -1,4 +1,5 @@
 import type { Project } from "@/data/projects";
+import { Play } from "lucide-react";
 
 const aspectClass: Record<Project["aspect"], string> = {
   wide: "aspect-[16/10]",
@@ -8,7 +9,7 @@ const aspectClass: Record<Project["aspect"], string> = {
 
 export function WorkTile({ project, eager = false }: { project: Project; eager?: boolean }) {
   return (
-    <div className="group cursor-pointer">
+    <div className="group">
       <div className={`relative overflow-hidden bg-card outline -outline-offset-1 outline-white/5 ${aspectClass[project.aspect]}`}>
         <img
           src={project.image}
@@ -16,7 +17,28 @@ export function WorkTile({ project, eager = false }: { project: Project; eager?:
           loading={eager ? "eager" : "lazy"}
           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
         />
-        <div className="absolute inset-0 bg-linear-gradient-to-t from-background/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute inset-0 bg-linear-to-t from-background/80 via-background/10 to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
+        <a
+          href={project.videoUrl}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`Watch ${project.title} video on YouTube`}
+          className="absolute inset-0 flex items-center justify-center"
+        >
+          <span className="relative flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-accent/90 text-accent-foreground backdrop-blur-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] transition-transform duration-500 ease-out scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100">
+            <span className="absolute inset-0 rounded-full bg-accent/60 animate-ping opacity-0 group-hover:opacity-60" />
+            <Play className="relative w-6 h-6 sm:w-7 sm:h-7 ml-0.5 fill-current" strokeWidth={0} />
+          </span>
+        </a>
+        <a
+          href={project.videoUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="absolute bottom-4 left-4 sm:bottom-5 sm:left-5 inline-flex items-center gap-2 px-3.5 py-2 bg-background/70 backdrop-blur-md border border-white/15 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-foreground hover:bg-accent hover:text-accent-foreground hover:border-accent transition-all duration-300 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
+        >
+          <Play className="w-3 h-3 fill-current" strokeWidth={0} />
+          Watch Video
+        </a>
       </div>
       <div className="mt-4 flex justify-between items-start gap-4">
         <h3 style={{ fontFamily: "var(--font-display)" }} className="text-lg md:text-xl uppercase tracking-tight">

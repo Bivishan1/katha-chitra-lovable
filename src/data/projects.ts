@@ -12,6 +12,7 @@ export type Project = {
   year: number;
   image: string;
   aspect: "wide" | "portrait" | "square";
+  videoUrl : string;
 };
 
 export const projects: Project[] = [
@@ -23,6 +24,7 @@ export const projects: Project[] = [
     year: 2024,
     image: workCommercial,
     aspect: "wide",
+    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
   },
   {
     id: "the-last-weaver",
@@ -32,6 +34,8 @@ export const projects: Project[] = [
     year: 2024,
     image: workDocumentary,
     aspect: "portrait",
+    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+
   },
   {
     id: "echoes-of-the-valley",
@@ -41,6 +45,8 @@ export const projects: Project[] = [
     year: 2023,
     image: workMusic,
     aspect: "square",
+   videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+
   },
   {
     id: "kathmandu-midnight",
@@ -50,6 +56,8 @@ export const projects: Project[] = [
     year: 2023,
     image: workBranded,
     aspect: "wide",
+    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+
   },
   {
     id: "mustang-letters",
@@ -59,5 +67,7 @@ export const projects: Project[] = [
     year: 2022,
     image: workMustang,
     aspect: "wide",
+        videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+
   },
 ];

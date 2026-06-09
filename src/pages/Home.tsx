@@ -148,7 +148,7 @@ export default function Home() {
             <button
               type="button"
               onClick={scrollToCapabilities}
-              className="group inline-flex items-center gap-3 text-[10px] sm:text-xs uppercase tracking-[0.3em] px-5 py-3 bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
+              className="cursor-pointer group inline-flex items-center gap-3 text-[10px] sm:text-xs uppercase tracking-[0.3em] px-5 py-3 bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
             >
               Learn More
               <span className="inline-block transition-transform group-hover:translate-y-1">↓</span>
