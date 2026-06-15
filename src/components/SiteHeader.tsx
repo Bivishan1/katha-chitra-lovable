@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 const links = [
   { to: "/work", label: "Work" },
   { to: "/services", label: "Services" },
+   { to: "/international_support", label: "Intl. Support" },
+     { to: "/rental-equipment", label: "Rentals" },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
 ] as const;
@@ -58,10 +60,10 @@ export default function SiteHeader() {
       >
         <Link to="/" className="flex items-baseline gap-2 sm:gap-3" onClick={() => setOpen(false)}>
            <span style={{ fontFamily: "var(--font-display)" }} className="text-lg sm:text-xl md:text-2xl font-bold tracking-tighter uppercase text-foreground">
-            Katha Chitra
+            Katha Chitra Production
           </span>
           <span style={{ fontFamily: "var(--font-nepali)" }} className="hidden sm:inline text-sm text-accent/80">
-            कथा चित्र
+            कथा चित्र प्रोडक्शन
           </span>
         </Link>
         <div className="hidden md:flex gap-8 lg:gap-10 text-[11px] font-medium uppercase tracking-[0.2em] text-foreground/80">
