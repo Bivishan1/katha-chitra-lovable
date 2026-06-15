@@ -229,6 +229,7 @@ export default function Home() {
               "Documentaries",
               "Music Videos",
               "Digital Campaigns",
+              "Rental Equipments"
             ].map((s, index) => (
              <Reveal as="li" key={s} direction="up" delay={index * 90}>
                 <div className="py-3 sm:py-4 md:py-5 flex items-center justify-between gap-4 group">
