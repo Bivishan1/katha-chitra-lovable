@@ -8,7 +8,7 @@ import Services from "./pages/Services";
 import International from "./pages/International";
 import RentalEquipment from "./pages/Rental-equipment";
 import Contact from "./pages/Contact";
-import Test from "./pages/test";
+
 function App() {
   return (
     <>
@@ -21,7 +21,6 @@ function App() {
       <Route path="/international_support" element={<International />} />
         <Route path="/rental-equipment" element={<RentalEquipment />} />
       <Route path="/contact" element={<Contact />} />
-      <Route path = "/test" element = {<Test />} />
     </Routes>
     </>
   );
