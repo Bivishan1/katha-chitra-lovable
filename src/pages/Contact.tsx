@@ -8,6 +8,7 @@ const projectTypes = [
   "Music Video",
   "Documentary",
   "Digital Campaign",
+  "Equipment Rental",
   "Other",
 ];
 

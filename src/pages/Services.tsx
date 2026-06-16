@@ -33,6 +33,17 @@ const services = [
     body: "Beyond production. We build comprehensive digital campaigns that ensure your story actually reaches its audience.",
     bullets: ["Strategy & rollout", "Platform-native edits", "Paid creative"],
   },
+  {
+    n: "06",
+    title: "Rental Equipment",
+    body:
+      "A working kit room in Kathmandu — cinema cameras, lenses, lighting, grip, sound and drones. Daily and weekly rentals with delivery, on-set support and full insurance. Available standalone or bundled with crew.",
+    bullets: [
+      "Cameras, lenses & lighting",
+      "Grip, sound & drones",
+      "Delivery & on-set support",
+    ],
+  },
 ];
 
 function setMetaTag(selector: string, attribute: string, content: string) {

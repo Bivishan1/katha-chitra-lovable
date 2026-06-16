@@ -71,6 +71,11 @@ export default function SiteFooter() {
             <p>Katha Chitra Films</p>
             <p style={{ fontFamily: "var(--font-nepali)" }}>कथा चित्र</p>
           </div>
+          {/* make this link to a center */}
+          <Link to="/rental-equipment" className="block mt-2 hover:text-accent">
+              Rent Equipment →
+            </Link>
+           
         </div>
       </div>
     </footer>
