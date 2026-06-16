@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import SiteHeader from "../components/SiteHeader";
 import  SiteFooter  from "../components/SiteFooter";
+import { PageHero } from "../components/PageHero";
+import rentalHero from "../assets/bts-monitor.jpg";
 
 const categories = [
   {
@@ -57,23 +59,23 @@ export default function RentalEquipmentPage() {
     <div className="min-h-screen">
       <SiteHeader />
       {/* Hero */}
-      <section className="pt-32 sm:pt-40 md:pt-48 pb-12 sm:pb-20 px-4 sm:px-6 md:px-10">
-        <div className="max-w-7xl mx-auto">
-          <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-accent mb-4 sm:mb-6">
-            Rental Equipment
-          </p>
-          <h1
-            style={{ fontFamily: "var(--font-display)" }}
-            className="text-5xl sm:text-7xl md:text-9xl uppercase tracking-tighter leading-[0.85]"
-          >
-            Gear, ready <br />
-            <span className="italic font-light text-accent">to roll.</span>
-          </h1>
-          <p className="mt-8 max-w-2xl text-sm sm:text-base text-foreground/80 leading-relaxed">
-            A working kit room in Kathmandu — cameras, lenses, lighting, grip, sound and drones. Daily and weekly rentals, with delivery, on-set support and full insurance.
-          </p>
-        </div>
-      </section>
+       <PageHero
+        image={rentalHero}
+        alt="Cinema camera and monitor on a film set"
+        eyebrow="Rental Equipment"
+        caption="Kit Room · Kathmandu"
+      >
+        <h1
+          style={{ fontFamily: "var(--font-display)" }}
+          className="text-5xl sm:text-7xl md:text-9xl uppercase tracking-tighter leading-[0.85]"
+        >
+          Gear, ready <br />
+          <span className="italic font-light text-accent">to roll.</span>
+        </h1>
+        <p className="mt-8 max-w-2xl text-sm sm:text-base text-foreground/80 leading-relaxed">
+          A working kit room in Kathmandu — cameras, lenses, lighting, grip, sound and drones. Daily and weekly rentals, with delivery, on-set support and full insurance.
+        </p>
+      </PageHero>
       {/* Categories */}
       <section className="px-4 sm:px-6 md:px-10 pb-20 sm:pb-32">
         <div className="max-w-7xl mx-auto">

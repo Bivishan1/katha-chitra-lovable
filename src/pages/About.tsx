@@ -6,6 +6,8 @@ import  SiteFooter  from "../components/SiteFooter";
 import founderImage from "../assets/team-founder.jpeg";
 import btsSet from "../assets/bts-set.jpg";
 import btsMonitor from "../assets/bts-monitor.jpg";
+import { PageHero } from "../components/PageHero";
+
 
 function setMetaTag(selector: string, attribute: string, content: string) {
   let element = document.head.querySelector(selector) as HTMLMetaElement | null;
@@ -70,21 +72,21 @@ export default function About() {
     <div className="min-h-screen">
       <SiteHeader />
 
-      <section className="pt-32 sm:pt-40 md:pt-48 pb-12 sm:pb-16 px-4 sm:px-6 md:px-10">
-        <div className="max-w-7xl mx-auto">
-          <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-accent mb-4 sm:mb-6">Studio</p>
-          <h1 style={{ fontFamily: "var(--font-display)" }} className="text-4xl sm:text-6xl md:text-8xl uppercase tracking-tighter leading-[0.9] max-w-5xl">
-            We tell{" "}
-            <span className="italic font-light text-accent">honest</span>{" "}
-            stories with cinematic intent.
-          </h1>
-        </div>
-      </section>
+           <PageHero
+        image={aboutImage}
+        alt="Katha Chitra crew on a Kathmandu rooftop at dusk"
+        eyebrow="Studio"
+        caption="Est. Kathmandu · MMXIV"
+      >
+        <h1 style={{ fontFamily: "var(--font-display)" }} className="text-4xl sm:text-6xl md:text-8xl uppercase tracking-tighter leading-[0.9] max-w-5xl">
+          We tell <span className="italic font-light text-accent">honest</span> stories with cinematic intent.
+        </h1>
+      </PageHero>
 
       <section className="px-4 sm:px-6 md:px-10 py-10 sm:py-16">
         <div className="max-w-7xl mx-auto">
           <img
-            src={aboutImage}
+            src={btsSet}
             alt="Katha Chitra crew on a Kathmandu rooftop at dusk"
             width={1280}
             height={896}

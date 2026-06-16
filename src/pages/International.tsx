@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import heroImage from "../assets/international-hero.jpg";
 import SiteHeader  from "../components/SiteHeader";
 import  SiteFooter from "../components/SiteFooter";
+import { PageHero } from "../components/PageHero";
+
 
 const offerings = [
   {
@@ -43,32 +45,23 @@ export default function International() {
       <SiteHeader />
 
       {/* Hero */}
-      <section className="relative min-h-[80vh] flex flex-col justify-end px-4 sm:px-6 md:px-10 pb-12 sm:pb-16 md:pb-20 overflow-hidden pt-32">
-        <img
-          src={heroImage}
-          alt="Aerial drone view of a film crew on a Himalayan ridge at golden hour"
-          width={1920}
-          height={1088}
-          className="absolute inset-0 w-full h-full object-cover opacity-60"
-        />
-        <div className="absolute inset-0 bg-linear-to-b from-background/60 via-background/20 to-background" />
-
-        <div className="relative z-10 max-w-5xl">
-          <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-accent mb-4 sm:mb-6">
-            For foreign agencies, filmmakers & brands
-          </p>
-          <h1
-            style={{ fontFamily: "var(--font-display)" }}
-            className="text-5xl sm:text-7xl md:text-8xl uppercase tracking-tighter leading-[0.9]"
-          >
-            International <br /> Production <br />
-            <span className="italic font-light text-accent">Support in Nepal.</span>
-          </h1>
-          <p className="mt-6 sm:mt-8 max-w-xl text-sm sm:text-base text-foreground/85 leading-relaxed">
-            Land in Kathmandu with a film-ready crew. Local fixer, scouting, permits, drone, and post — under one roof.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        image={heroImage}
+        alt="Aerial drone view of a film crew on a Himalayan ridge at golden hour"
+        eyebrow="For foreign agencies, filmmakers & brands"
+        caption="Line production · Nepal"
+      >
+        <h1
+          style={{ fontFamily: "var(--font-display)" }}
+          className="text-5xl sm:text-7xl md:text-8xl uppercase tracking-tighter leading-[0.9]"
+        >
+          International <br /> Production <br />
+          <span className="italic font-light text-accent">Support in Nepal.</span>
+        </h1>
+        <p className="mt-6 sm:mt-8 max-w-xl text-sm sm:text-base text-foreground/85 leading-relaxed">
+          Land in Kathmandu with a film-ready crew. Local fixer, scouting, permits, drone, and post — under one roof.
+        </p>
+      </PageHero>
 
       {/* What we cover */}
       <section className="px-4 sm:px-6 md:px-10 py-20 sm:py-28 md:py-32">

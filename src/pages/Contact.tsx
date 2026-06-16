@@ -1,6 +1,10 @@
+import {Link} from "react-router-dom";
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import SiteHeader from "../components/SiteHeader";
+import { PageHero } from "../components/PageHero";
+import contactHero from "../assets/bts-set.jpg";
+
 
 const projectTypes = [
   "Commercial",
@@ -130,20 +134,39 @@ export default function Contact() {
     <div className="min-h-screen">
       <SiteHeader />
 
-      <section className="pt-32 sm:pt-40 md:pt-48 pb-12 sm:pb-16 px-4 sm:px-6 md:px-10">
-        <div className="max-w-7xl mx-auto">
-          <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-accent mb-4 sm:mb-6">
-            Get in touch
-          </p>
-          <h1
-            style={{ fontFamily: "var(--font-display)" }}
-            className="text-5xl sm:text-7xl md:text-9xl uppercase tracking-tighter leading-[0.85]"
+     <PageHero
+        image={contactHero}
+        alt="On-set production team during a Kathmandu shoot"
+        eyebrow="Project inquiry"
+        caption="hello@kathachitra.com"
+      >
+        <h1 style={{ fontFamily: "var(--font-display)" }} className="text-4xl sm:text-6xl md:text-7xl uppercase tracking-tighter leading-[0.95] max-w-5xl">
+          Have a film, brand campaign, or documentary idea?{" "}
+          <span className="italic font-light text-accent">Let's build it together.</span>
+        </h1>
+        <div className="mt-8 sm:mt-12 flex flex-wrap gap-3 sm:gap-4">
+          <a
+            href="#inquiry"
+            className="text-xs uppercase tracking-widest px-5 py-3 bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
           >
-            Start the <br />
-            <span className="italic font-light text-accent">story.</span>
-          </h1>
+            Start a Project
+          </a>
+          <Link
+            to="/work"
+            className="text-xs uppercase tracking-widest px-5 py-3 border border-foreground/40 text-foreground hover:border-accent hover:text-accent transition-colors"
+          >
+            View Portfolio
+          </Link>
+          <a
+            href="https://calendar.app.google/"
+            target="_blank"
+            rel="noreferrer"
+            className="text-xs uppercase tracking-widest px-5 py-3 border border-foreground/40 text-foreground hover:border-accent hover:text-accent transition-colors"
+          >
+            Book a Call
+          </a>
         </div>
-      </section>
+      </PageHero>
 
       <section className="px-4 sm:px-6 md:px-10 pb-20 sm:pb-24">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-10 sm:gap-12 md:gap-16">

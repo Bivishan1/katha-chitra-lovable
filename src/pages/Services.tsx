@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import  SiteHeader from "../components/SiteHeader";
 import  SiteFooter from "../components/SiteFooter";
+import { PageHero } from "../components/PageHero";
+import servicesHero from "../assets/work-commercial.jpg";
 
 const services = [
   {
@@ -109,15 +111,16 @@ export default function Services() {
     <div className="min-h-screen">
       <SiteHeader />
 
-       <section className="pt-32 sm:pt-40 md:pt-48 pb-12 sm:pb-20 px-4 sm:px-6 md:px-10">
-        <div className="max-w-7xl mx-auto">
-          <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-accent mb-4 sm:mb-6">Capabilities</p>
-          <h1 style={{ fontFamily: "var(--font-display)" }} className="text-5xl sm:text-7xl md:text-9xl uppercase tracking-tighter leading-[0.85]">
-            What we <br />
-            <span className="italic font-light text-accent">make.</span>
-          </h1>
-        </div>
-      </section>
+      <PageHero
+        image={servicesHero}
+        alt="Cinema camera setup on a commercial shoot"
+        eyebrow="02 — Capabilities"
+        caption="Services · Kathmandu"
+      >
+        <h1 style={{ fontFamily: "var(--font-display)" }} className="text-5xl sm:text-7xl md:text-9xl uppercase tracking-tighter leading-[0.85]">
+          What we <br /> <span className="italic font-light text-accent">make.</span>
+        </h1>
+      </PageHero>
 
      <section className="px-4 sm:px-6 md:px-10 pb-20 sm:pb-32">
         <div className="max-w-7xl mx-auto">
