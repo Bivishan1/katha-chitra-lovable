@@ -211,7 +211,7 @@ export default function Home() {
       {/* Services teaser */}
        {/* Services teaser — sticky reveal layer 2 */}
       {/* <div className="relative h-screen"> */}
-        <section id= "capabilities" className="sticky top-0 h-screen z-10 overflow-hidden bg-secondary text-secondary-foreground flex items-center px-4 sm:px-6 md:px-10 scroll-mt-24">
+        <section id= "capabilities" className="sticky top-0 h-screen z-10 overflow-hidden bg-secondary text-secondary-foreground flex px-4 sm:px-6 md:px-10 scroll-mt-24">
         <div className="w-full">
         <Reveal direction="left">
             <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-accent mb-3 sm:mb-4">02 — Capabilities</p>

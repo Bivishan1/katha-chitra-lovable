@@ -35,7 +35,7 @@ export function PageHero({
         loading="eager"
         decoding="async"
         className="absolute inset-0 w-full h-full object-cover scale-110 origin-center animate-[heroDrift_18s_ease-in-out_infinite_alternate]"
-      />
+      /> 
       {/* Cinematic scrim: dark base + bottom fade into page */}
       <div className="absolute inset-0 bg-background/55" />
       <div className="absolute inset-0 bg-linear-to-b from-background/70 via-background/30 to-background" />
