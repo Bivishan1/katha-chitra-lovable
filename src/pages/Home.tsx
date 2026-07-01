@@ -191,7 +191,7 @@ export default function Home() {
           )}
 
           {featured[1] && (
-            <div className="md:col-span-4 md:mt-24  md:sticky md:top-24 md:self-end">
+            <div className="md:col-span-4 md:mt-24  md:sticky md:top-24 md:self-start">
               <Reveal direction="right" delay={300}>
               <WorkTile project={featured[1]} />
               </Reveal>

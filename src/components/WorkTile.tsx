@@ -1,5 +1,6 @@
 import type { Project } from "@/data/projects";
 import { Play } from "lucide-react";
+import {useState} from "react";
 
 const aspectClass: Record<Project["aspect"], string> = {
   wide: "aspect-[16/10]",
@@ -7,12 +8,31 @@ const aspectClass: Record<Project["aspect"], string> = {
   square: "aspect-square",
 };
 
+function getYouTubeId(url: string): string | null {
+  const m = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|v\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+
 export function WorkTile({ project, eager = false }: { project: Project; eager?: boolean }) {
+  //getting thumbnail with youtubeid
+  const ytId = getYouTubeId(project.videoUrl);
+  const [thumb, setThumb] = useState(
+    ytId ? `https://i.ytimg.com/vi/${ytId}/maxresdefault.jpg` : project.image,
+  );
+  const handleError = () => {
+    if (ytId && thumb.includes("maxresdefault")) {
+      setThumb(`https://i.ytimg.com/vi/${ytId}/hqdefault.jpg`);
+    } else {
+      setThumb(project.image);
+    }
+  };
+
   return (
     <div className="group">
       <div className={`relative overflow-hidden bg-card outline -outline-offset-1 outline-white/5 ${aspectClass[project.aspect]}`}>
         <img
-          src={project.image}
+          src={thumb}
+          onError = {handleError}
           alt={`${project.title} — ${project.category} for ${project.client}`}
           loading={eager ? "eager" : "lazy"}
           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
