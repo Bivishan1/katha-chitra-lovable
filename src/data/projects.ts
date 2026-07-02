@@ -1,9 +1,7 @@
 import yakChew from "../assets/proposal/yak-chew.png";
 import speaking from "../assets/proposal/speaking.jpg";
 import bagiraheko from "../assets/proposal/bagiraheko_aasha.jpg";
-import prakash from "../assets/proposal/prakash.jpg";
-import npl from "../assets/proposal/npl.jpg";
-import surakshya from "../assets/proposal/surakshya_panta.jpg";
+
 
 export type Project = {
   id: string;
@@ -48,24 +46,24 @@ export const projects: Project[] = [
     videoUrl: "https://www.youtube.com/watch?v=inmFjJUXjqs",
   },
   {
-    id: "prakash-saput-music-video",
-    title: "Music Video w/ Prakash Saput",
-    client: "Prakash Saput",
+    id: "yaad-haru",
+    title: "Yaad Haru - Music Video",
+    client: "Ashish Adhikari",
     category: "Music Video",
     year: 2024,
-    image: prakash,
+    image: '',
     aspect: "portrait",
-    videoUrl: "https://www.youtube.com/watch?v=B0Nts5ARrOs",
+    videoUrl: "https://www.youtube.com/watch?v=ak6euuieHrc",
   },
   {
-    id: "desh-chhodeko-larko",
-    title: "Desh Chhodeko Larko",
-    client: "Surakshya Panta",
+    id: "kathmandu-sumnima",
+    title: "Kathmandu - Sumnima",
+    client: "Sumnima",
     category: "Music Video",
     year: 2024,
-    image: surakshya,
+    image: '',
     aspect: "wide",
-    videoUrl: "https://www.youtube.com/watch?v=Uq3lHHmmRvI",
+    videoUrl: "https://www.youtube.com/watch?v=UYoay4kRaz4",
   },
     {
     id: "nepal-premier-league",
@@ -73,8 +71,8 @@ export const projects: Project[] = [
     client: "SBL (Nepal)",
     category: "Anthem",
     year: 2024,
-    image: npl,
+    image: '',
     aspect: "wide",
-    videoUrl: "https://www.youtube.com/watch?v=Uq3lHHmmRvI",
+    videoUrl: "https://www.youtube.com/watch?v=-LRG342jBv4",
   },
 ];

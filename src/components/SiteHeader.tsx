@@ -1,5 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import logo from '../assets/logo.png';
 
 const links = [
   { to: "/work", label: "Work" },
@@ -59,12 +60,7 @@ export default function SiteHeader() {
         }`}
       >
         <Link to="/" className="flex items-baseline gap-2 sm:gap-3" onClick={() => setOpen(false)}>
-           <span style={{ fontFamily: "var(--font-display)" }} className="text-lg sm:text-xl md:text-2xl font-bold tracking-tighter uppercase text-foreground">
-            Katha Chitra Production
-          </span>
-          <span style={{ fontFamily: "var(--font-nepali)" }} className="hidden sm:inline text-sm text-accent/80">
-            कथा चित्र प्रोडक्शन
-          </span>
+          <img src={logo} alt="Katha Chitra Logo" width={200} height={200} className="w-10 h-10 sm:w-10 sm:h-10"/>
         </Link>
         <div className="hidden md:flex gap-8 lg:gap-10 text-[11px] font-medium uppercase tracking-[0.2em] text-foreground/80">
           {links.map((l) => (
