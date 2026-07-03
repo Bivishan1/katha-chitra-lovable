@@ -152,10 +152,10 @@ export default function Contact() {
             Start a Project
           </a>
           <Link
-            to="/work"
+            to="https://drive.google.com/file/d/1GgrG6hLkosiBa36GhOlXGqeN3WZT09O6/view?usp=sharing"
             className="text-xs uppercase tracking-widest px-5 py-3 border border-foreground/40 text-foreground hover:border-accent hover:text-accent transition-colors"
           >
-            View Portfolio
+            View Proposal
           </Link>
           <a
             href="https://calendar.app.google/"
@@ -178,7 +178,7 @@ export default function Contact() {
               </p>
 
               <p className="text-foreground/80 leading-relaxed">
-                Jhamsikhel, Lalitpur
+                New Baneshwor
                 <br />
                 Kathmandu, Nepal
               </p>
@@ -193,7 +193,7 @@ export default function Contact() {
                 href="mailto:hello@kathachitra.com"
                 className="text-foreground hover:text-accent"
               >
-                hello@kathachitra.com
+                kathachitra5@gmail.com
               </a>
             </div>
 
@@ -203,10 +203,10 @@ export default function Contact() {
               </p>
 
               <a
-                href="tel:+97714123456"
+                href="tel:+9779841004524"
                 className="text-foreground hover:text-accent"
               >
-                +977 1 412 3456
+                +977-9841004524
               </a>
             </div>
 
@@ -218,9 +218,6 @@ export default function Contact() {
               <div className="flex flex-col gap-1 text-foreground/80">
                 <a href="#" className="hover:text-accent">
                   Instagram
-                </a>
-                <a href="#" className="hover:text-accent">
-                  Vimeo
                 </a>
                 <a href="#" className="hover:text-accent">
                   YouTube
