@@ -283,7 +283,31 @@ export default function Home() {
             >
               Inside the studio →
             </Link>
+            
           </Reveal>
+            {/* proposal section */}
+          <Reveal direction="left" delay={200} className = "relative py-20 sm:py-24 md:py-16 px-4 sm:px-6 md:px-10 md:col-span-7">
+            <h2 style={{ fontFamily: "var(--font-display)" }} className="text-3xl sm:text-4xl md:text-6xl uppercase tracking-tight leading-[0.95]">
+                Take our deck <span className="italic font-light text-accent">to your team.</span>
+              </h2>
+              <p className="mt-5 sm:mt-6 max-w-xl mx-auto text-foreground/75 leading-relaxed text-center">
+                A short PDF with our story, recent commercials, documentaries, music videos and the people behind the lens — formatted for sharing with clients and partners.
+              </p>
+            
+          </Reveal>
+          <Reveal direction="right" delay={200} className=" md:text-center">
+              <a
+                href='https://drive.google.com/file/d/1GgrG6hLkosiBa36GhOlXGqeN3WZT09O6/view?usp=sharing'
+                download="Katha-Chitra-Proposal.pdf"
+                target="_blank"
+                rel="noreferrer"
+                className="group inline-flex items-center gap-3 text-[10px] sm:text-xs uppercase tracking-[0.3em] px-5 py-3 bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
+              >
+                Download Proposal
+                <span className="inline-block transition-transform group-hover:translate-y-0.5">↓</span>
+              </a>
+              <p className="mt-3 text-[10px] uppercase tracking-widest text-muted-foreground">PDF · 6 pages</p>
+            </Reveal>
         </div>
       </section>
 <section id= "capabilities" className="sticky top-0 h-screen z-10 overflow-hidden bg-secondary text-secondary-foreground flex items-center px-4 sm:px-6 md:px-10 scroll-mt-24">
