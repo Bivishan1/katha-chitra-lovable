@@ -38,7 +38,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    document.title = "Katha Chitra — Nepali Video Production House";
+    document.title = "Katha Chitra Production — Nepali Video Production House";
 
     setMetaTag(
       'meta[name="description"]',

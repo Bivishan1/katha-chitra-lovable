@@ -3,22 +3,27 @@ import { Link } from "react-router-dom";
 const footerLinks = [
   {
     title: "Studio",
-    items: ["Jhamsikhel, Lalitpur", "Kathmandu, Nepal"],
+    items: ["New Baneshwor, Nepal", "+977-9841004524"],
   },
   {
     title: "Inquiries",
     items: [
       {
-        label: "hello@kathachitra.com",
-        href: "mailto:hello@kathachitra.com",
+        label: "kathachitra5@gmail.com",
+        href: "mailto:kathachitra5@gmail.com",
       },
     ],
   },
-  {
-    title: "Follow",
+   {
+    title: "Contact",
     items: [
-      { label: "Instagram", href: "#" },
-      { label: "Vimeo", href: "#" },
+      { label: "WhatsApp", href: "https://wa.me/9779841004524" },
+    ],
+  },
+  {
+    title: "Follow us",
+    items: [
+      { label: "Instagram", href: "" },
       { label: "YouTube", href: "#" },
     ],
   },
@@ -27,7 +32,7 @@ const footerLinks = [
 
 export default function SiteFooter() {
   return (
-  <footer className="border-t border-border px-4 py-20 sm:px-6 sm:py-28 lg:px-10 lg:py-36">
+  <footer className="border-t border-border px-4 py-20 sm:px-6 sm:py-15 lg:px-10">
       <div className="mx-auto max-w-7xl">
         <p className="mb-8 text-[10px] uppercase tracking-[0.28em] text-muted-foreground sm:mb-10 sm:text-[11px] sm:tracking-[0.4em]">
           Ready to tell your story?
@@ -66,17 +71,23 @@ export default function SiteFooter() {
             </div>
           ))}
 
-          <div className="min-w-0 sm:col-span-2 lg:col-span-1 lg:text-right">
-            <p className="mb-2 text-foreground/60">© 2025</p>
+         
+           
+        </div>
+        <div className="copyright text-center  tracking-widest text-muted-foreground sm:text-[11px] lg:mt-10">
+             <p className="mb-2 text-foreground/60">© 2025</p>
             <p>Katha Chitra Films</p>
             <p style={{ fontFamily: "var(--font-nepali)" }}>कथा चित्र</p>
           </div>
-          {/* make this link to a center */}
-          <Link to="/rental-equipment" className="block mt-2 hover:text-accent">
+         <div className="flex items-center justify-between text-[10px] uppercase ">
+          
+           
+           {/* make this link to a center */}
+          <Link to="/rental-equipment" className="block mt-2 hover:text-accent pb-20">
               Rent Equipment →
             </Link>
-           
-        </div>
+          </div>
+          
       </div>
     </footer>
   );

@@ -1,2 +1,2 @@
--- add better way to display price (NPR) of the equipments
--- add full background image in the relevants equipments section in the rental-equivalent page. E.g. in first 'cinema cameras' section add full width cinema camers image on that section.
+-- add better way to display price (NPR) of the equipments in the rental-equipments page
+-- add full background image in the relevants equipments section in the rental-equipments page. E.g. in first 'cinema cameras' section add full width cinema camers image on that section.

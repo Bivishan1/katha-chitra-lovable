@@ -3,49 +3,96 @@ import SiteHeader from "../components/SiteHeader";
 import  SiteFooter  from "../components/SiteFooter";
 import { PageHero } from "../components/PageHero";
 import rentalHero from "../assets/bts-monitor.jpg";
+import camerasBg from "../assets/cameras.jpg";
+import lensesBg from "../assets/lenses.jpg";
+import lightingBg from "../assets/lighting.jpg";
+import gripBg from "../assets/grip.jpg";
+import soundBg from "../assets/sound.jpg";
+import dronesBg from "../assets/drone.jpg";
+
+const npr = (n: number) => `NPR ${n.toLocaleString("en-IN")}`;
 
 const categories = [
   {
     n: "01",
     title: "Cinema Cameras",
+    image: camerasBg,
     body:
       "Sony FX-series, RED Komodo, Blackmagic URSA and mirrorless A-cams — ready with media, batteries and accessories.",
-    items: ["Sony FX6 / FX3", "RED Komodo 6K", "Blackmagic URSA / Pocket 6K", "Sony A7S III / A7 IV"],
+    items: [
+      { name: "Sony FX6", day: 18000, week: 95000 },
+      { name: "Sony FX3", day: 12000, week: 65000 },
+      { name: "RED Komodo 6K", day: 25000, week: 135000 },
+      { name: "Blackmagic URSA / Pocket 6K", day: 9000, week: 48000 },
+      { name: "Sony A7S III / A7 IV", day: 6500, week: 34000 },
+    ],
   },
   {
     n: "02",
     title: "Lenses",
+    image: lensesBg,
     body:
       "Cine primes and zooms, vintage glass and fast stills lenses — PL, E and EF mounts with full mount-swap support.",
-    items: ["Sigma Cine FF primes", "DZOFilm Vespid set", "Canon CN-E primes", "Sony G Master zooms"],
+    items: [
+      { name: "Sigma Cine FF primes", day: 5000, week: 25000 },
+      { name: "DZOFilm Vespid set", day: 8000, week: 40000 },
+      { name: "Canon CN-E primes", day: 12000, week: 60000 },
+      { name: "Sony G Master zooms", day: 10000, week: 50000 },
+    ],
   },
   {
     n: "03",
     title: "Lighting",
+    image: lightingBg,
     body:
       "Aputure, Nanlux and Arri-grade fixtures with full modifier packages, stands and distro.",
-    items: ["Aputure 600x / 300x", "Nanlux Evoke 1200", "Astera Titan tubes", "HMI 1.2K / 2.5K kits"],
+    items: [
+      { name: "Aputure 600x", day: 4500, week: 24000 },
+      { name: "Aputure 300x", day: 2800, week: 15000 },
+      { name: "Nanlux Evoke 1200", day: 6500, week: 34000 },
+      { name: "Astera Titan tube (each)", day: 1800, week: 9500 },
+      { name: "HMI 1.2K kit", day: 8000, week: 42000 },
+      { name: "HMI 2.5K kit", day: 12000, week: 65000 },
+    ],
   },
   {
     n: "04",
     title: "Grip & Support",
+    image: gripBg,
     body:
       "Tripods, sliders, gimbals, jibs and dollies — including stabilized vehicle and aerial-ready mounts.",
-    items: ["DJI Ronin 4D / RS3 Pro", "O'Connor & Sachtler heads", "Slider & jib packages", "Easy-rigs & shoulder rigs"],
+    items: [
+      { name: "DJI Ronin 4D", day: 12000, week: 65000 },
+      { name: "DJI RS3 Pro", day: 3500, week: 18000 },
+      { name: "O'Connor / Sachtler head + sticks", day: 4500, week: 24000 },
+      { name: "Slider package (1m)", day: 2500, week: 13000 },
+      { name: "Jib package (up to 3m)", day: 6000, week: 32000 },
+      { name: "Easy-rig / shoulder rig", day: 2000, week: 10500 }],
   },
   {
     n: "05",
     title: "Sound",
+    image: soundBg,
     body:
       "Production sound packages with wireless lavs, boom kits and on-set mixers — recordists available on request.",
-    items: ["Sennheiser MKH 416", "Wisycom & Sennheiser wireless", "Sound Devices MixPre", "Comtek IFB systems"],
+    items: [
+      { name: "Sennheiser MKH 416 + boom kit", day: 3500, week: 18000 },
+      { name: "Wisycom wireless (2ch)", day: 5500, week: 29000 },
+      { name: "Sennheiser G4 wireless (each)", day: 1500, week: 8000 },
+      { name: "Sound Devices MixPre-6 II", day: 4500, week: 24000 },
+      { name: "Comtek IFB (4 rx)", day: 2500, week: 13000 }],
   },
   {
     n: "06",
     title: "Drones & Aerial",
+    image: dronesBg,
     body:
       "CAAN-licensed drone operators with insured rigs, FPV cinema drones and high-altitude packages.",
-    items: ["DJI Inspire 3", "Mavic 3 Cine", "FPV cinema drones", "Aerial permits & pilots"],
+    items: [
+       { name: "DJI Inspire 3 + pilot", day: 45000, week: 240000 },
+      { name: "DJI Mavic 3 Cine + pilot", day: 15000, week: 80000 },
+      { name: "FPV cinema drone + pilot", day: 25000, week: 135000 },
+      { name: "CAAN permit coordination", day: 0, week: 0, note: "Quoted per shoot" },],
   },
 ];
 const perks = [
@@ -77,37 +124,100 @@ export default function RentalEquipmentPage() {
         </p>
       </PageHero>
       {/* Categories */}
-      <section className="px-4 sm:px-6 md:px-10 pb-20 sm:pb-32">
-        <div className="max-w-7xl mx-auto">
-          <ul className="divide-y divide-border border-t border-border">
-            {categories.map((c) => (
-              <li key={c.n} className="grid grid-cols-12 gap-4 sm:gap-6 py-10 sm:py-12 md:py-16 group">
-                <div className="col-span-12 md:col-span-2 text-[10px] sm:text-xs uppercase tracking-widest text-accent">
-                  {c.n}
+      {/* Categories — full-bleed image bands with price table */}
+      <div>
+        {categories.map((c) => (
+          <section
+            key={c.n}
+            className="relative overflow-hidden border-t border-border"
+          >
+            {/* Full-bleed background image */}
+            <img
+              src={c.image}
+              alt={`${c.title} — rental equipment`}
+              loading="lazy"
+              width={1920}
+              height={1080}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            {/* Scrims for legibility */}
+            <div className="absolute inset-0 bg-background/70" />
+            <div className="absolute inset-0 bg-linear-gradient-to-r from-background via-background/70 to-background/30" />
+            <div className="absolute inset-0 bg-linear-gradient-to-b from-background/40 via-transparent to-background/80" />
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-10 py-20 sm:py-28 md:py-36 grid grid-cols-12 gap-6">
+              <div className="col-span-12 md:col-span-5 flex flex-col justify-center">
+                <div className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-accent mb-4">
+                  {c.n} · Category
                 </div>
-                <div className="col-span-12 md:col-span-5">
-                  <h2
-                    style={{ fontFamily: "var(--font-display)" }}
-                    className="text-3xl sm:text-4xl md:text-6xl uppercase tracking-tight group-hover:text-accent transition-colors"
-                  >
-                    {c.title}
-                  </h2>
-                </div>
-                <div className="col-span-12 md:col-span-5">
-                  <p className="text-sm sm:text-base text-foreground/80 leading-relaxed mb-4 sm:mb-6">
-                    {c.body}
-                  </p>
-                  <ul className="text-xs uppercase tracking-widest text-muted-foreground space-y-2">
+                <h2
+                  style={{ fontFamily: "var(--font-display)" }}
+                  className="text-4xl sm:text-5xl md:text-7xl uppercase tracking-tight leading-[0.9] mb-6"
+                >
+                  {c.title}
+                </h2>
+                <p className="text-sm sm:text-base text-foreground/80 leading-relaxed max-w-md">
+                  {c.body}
+                </p>
+              </div>
+              {/* Price table */}
+              <div className="col-span-12 md:col-span-7 md:pl-8">
+                <div className="backdrop-blur-md bg-background/40 border border-border/60 rounded-sm">
+                  <div className="hidden sm:grid grid-cols-12 px-5 py-3 border-b border-border/60 text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+                    <div className="col-span-6">Item</div>
+                    <div className="col-span-3 text-right">Per day</div>
+                    <div className="col-span-3 text-right">Per week</div>
+                  </div>
+                  <ul className="divide-y divide-border/60">
                     {c.items.map((i) => (
-                      <li key={i}>— {i}</li>
+                     <li
+                        key={i.name}
+                        className="grid grid-cols-12 gap-2 px-5 py-4 items-baseline hover:bg-accent/5 transition-colors"
+                      >
+                        <div className="col-span-12 sm:col-span-6 text-sm sm:text-[15px] text-foreground">
+                          {i.name}
+                        </div>
+                        {"note" in i && i.note ? (
+                          <div className="col-span-12 sm:col-span-6 text-right text-xs uppercase tracking-widest text-accent">
+                            {i.note}
+                          </div>
+                        ) : (
+                          <>
+                            <div className="col-span-6 sm:col-span-3 text-left sm:text-right">
+                              <span className="sm:hidden text-[10px] uppercase tracking-widest text-muted-foreground mr-2">
+                                Day
+                              </span>
+                              <span
+                                style={{ fontFamily: "var(--font-display)" }}
+                                className="text-base sm:text-lg tracking-tight text-foreground"
+                              >
+                                {npr(i.day)}
+                              </span>
+                            </div>
+                            <div className="col-span-6 sm:col-span-3 text-right">
+                              <span className="sm:hidden text-[10px] uppercase tracking-widest text-muted-foreground mr-2">
+                                Week
+                              </span>
+                              <span
+                                style={{ fontFamily: "var(--font-display)" }}
+                                className="text-base sm:text-lg tracking-tight text-accent"
+                              >
+                                {npr(i.week)}
+                              </span>
+                            </div>
+                          </>
+                        )}
+                      </li>
                     ))}
                   </ul>
+                   <p className="px-5 py-3 text-[10px] uppercase tracking-[0.2em] text-muted-foreground border-t border-border/60">
+                    Prices in NPR · exclusive of VAT · weekly = 6 days
+                  </p>
                 </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+                </div>
+            </div>
+          </section>
+        ))}
+      </div>
       {/* Perks */}
       <section className="px-4 sm:px-6 md:px-10 py-20 sm:py-28 border-t border-border">
         <div className="max-w-7xl mx-auto">
