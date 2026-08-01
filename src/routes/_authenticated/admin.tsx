@@ -1,4 +1,4 @@
-import { useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { ShieldAlert, LogOut } from "lucide-react";
 
-export default function AdminPage() {
+function AdminPage() {
   const { data, isLoading } = useAdmin();
   const navigate = useNavigate();
   const qc = useQueryClient();
@@ -182,3 +182,7 @@ export default function AdminPage() {
     </main>
   );
 }
+
+export const Route = createFileRoute("/_authenticated/admin")({
+  component: AdminPage,
+});
