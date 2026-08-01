@@ -18,7 +18,7 @@ function AdminPage() {
   useEffect(() => {
     // Attempt to claim the admin role for allowlisted emails on first visit.
     if (data?.user && !data.isAdmin) {
-      supabase.rpc("claim_admin").then(({ data: granted }) => {
+      supabase.rpc("has_role",{ _user_id: data?.user?.id, _role: "admin" }).then(({ data: granted }) => {
         if (granted) qc.invalidateQueries({ queryKey: ["admin-session"] });
       });
     }
