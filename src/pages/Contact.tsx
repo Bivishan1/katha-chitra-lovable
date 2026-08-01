@@ -138,7 +138,7 @@ export default function Contact() {
         image={contactHero}
         alt="On-set production team during a Kathmandu shoot"
         eyebrow="Project inquiry"
-        caption="hello@kathachitra.com"
+        caption="kathachitra5@gmail.com"
       >
         <h1 style={{ fontFamily: "var(--font-display)" }} className="text-4xl sm:text-6xl md:text-7xl uppercase tracking-tighter leading-[0.95] max-w-5xl">
           Have a film, brand campaign, or documentary idea?{" "}
@@ -190,7 +190,7 @@ export default function Contact() {
               </p>
 
               <a
-                href="mailto:hello@kathachitra.com"
+                href="mailto:kathachitra5@gmail.com"
                 className="text-foreground hover:text-accent"
               >
                 kathachitra5@gmail.com

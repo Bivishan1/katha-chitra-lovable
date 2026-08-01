@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import aboutImage from "../assets/about-studio.jpg";
 import  SiteHeader from "../components/SiteHeader";
 import  SiteFooter  from "../components/SiteFooter";
@@ -7,6 +7,7 @@ import founderImage from "../assets/team-founder.jpeg";
 import btsSet from "../assets/bts-set.jpg";
 import btsMonitor from "../assets/bts-monitor.jpg";
 import { PageHero } from "../components/PageHero";
+// import { supabase } from "../../supabase/client";
 
 
 function setMetaTag(selector: string, attribute: string, content: string) {
@@ -31,7 +32,37 @@ function setMetaTag(selector: string, attribute: string, content: string) {
   element.setAttribute(attribute, content);
 }
 
+// const { data, error } = await supabase
+//   .from("equipment_items")
+//   .insert({
+//     name: "Laptop",
+// price: 25000,
+//   })
+//   .select();
+
+// console.log(data);
+// console.log(error);
+
 export default function About() {
+
+  // onlysupabase testing
+//   useEffect(() => {
+//     const testConnection = async () => {
+//       const { data, error } = await supabase
+//         .from("equipment_items")
+//         .select("*");
+
+//       console.log("Data:", data);
+//       console.log("Error:", error);
+//       console.log('supbase url:',import.meta.env.VITE_SUPABASE_URL);
+// console.log('supabase:',supabase);
+//     };
+
+//     testConnection();
+//   }, []);
+
+
+
   useEffect(() => {
     document.title = "About — Katha Chitra";
 

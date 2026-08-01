@@ -1,0 +1,184 @@
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+
+export type CmsProject = {
+  id: string;
+  slug: string;
+  title: string;
+  client: string;
+  category: string;
+  year: number;
+  image_url: string | null;
+  video_url: string | null;
+  aspect: "wide" | "portrait" | "square";
+  sort_order: number;
+  published: boolean;
+};
+
+export type CmsFrame = {
+  id: string;
+  title: string;
+  subtitle: string;
+  image_url: string | null;
+  video_url: string | null;
+  sort_order: number;
+  published: boolean;
+};
+
+export type CmsCategory = {
+  id: string;
+  name: string;
+  description: string;
+  image_url: string | null;
+  sort_order: number;
+};
+
+export type CmsEquipmentItem = {
+  id: string;
+  category_id: string;
+  name: string;
+  note: string | null;
+  sort_order: number;
+  price_day?: number | null;
+  price_week?: number | null;
+};
+
+export type CmsContact = {
+  id: string;
+  company_name: string;
+  address: string;
+  email: string;
+  secondary_email: string | null;
+  phone: string;
+  whatsapp: string | null;
+  booking_url: string | null;
+  note: string | null;
+};
+
+export type CmsSocialLink = {
+  id: string;
+  platform: string;
+  url: string;
+  handle: string | null;
+  sort_order: number;
+};
+
+export type CmsProposal = {
+  id: string;
+  title: string;
+  file_url: string;
+  is_active: boolean;
+  created_at: string;
+};
+
+export const MEDIA_BUCKET = "cms-media";
+
+/** Uploads a file to the CMS bucket and returns a long-lived signed URL. */
+export async function uploadMedia(file: File, folder: string) {
+  const ext = file.name.split(".").pop() ?? "bin";
+  const path = `${folder}/${crypto.randomUUID()}.${ext}`;
+  const { error } = await supabase.storage.from(MEDIA_BUCKET).upload(path, file, {
+    cacheControl: "3600",
+    upsert: false,
+  });
+  if (error) throw error;
+  const { data, error: signErr } = await supabase.storage
+    .from(MEDIA_BUCKET)
+    .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
+  if (signErr || !data) throw signErr ?? new Error("Could not create media URL");
+  return data.signedUrl;
+}
+
+export function useProjects() {
+  return useQuery({
+    queryKey: ["cms", "projects"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .eq("published", true)
+        .order("sort_order", { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as unknown as CmsProject[];
+    },
+  });
+}
+
+export function useFrames() {
+  return useQuery({
+    queryKey: ["cms", "frames"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("frames")
+        .select("*")
+        .eq("published", true)
+        .order("sort_order", { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as unknown as CmsFrame[];
+    },
+  });
+}
+
+/** Equipment categories with their items. Prices are only returned for admins. */
+export function useEquipment(withPrices = false) {
+  return useQuery({
+    queryKey: ["cms", "equipment", withPrices],
+    queryFn: async () => {
+      const [cats, items] = await Promise.all([
+        supabase.from("equipment_categories").select("*").order("sort_order"),
+        withPrices
+          ? supabase.from("equipment_items").select("*").order("sort_order")
+          : supabase.from("equipment_items_public").select("*").order("sort_order"),
+      ]);
+      if (cats.error) throw cats.error;
+      if (items.error) throw items.error;
+      return {
+        categories: (cats.data ?? []) as unknown as CmsCategory[],
+        items: (items.data ?? []) as unknown as CmsEquipmentItem[],
+      };
+    },
+  });
+}
+
+export function useContactDetails() {
+  return useQuery({
+    queryKey: ["cms", "contact"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("contact_details").select("*").limit(1).maybeSingle();
+      if (error) throw error;
+      return (data ?? null) as unknown as CmsContact | null;
+    },
+  });
+}
+
+export function useSocialLinks() {
+  return useQuery({
+    queryKey: ["cms", "social"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("social_links").select("*").order("sort_order");
+      if (error) throw error;
+      return (data ?? []) as unknown as CmsSocialLink[];
+    },
+  });
+}
+
+export function useActiveProposal() {
+  return useQuery({
+    queryKey: ["cms", "proposal"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("proposals")
+        .select("*")
+        .eq("is_active", true)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (error) throw error;
+      return (data ?? null) as unknown as CmsProposal | null;
+    },
+  });
+}
+
+export function npr(n: number) {
+  return `NPR ${Number(n).toLocaleString("en-IN")}`;
+}
