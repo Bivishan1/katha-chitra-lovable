@@ -10,6 +10,8 @@ CREATE POLICY "Admins manage allowlist" ON public.admin_allowlist FOR ALL TO aut
 USING (public.has_role(auth.uid(), 'admin')) WITH CHECK (public.has_role(auth.uid(), 'admin'));
 
 INSERT INTO public.admin_allowlist (email) VALUES ('kathachitra5@gmail.com');
+INSERT INTO public.admin_allowlist (email) VALUES ('bivishan8686@gmail.com');
+
 
 CREATE OR REPLACE FUNCTION public.claim_admin()
 RETURNS boolean

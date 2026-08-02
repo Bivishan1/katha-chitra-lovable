@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import SiteHeader from "../components/SiteHeader";
 import  SiteFooter  from "../components/SiteFooter";
 import { PageHero } from "../components/PageHero";

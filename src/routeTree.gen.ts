@@ -15,7 +15,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as ContactRouteImport } from './routes/contact'
-import { Route as InternationalProductionSupportRouteImport } from './routes/international-production-support'
+import { Route as International_supportRouteImport } from './routes/international_support'
 import { Route as RentalEquipmentRouteImport } from './routes/rental-equipment'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as WorkRouteImport } from './routes/work'
@@ -50,12 +50,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const InternationalProductionSupportRoute =
-  InternationalProductionSupportRouteImport.update({
-    id: '/international-production-support',
-    path: '/international-production-support',
-    getParentRoute: () => rootRouteImport,
-  } as any)
+const International_supportRoute = International_supportRouteImport.update({
+  id: '/international_support',
+  path: '/international_support',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RentalEquipmentRoute = RentalEquipmentRouteImport.update({
   id: '/rental-equipment',
   path: '/rental-equipment',
@@ -83,7 +82,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
-  '/international-production-support': typeof InternationalProductionSupportRoute
+  '/international_support': typeof International_supportRoute
   '/rental-equipment': typeof RentalEquipmentRoute
   '/services': typeof ServicesRoute
   '/work': typeof WorkRoute
@@ -95,7 +94,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
-  '/international-production-support': typeof InternationalProductionSupportRoute
+  '/international_support': typeof International_supportRoute
   '/rental-equipment': typeof RentalEquipmentRoute
   '/services': typeof ServicesRoute
   '/work': typeof WorkRoute
@@ -109,7 +108,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
-  '/international-production-support': typeof InternationalProductionSupportRoute
+  '/international_support': typeof International_supportRoute
   '/rental-equipment': typeof RentalEquipmentRoute
   '/services': typeof ServicesRoute
   '/work': typeof WorkRoute
@@ -123,7 +122,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/contact'
-    | '/international-production-support'
+    | '/international_support'
     | '/rental-equipment'
     | '/services'
     | '/work'
@@ -135,7 +134,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/contact'
-    | '/international-production-support'
+    | '/international_support'
     | '/rental-equipment'
     | '/services'
     | '/work'
@@ -148,7 +147,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/contact'
-    | '/international-production-support'
+    | '/international_support'
     | '/rental-equipment'
     | '/services'
     | '/work'
@@ -162,7 +161,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRoute
   ContactRoute: typeof ContactRoute
-  InternationalProductionSupportRoute: typeof InternationalProductionSupportRoute
+  International_supportRoute: typeof International_supportRoute
   RentalEquipmentRoute: typeof RentalEquipmentRoute
   ServicesRoute: typeof ServicesRoute
   WorkRoute: typeof WorkRoute
@@ -212,11 +211,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/international-production-support': {
-      id: '/international-production-support'
-      path: '/international-production-support'
-      fullPath: '/international-production-support'
-      preLoaderRoute: typeof InternationalProductionSupportRouteImport
+    '/international_support': {
+      id: '/international_support'
+      path: '/international_support'
+      fullPath: '/international_support'
+      preLoaderRoute: typeof International_supportRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/rental-equipment': {
@@ -268,7 +267,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BlogRoute: BlogRoute,
   ContactRoute: ContactRoute,
-  InternationalProductionSupportRoute: InternationalProductionSupportRoute,
+  International_supportRoute: International_supportRoute,
   RentalEquipmentRoute: RentalEquipmentRoute,
   ServicesRoute: ServicesRoute,
   WorkRoute: WorkRoute,
