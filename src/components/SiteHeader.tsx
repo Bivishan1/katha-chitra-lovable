@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import logo from "../assets/logo.png";
 
@@ -47,6 +47,10 @@ export default function SiteHeader() {
     };
   }, [open]);
 
+  const getLinkClassName = (isActive: boolean) => `
+  relative hover:text-accent transition-colors duration-300 after:absolute after:left-0 after:-bottom-1 after:h-px after:w-0 after:bg-accent after:transition-all after:duration-300 hover:after:w-full ${isActive ? "text-accent" : ""}
+`;
+
   return (
     <>
       <header
@@ -81,17 +85,14 @@ export default function SiteHeader() {
           className="hidden md:flex gap-8 lg:gap-10 text-[11px] font-medium uppercase tracking-[0.2em] text-foreground/80"
         >
           {links.map((link) => (
-            <NavLink
+            <Link
               key={link.to}
               to={link.to}
-              className={({ isActive }) =>
-                `relative hover:text-accent transition-colors duration-300 after:absolute after:left-0 after:-bottom-1 after:h-px after:w-0 after:bg-accent after:transition-all after:duration-300 hover:after:w-full ${
-                  isActive ? "text-accent" : ""
-                }`
-              }
+              className={getLinkClassName(false)}
+              activeProps={{ className: getLinkClassName(true) }}
             >
               {link.label}
-            </NavLink>
+            </Link>
           ))}
         </nav>
 
@@ -123,20 +124,16 @@ export default function SiteHeader() {
       {open && (
         <div className="fixed inset-0 z-40 bg-background md:hidden flex flex-col justify-center px-6">
           <ul className="space-y-6">
-            {links.map((l) => (
-              <li key={l.to}>
-                <NavLink
-                  to={l.to}
-                  onClick={() => setOpen(false)}
-                  style={{ fontFamily: "var(--font-display)" }}
-                  className={({ isActive }) =>
-                    `${isActive ? "text-accent" : "hover:text-accent"} block text-5xl uppercase tracking-tighter`
-                  }
-                >
-                  {l.label}
-                </NavLink>
-              </li>
-            ))}
+           {links.map((link) => (
+            <Link
+              key={link.to}
+              to={link.to}
+              className={getLinkClassName(false)}
+              activeProps={{ className: getLinkClassName(true) }}
+            >
+              {link.label}
+            </Link>
+          ))}
           </ul>
         </div>
       )}

@@ -1,0 +1,7 @@
+Run this whenever you change the database schema :
+npx supabase gen types typescript \ --linked \ > src/integrations/supabase/types.ts
+
+
+Generated route tree (esp. in tanstack router):
+src/routeTree.gen.ts
+npx tsr generate

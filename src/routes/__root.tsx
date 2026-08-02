@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import { Toaster } from "@/components/ui/sooner";
 import { supabase } from "@/integrations/supabase/client";
 
-import appCss from "../styles.css?url";
+import appCss from "../index.css?url";
 
 function NotFoundComponent() {
   return (

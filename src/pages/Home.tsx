@@ -5,7 +5,7 @@ import  SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
 import { WorkTile } from "../components/WorkTile";
 import { projects } from "../data/projects";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import { Reveal } from "../components/Reveal";
 
 function setMetaTag(selector: string, attribute: string, content: string) {
