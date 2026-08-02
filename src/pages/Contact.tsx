@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom";
+import {Link} from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import SiteHeader from "../components/SiteHeader";
