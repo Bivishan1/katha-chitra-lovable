@@ -9,6 +9,8 @@ import {
 
 import { Toaster } from "@/components/ui/sooner";
 import { supabase } from "@/integrations/supabase/client";
+import { CmsRealtime } from "@/components/CmsRealtime";
+
 
 function NotFoundComponent() {
   return (
@@ -109,6 +111,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+            <CmsRealtime />
       <Outlet />
       <Toaster position="bottom-right" />
     </QueryClientProvider>

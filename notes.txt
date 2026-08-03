@@ -17,3 +17,5 @@ create new migration if you need to modify in sql, and then run following to upd
 
 kathaChitra_$admin#
 
+types.ts, routetree.gen.ts
+

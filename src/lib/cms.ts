@@ -1,4 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
 export type CmsProject = {
@@ -70,6 +71,55 @@ export type CmsProposal = {
   is_active: boolean;
   created_at: string;
 };
+
+export type CmsSiteSettings = {
+  id: string;
+  show_equipment_prices: boolean;
+};
+
+/** Tables that drive public site content. */
+export const CMS_TABLES = [
+  "equipment_categories",
+  "equipment_items",
+  "frames",
+  "projects",
+  "proposals",
+  "contact_details",
+  "social_links",
+  "site_settings",
+] as const;
+
+/**
+ * Subscribes to database changes so any admin add/edit/delete instantly
+ * refreshes the public site for every visitor.
+ */
+export function useCmsRealtime() {
+  const qc = useQueryClient();
+  useEffect(() => {
+    const channel = supabase.channel("cms-live");
+    for (const table of CMS_TABLES) {
+      channel.on("postgres_changes", { event: "*", schema: "public", table }, () => {
+        qc.invalidateQueries({ queryKey: ["cms"] });
+      });
+    }
+    channel.subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [qc]);
+}
+
+export function useSiteSettings() {
+  return useQuery({
+    queryKey: ["cms", "settings"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("site_settings").select("*").limit(1).maybeSingle();
+      if (error) throw error;
+      return (data ?? null) as unknown as CmsSiteSettings | null;
+    },
+  });
+}
+
 
 export const MEDIA_BUCKET = "cms-media";
 

@@ -1,38 +1,60 @@
 import { Link } from "@tanstack/react-router";
+import {
+  useContactDetails,
+  useSocialLinks,
 
-const footerLinks = [
-  {
-    title: "Studio",
-    items: ["New Baneshwor, Nepal", "+977-9841004524"],
-  },
-  {
-    title: "Inquiries",
-    items: [
-      {
-        label: "kathachitra5@gmail.com",
-        href: "mailto:kathachitra5@gmail.com",
-      },
-    ],
-  },
-   {
-    title: "Contact",
-    items: [
-      { label: "WhatsApp", href: "https://wa.me/9779841004524" },
-    ],
-  },
-  {
-    title: "Follow us",
-    items: [
-      { label: "Instagram", href: "" },
-      { label: "YouTube", href: "#" },
-    ],
-  },
-];
+} from "@/lib/cms";
 
 
 export default function SiteFooter() {
+  const { data: contact } = useContactDetails();
+  const { data: socials } = useSocialLinks();
+  const email = contact?.email || "kathachitra5@gmail.com";
+
+  const footerLinks = [
+    {
+      title: "Studio",
+      items: [
+        ...(contact?.address?.split("\n") ?? [
+          "New Baneshwor, Nepal",
+        ]),
+        contact?.phone || "+977-9841004524",
+      ],
+    },
+    {
+      title: "Inquiries",
+      items: [
+        {
+          label: email,
+          href: `mailto:${email}`,
+        },
+      ],
+    },
+    {
+      title: "Contact",
+      items: contact?.whatsapp
+        ? [
+            {
+              label: "WhatsApp",
+              href: `https://wa.me/${contact.whatsapp.replace(/\D/g, "")}`,
+            },
+          ]
+        : [],
+    },
+    {
+      title: "Follow us",
+      items:
+        socials?.map((social) => ({
+          label: social.platform,
+          href: social.url,
+        })) ?? [],
+    },
+  ];
+
+
+
   return (
-  <footer className="border-t border-border px-4 py-20 sm:px-6 sm:py-15 lg:px-10">
+    <footer className="border-t border-border px-4 py-20 sm:px-6 sm:py-15 lg:px-10">
       <div className="mx-auto max-w-7xl">
         <p className="mb-8 text-[10px] uppercase tracking-[0.28em] text-muted-foreground sm:mb-10 sm:text-[11px] sm:tracking-[0.4em]">
           Ready to tell your story?
@@ -65,29 +87,26 @@ export default function SiteFooter() {
                     >
                       {item.label}
                     </a>
-                  )
+                  ),
                 )}
               </div>
             </div>
           ))}
-
-         
-           
         </div>
         <div className="copyright text-center  tracking-widest text-muted-foreground sm:text-[11px] lg:mt-10">
-             <p className="mb-2 text-foreground/60">© 2025</p>
-            <p>Katha Chitra Films</p>
-            <p style={{ fontFamily: "var(--font-nepali)" }}>कथा चित्र</p>
-          </div>
-         <div className="flex items-center justify-between text-[10px] uppercase ">
-          
-           
-           {/* make this link to a center */}
-          <Link to="/rental-equipment" className="block mt-2 hover:text-accent pb-20">
-              Rent Equipment →
-            </Link>
-          </div>
-          
+          <p className="mb-2 text-foreground/60">© 2025</p>
+          <p>Katha Chitra Films</p>
+          <p style={{ fontFamily: "var(--font-nepali)" }}>कथा चित्र</p>
+        </div>
+        <div className="flex items-center justify-between text-[10px] uppercase ">
+          {/* make this link to a center */}
+          <Link
+            to="/rental-equipment"
+            className="block mt-2 hover:text-accent pb-20"
+          >
+            Rent Equipment →
+          </Link>
+        </div>
       </div>
     </footer>
   );

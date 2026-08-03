@@ -4,6 +4,8 @@ import type { FormEvent } from "react";
 import SiteHeader from "../components/SiteHeader";
 import { PageHero } from "../components/PageHero";
 import contactHero from "../assets/bts-set.jpg";
+import { useContactDetails, useSocialLinks } from "@/lib/cms";
+
 
 
 const projectTypes = [
@@ -47,6 +49,9 @@ export default function Contact() {
     budget: "",
     message: "",
   });
+  const { data: contact } = useContactDetails();
+  const { data: socials } = useSocialLinks();
+  const email = contact?.email || "kathachitra5@gmail.com";
 
   useEffect(() => {
     document.title = "Contact — Katha Chitra";
@@ -138,7 +143,7 @@ export default function Contact() {
         image={contactHero}
         alt="On-set production team during a Kathmandu shoot"
         eyebrow="Project inquiry"
-        caption="kathachitra5@gmail.com"
+        caption={email}
       >
         <h1 style={{ fontFamily: "var(--font-display)" }} className="text-4xl sm:text-6xl md:text-7xl uppercase tracking-tighter leading-[0.95] max-w-5xl">
           Have a film, brand campaign, or documentary idea?{" "}
@@ -158,7 +163,7 @@ export default function Contact() {
             View Proposal
           </Link>
           <a
-            href="https://calendar.app.google/"
+            href={contact?.booking_url || "https://calendar.app.google/"}
             target="_blank"
             rel="noreferrer"
             className="text-xs uppercase tracking-widest px-5 py-3 border border-foreground/40 text-foreground hover:border-accent hover:text-accent transition-colors"
@@ -177,10 +182,8 @@ export default function Contact() {
                 Studio
               </p>
 
-              <p className="text-foreground/80 leading-relaxed">
-                New Baneshwor
-                <br />
-                Kathmandu, Nepal
+             <p className="text-foreground/80 leading-relaxed whitespace-pre-line">
+                {contact?.address || "New Baneshwor, Kathmandu\nKathmandu, Nepal"}
               </p>
             </div>
 
@@ -189,11 +192,8 @@ export default function Contact() {
                 Email
               </p>
 
-              <a
-                href="mailto:kathachitra5@gmail.com"
-                className="text-foreground hover:text-accent"
-              >
-                kathachitra5@gmail.com
+                <a href={`mailto:${email}`} className="text-foreground hover:text-accent">
+                {email}
               </a>
             </div>
 
@@ -203,10 +203,10 @@ export default function Contact() {
               </p>
 
               <a
-                href="tel:+9779841004524"
+                href={`tel:${(contact?.phone || "+97714123456").replace(/\s/g, "")}`}
                 className="text-foreground hover:text-accent"
               >
-                +977-9841004524
+                {contact?.phone || "+977 1 412 3456"}
               </a>
             </div>
 
@@ -216,12 +216,11 @@ export default function Contact() {
               </p>
 
               <div className="flex flex-col gap-1 text-foreground/80">
-                <a href="#" className="hover:text-accent">
-                  Instagram
-                </a>
-                <a href="#" className="hover:text-accent">
-                  YouTube
-                </a>
+               {(socials ?? []).map((s) => (
+                  <a key={s.id} href={s.url} target="_blank" rel="noreferrer" className="hover:text-accent">
+                    {s.platform}
+                  </a>
+                ))}
               </div>
             </div>
           </aside>

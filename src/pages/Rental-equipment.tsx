@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import SiteHeader from "../components/SiteHeader";
 import  SiteFooter  from "../components/SiteFooter";
 import { PageHero } from "../components/PageHero";
+import { useEquipment, useSiteSettings, npr } from "@/lib/cms";
 import rentalHero from "../assets/bts-monitor.jpg";
 import camerasBg from "../assets/cameras.jpg";
 import lensesBg from "../assets/lenses.jpg";
@@ -10,91 +11,8 @@ import gripBg from "../assets/grip.jpg";
 import soundBg from "../assets/sound.jpg";
 import dronesBg from "../assets/drone.jpg";
 
-const npr = (n: number) => `NPR ${n.toLocaleString("en-IN")}`;
+const fallbackImages = [camerasBg, lensesBg, lightingBg, gripBg, soundBg, dronesBg];
 
-const categories = [
-  {
-    n: "01",
-    title: "Cinema Cameras",
-    image: camerasBg,
-    body:
-      "Sony FX-series, RED Komodo, Blackmagic URSA and mirrorless A-cams — ready with media, batteries and accessories.",
-    items: [
-      { name: "Sony FX6", day: 18000, week: 95000 },
-      { name: "Sony FX3", day: 12000, week: 65000 },
-      { name: "RED Komodo 6K", day: 25000, week: 135000 },
-      { name: "Blackmagic URSA / Pocket 6K", day: 9000, week: 48000 },
-      { name: "Sony A7S III / A7 IV", day: 6500, week: 34000 },
-    ],
-  },
-  {
-    n: "02",
-    title: "Lenses",
-    image: lensesBg,
-    body:
-      "Cine primes and zooms, vintage glass and fast stills lenses — PL, E and EF mounts with full mount-swap support.",
-    items: [
-      { name: "Sigma Cine FF primes", day: 5000, week: 25000 },
-      { name: "DZOFilm Vespid set", day: 8000, week: 40000 },
-      { name: "Canon CN-E primes", day: 12000, week: 60000 },
-      { name: "Sony G Master zooms", day: 10000, week: 50000 },
-    ],
-  },
-  {
-    n: "03",
-    title: "Lighting",
-    image: lightingBg,
-    body:
-      "Aputure, Nanlux and Arri-grade fixtures with full modifier packages, stands and distro.",
-    items: [
-      { name: "Aputure 600x", day: 4500, week: 24000 },
-      { name: "Aputure 300x", day: 2800, week: 15000 },
-      { name: "Nanlux Evoke 1200", day: 6500, week: 34000 },
-      { name: "Astera Titan tube (each)", day: 1800, week: 9500 },
-      { name: "HMI 1.2K kit", day: 8000, week: 42000 },
-      { name: "HMI 2.5K kit", day: 12000, week: 65000 },
-    ],
-  },
-  {
-    n: "04",
-    title: "Grip & Support",
-    image: gripBg,
-    body:
-      "Tripods, sliders, gimbals, jibs and dollies — including stabilized vehicle and aerial-ready mounts.",
-    items: [
-      { name: "DJI Ronin 4D", day: 12000, week: 65000 },
-      { name: "DJI RS3 Pro", day: 3500, week: 18000 },
-      { name: "O'Connor / Sachtler head + sticks", day: 4500, week: 24000 },
-      { name: "Slider package (1m)", day: 2500, week: 13000 },
-      { name: "Jib package (up to 3m)", day: 6000, week: 32000 },
-      { name: "Easy-rig / shoulder rig", day: 2000, week: 10500 }],
-  },
-  {
-    n: "05",
-    title: "Sound",
-    image: soundBg,
-    body:
-      "Production sound packages with wireless lavs, boom kits and on-set mixers — recordists available on request.",
-    items: [
-      { name: "Sennheiser MKH 416 + boom kit", day: 3500, week: 18000 },
-      { name: "Wisycom wireless (2ch)", day: 5500, week: 29000 },
-      { name: "Sennheiser G4 wireless (each)", day: 1500, week: 8000 },
-      { name: "Sound Devices MixPre-6 II", day: 4500, week: 24000 },
-      { name: "Comtek IFB (4 rx)", day: 2500, week: 13000 }],
-  },
-  {
-    n: "06",
-    title: "Drones & Aerial",
-    image: dronesBg,
-    body:
-      "CAAN-licensed drone operators with insured rigs, FPV cinema drones and high-altitude packages.",
-    items: [
-       { name: "DJI Inspire 3 + pilot", day: 45000, week: 240000 },
-      { name: "DJI Mavic 3 Cine + pilot", day: 15000, week: 80000 },
-      { name: "FPV cinema drone + pilot", day: 25000, week: 135000 },
-      { name: "CAAN permit coordination", day: 0, week: 0, note: "Quoted per shoot" },],
-  },
-];
 const perks = [
   { title: "Daily & weekly rates", body: "Flexible day, weekend and weekly pricing with multi-day discounts." },
   { title: "Delivery in Kathmandu", body: "Pickup from our Lalitpur kit room or same-day delivery within the valley." },
@@ -102,6 +20,12 @@ const perks = [
   { title: "Fully insured", body: "All equipment insured. Damage waivers and certificates of insurance on request." },
 ];
 export default function RentalEquipmentPage() {
+  const { data: equipment } = useEquipment();
+  const { data: settings } = useSiteSettings();
+  const categories = equipment?.categories ?? [];
+  const items = equipment?.items ?? [];
+  const showPrices = Boolean(settings?.show_equipment_prices);
+
   return (
     <div className="min-h-screen">
       <SiteHeader />
@@ -126,15 +50,14 @@ export default function RentalEquipmentPage() {
       {/* Categories */}
       {/* Categories — full-bleed image bands with price table */}
       <div>
-        {categories.map((c) => (
-          <section
-            key={c.n}
-            className="relative overflow-hidden border-t border-border"
-          >
+        {categories.map((c, idx) => {
+          const catItems = items.filter((i) => i.category_id === c.id);
+          return (
+          <section key={c.id} className="relative overflow-hidden border-t border-border">
             {/* Full-bleed background image */}
             <img
-              src={c.image}
-              alt={`${c.title} — rental equipment`}
+              src={c.image_url || fallbackImages[idx % fallbackImages.length]}
+              alt={`${c.name} — rental equipment`}
               loading="lazy"
               width={1920}
               height={1080}
@@ -147,16 +70,16 @@ export default function RentalEquipmentPage() {
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-10 py-20 sm:py-28 md:py-36 grid grid-cols-12 gap-6">
               <div className="col-span-12 md:col-span-5 flex flex-col justify-center">
                 <div className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-accent mb-4">
-                  {c.n} · Category
+                  {String(idx + 1).padStart(2, "0")} · Category
                 </div>
                 <h2
                   style={{ fontFamily: "var(--font-display)" }}
                   className="text-4xl sm:text-5xl md:text-7xl uppercase tracking-tight leading-[0.9] mb-6"
                 >
-                  {c.title}
+                  {c.name}
                 </h2>
                 <p className="text-sm sm:text-base text-foreground/80 leading-relaxed max-w-md">
-                  {c.body}
+                  {c.description}
                 </p>
               </div>
               {/* Price table */}
@@ -164,23 +87,31 @@ export default function RentalEquipmentPage() {
                 <div className="backdrop-blur-md bg-background/40 border border-border/60 rounded-sm">
                   <div className="hidden sm:grid grid-cols-12 px-5 py-3 border-b border-border/60 text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
                     <div className="col-span-6">Item</div>
-                    <div className="col-span-3 text-right">Per day</div>
-                    <div className="col-span-3 text-right">Per week</div>
+                    <div className={showPrices ? "col-span-6" : "col-span-12"}>Item</div>
+                    {showPrices && (
+                      <>
+                        <div className="col-span-3 text-right">Per day</div>
+                        <div className="col-span-3 text-right">Per week</div>
+                      </>
+                    )}
                   </div>
                   <ul className="divide-y divide-border/60">
-                    {c.items.map((i) => (
+                   {catItems.length === 0 && (
+                      <li className="px-5 py-4 text-sm text-muted-foreground">Kit list coming soon.</li>
+                    )}
+                    {catItems.map((i) => (
                      <li
-                        key={i.name}
+                        key={i.id}
                         className="grid grid-cols-12 gap-2 px-5 py-4 items-baseline hover:bg-accent/5 transition-colors"
                       >
-                        <div className="col-span-12 sm:col-span-6 text-sm sm:text-[15px] text-foreground">
+                        <div className={`col-span-12 text-sm sm:text-[15px] text-foreground ${showPrices ? "sm:col-span-6" : ""}`}>
                           {i.name}
                         </div>
-                        {"note" in i && i.note ? (
+                        {i.note ? (
                           <div className="col-span-12 sm:col-span-6 text-right text-xs uppercase tracking-widest text-accent">
                             {i.note}
                           </div>
-                        ) : (
+                        ) : showPrices ? (
                           <>
                             <div className="col-span-6 sm:col-span-3 text-left sm:text-right">
                               <span className="sm:hidden text-[10px] uppercase tracking-widest text-muted-foreground mr-2">
@@ -190,7 +121,7 @@ export default function RentalEquipmentPage() {
                                 style={{ fontFamily: "var(--font-display)" }}
                                 className="text-base sm:text-lg tracking-tight text-foreground"
                               >
-                                {npr(i.day)}
+                                 {npr(Number(i.price_day ?? 0))}
                               </span>
                             </div>
                             <div className="col-span-6 sm:col-span-3 text-right">
@@ -201,22 +132,25 @@ export default function RentalEquipmentPage() {
                                 style={{ fontFamily: "var(--font-display)" }}
                                 className="text-base sm:text-lg tracking-tight text-accent"
                               >
-                                {npr(i.week)}
+                                 {npr(Number(i.price_week ?? 0))}
                               </span>
                             </div>
                           </>
-                        )}
+                        ) : null}
                       </li>
                     ))}
                   </ul>
                    <p className="px-5 py-3 text-[10px] uppercase tracking-[0.2em] text-muted-foreground border-t border-border/60">
-                    Prices in NPR · exclusive of VAT · weekly = 6 days
+                    {showPrices
+                      ? "Prices in NPR · exclusive of VAT · weekly = 6 days"
+                      : "Rates on request · send your kit list and shoot dates for a quote"}
                   </p>
                 </div>
                 </div>
             </div>
           </section>
-        ))}
+        )
+      })}
       </div>
       {/* Perks */}
       <section className="px-4 sm:px-6 md:px-10 py-20 sm:py-28 border-t border-border">

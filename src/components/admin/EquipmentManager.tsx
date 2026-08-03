@@ -1,8 +1,12 @@
 import { useMemo, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { ResourceManager } from "./ResourceManager";
-import { useEquipment, npr } from "@/lib/cms";
+import { useEquipment, useSiteSettings, npr } from "@/lib/cms";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { toast } from "sonner";
 
 type EquipmentItemRow = Record<string, unknown> & {
   price_day?: number | string;
@@ -11,11 +15,40 @@ type EquipmentItemRow = Record<string, unknown> & {
 
 export function EquipmentManager() {
   const { data } = useEquipment(true);
+  const { data: settings } = useSiteSettings();
+  const qc = useQueryClient();
   const categories = data?.categories ?? [];
   const items = useMemo(() => data?.items ?? [], [data?.items]);
+
+
   const [categoryId, setCategoryId] = useState<string>("");
   const active = categoryId || categories[0]?.id || "";
   const [qty, setQty] = useState<Record<string, number>>({});
+
+  // new priced toggle for CMS
+const togglePrices = useMutation({
+    mutationFn: async (next: boolean) => {
+      if (settings?.id) {
+        const { error } = await supabase
+          .from("site_settings")
+          .update({ show_equipment_prices: next } as never)
+          .eq("id", settings.id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from("site_settings")
+          .insert({ show_equipment_prices: next } as never);
+        if (error) throw error;
+      }
+    },
+    onSuccess: (_d, next) => {
+      toast.success(next ? "Prices are now visible on the website" : "Prices are hidden from the website");
+      qc.invalidateQueries({ queryKey: ["cms"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  // cms close
 
   const total = useMemo(() => {
     return items.reduce(
@@ -34,6 +67,25 @@ export function EquipmentManager() {
 
   return (
     <div className="space-y-8">
+      {/* CMS price toggle hide UI */}
+      <section className="border border-border rounded-sm p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h3 style={{ fontFamily: "var(--font-display)" }} className="text-lg uppercase tracking-tight">
+            Show prices on the website
+          </h3>
+          <p className="text-xs text-muted-foreground mt-1 max-w-lg">
+            Off by default — visitors see the equipment list without prices. Turn on to publish daily and weekly rates
+            publicly. Admin prices and the quote calculator below always stay available to you.
+          </p>
+        </div>
+        <Switch
+          checked={Boolean(settings?.show_equipment_prices)}
+          disabled={togglePrices.isPending}
+          onCheckedChange={(v) => togglePrices.mutate(v)}
+          aria-label="Show equipment prices publicly"
+        />
+      </section>
+{/* CMS price toggle close */}
       <ResourceManager
         table="equipment_categories"
         title="Equipment Categories"
