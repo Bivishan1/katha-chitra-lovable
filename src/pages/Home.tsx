@@ -4,7 +4,9 @@ import showReel from "../assets/hero-720p.mp4";
 import  SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
 import { WorkTile } from "../components/WorkTile";
-import { projects } from "../data/projects";
+import { useFrames, useProjects, useActiveProposal } from "@/lib/cms";
+
+// import { projects } from "../data/projects";
 import { Link } from "@tanstack/react-router";
 import { Reveal } from "../components/Reveal";
 
@@ -31,7 +33,22 @@ function setMetaTag(selector: string, attribute: string, content: string) {
 }
 
 export default function Home() {
-  const featured = projects.slice(0, 3);
+  const { data: frames = [] } = useFrames();
+  const { data: projects = [] } = useProjects();
+  const { data: proposal } = useActiveProposal();
+  const featured = (
+    frames.length
+      ? frames.map((f) => ({
+          id: f.id,
+          title: f.title,
+          category: f.subtitle,
+          image_url: f.image_url,
+          video_url: f.video_url,
+          aspect: "wide" as const,
+        }))
+      : projects
+  ).slice(0, 3);
+  
    const scrollToCapabilities = () => {
     const el = document.getElementById("capabilities");
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -296,17 +313,23 @@ export default function Home() {
             
           </Reveal>
           <Reveal direction="right" delay={200} className=" md:text-center">
-              <a
-                href='https://drive.google.com/file/d/1GgrG6hLkosiBa36GhOlXGqeN3WZT09O6/view?usp=sharing'
-                download="Katha-Chitra-Proposal.pdf"
-                target="_blank"
-                rel="noreferrer"
-                className="group inline-flex items-center gap-3 text-[10px] sm:text-xs uppercase tracking-[0.3em] px-5 py-3 bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
-              >
-                Download Proposal
-                <span className="inline-block transition-transform group-hover:translate-y-0.5">↓</span>
-              </a>
-              <p className="mt-3 text-[10px] uppercase tracking-widest text-muted-foreground">PDF · 6 pages</p>
+              {proposal ? (
+                <>
+                  <a
+                    href={proposal.file_url}
+                    download
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group inline-flex items-center gap-3 text-[10px] sm:text-xs uppercase tracking-[0.3em] px-5 py-3 bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
+                  >
+                    Download Proposal
+                    <span className="inline-block transition-transform group-hover:translate-y-0.5">↓</span>
+                  </a>
+                  <p className="mt-3 text-[10px] uppercase tracking-widest text-muted-foreground">
+                    {proposal.title} · PDF
+                  </p>
+                </>
+              ) : null}
             </Reveal>
         </div>
       </section>

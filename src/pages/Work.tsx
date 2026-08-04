@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import SiteHeader from "../components/SiteHeader";
 import  SiteFooter  from "../components/SiteFooter";
 import { WorkTile } from "../components/WorkTile";
-import { projects } from "../data/projects";
+import { useProjects } from "@/lib/cms";
 import { PageHero } from "../components/PageHero";
 import workHero from "../assets/work-mustang.jpg";
 
@@ -65,6 +65,8 @@ export default function Work() {
     canonical.href = "/work";
   }, []);
 
+  const { data: projects = [], isLoading } = useProjects();
+
   return (
     <div className="min-h-screen">
       <SiteHeader />
@@ -84,13 +86,13 @@ export default function Work() {
       </PageHero>
 
        <section className="px-4 sm:px-6 md:px-10 pb-20 sm:pb-32">
+        {isLoading && (
+          <p className="max-w-7xl mx-auto text-xs uppercase tracking-widest text-muted-foreground">Loading work…</p>
+        )}
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-12 md:gap-x-8 md:gap-y-24">
-          {projects.map((project, index) => (
-            <div
-              key={project.id}
-              className={index % 2 === 1 ? "md:mt-32" : ""}
-            >
-              <WorkTile project={project} />
+          {projects.map((p, idx) => (
+            <div key={p.id} className={idx % 2 === 1 ? "md:mt-32" : ""}>
+              <WorkTile project={p} />
             </div>
           ))}
         </div>

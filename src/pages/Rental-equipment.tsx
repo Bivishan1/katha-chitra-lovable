@@ -86,7 +86,6 @@ export default function RentalEquipmentPage() {
               <div className="col-span-12 md:col-span-7 md:pl-8">
                 <div className="backdrop-blur-md bg-background/40 border border-border/60 rounded-sm">
                   <div className="hidden sm:grid grid-cols-12 px-5 py-3 border-b border-border/60 text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-                    <div className="col-span-6">Item</div>
                     <div className={showPrices ? "col-span-6" : "col-span-12"}>Item</div>
                     {showPrices && (
                       <>

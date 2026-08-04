@@ -1,9 +1,8 @@
+import Work from '@/pages/Work'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/work')({
-  component: RouteComponent,
+  component: Work,
 })
 
-function RouteComponent() {
-  return <div>Hello "/work"!</div>
-}
+

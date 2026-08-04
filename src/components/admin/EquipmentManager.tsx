@@ -6,7 +6,85 @@ import { useEquipment, useSiteSettings, npr } from "@/lib/cms";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Check, ChevronsUpDown, Search, X } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+
+
+type Option = { value: string; label: string };
+
+function SearchableSelect({
+  options,
+  value,
+  onChange,
+  placeholder,
+  searchPlaceholder,
+  disabled,
+}: {
+  options: Option[];
+  value: string;
+  onChange: (v: string) => void;
+  placeholder: string;
+  searchPlaceholder: string;
+  disabled?: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const current = options.find((o) => o.value === value);
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          type="button"
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          disabled={disabled}
+          className="w-full justify-between font-normal"
+        >
+          <span className={cn("truncate", !current && "text-muted-foreground")}>
+            {current?.label ?? placeholder}
+          </span>
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+        <Command>
+          <CommandInput placeholder={searchPlaceholder} />
+          <CommandList>
+            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandGroup>
+              {options.map((o) => (
+                <CommandItem
+                  key={o.value}
+                  value={o.label}
+                  onSelect={() => {
+                    onChange(o.value === value ? "" : o.value);
+                    setOpen(false);
+                  }}
+                >
+                  <Check className={cn("mr-2 h-4 w-4", value === o.value ? "opacity-100" : "opacity-0")} />
+                  <span className="truncate">{o.label}</span>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+
 
 type EquipmentItemRow = Record<string, unknown> & {
   price_day?: number | string;
@@ -17,13 +95,57 @@ export function EquipmentManager() {
   const { data } = useEquipment(true);
   const { data: settings } = useSiteSettings();
   const qc = useQueryClient();
-  const categories = data?.categories ?? [];
+  const categories = useMemo(() => data?.categories ?? [], [data?.categories]);
   const items = useMemo(() => data?.items ?? [], [data?.items]);
 
 
   const [categoryId, setCategoryId] = useState<string>("");
   const active = categoryId || categories[0]?.id || "";
   const [qty, setQty] = useState<Record<string, number>>({});
+
+// Quote calculator filters
+  const [filterItemId, setFilterItemId] = useState("");
+  const [filterCategoryId, setFilterCategoryId] = useState("");
+  const [filterCatItemId, setFilterCatItemId] = useState("");
+  const [searchDraft, setSearchDraft] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const categoryOptions = useMemo(
+    () => categories.map((c) => ({ value: c.id, label: c.name })),
+    [categories],
+  );
+  const itemOptions = useMemo(() => items.map((i) => ({ value: i.id, label: i.name })), [items]);
+  const categoryItemOptions = useMemo(
+    () =>
+      items
+        .filter((i) => !filterCategoryId || i.category_id === filterCategoryId)
+        .map((i) => ({ value: i.id, label: i.name })),
+    [items, filterCategoryId],
+  );
+
+  const filteredItems = useMemo(() => {
+    const term = searchTerm.trim().toLowerCase();
+    return items.filter((i) => {
+      if (filterItemId && i.id !== filterItemId) return false;
+      if (filterCategoryId && i.category_id !== filterCategoryId) return false;
+      if (filterCatItemId && i.id !== filterCatItemId) return false;
+      if (term && !i.name.toLowerCase().includes(term)) return false;
+      return true;
+    });
+  }, [items, filterItemId, filterCategoryId, filterCatItemId, searchTerm]);
+
+  const filtersActive =
+    Boolean(filterItemId || filterCategoryId || filterCatItemId || searchTerm.trim());
+
+  const clearFilters = () => {
+    setFilterItemId("");
+    setFilterCategoryId("");
+    setFilterCatItemId("");
+    setSearchDraft("");
+    setSearchTerm("");
+  };
+
+
 
   // new priced toggle for CMS
 const togglePrices = useMutation({
@@ -152,8 +274,71 @@ const togglePrices = useMutation({
             Enter quantities to total up a client's kit list. Admin-only.
           </p>
         </header>
+        {/* new added */}
+        <div className="px-4 sm:px-5 py-4 border-b border-border grid gap-3 lg:grid-cols-[1fr_1fr_1fr_auto] lg:items-end">
+          <div className="space-y-1.5">
+            <Label className="text-xs">All equipment</Label>
+            <SearchableSelect
+              options={itemOptions}
+              value={filterItemId}
+              onChange={setFilterItemId}
+              placeholder="All equipment"
+              searchPlaceholder="Search equipment..."
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs">Category</Label>
+            <SearchableSelect
+              options={categoryOptions}
+              value={filterCategoryId}
+              onChange={(v) => {
+                setFilterCategoryId(v);
+                setFilterCatItemId("");
+              }}
+              placeholder="All categories"
+              searchPlaceholder="Search categories..."
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs">Equipment in category</Label>
+            <SearchableSelect
+              options={categoryItemOptions}
+              value={filterCatItemId}
+              onChange={setFilterCatItemId}
+              placeholder={filterCategoryId ? "All in category" : "Pick a category first"}
+              searchPlaceholder="Search equipment..."
+              disabled={!filterCategoryId}
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs" htmlFor="quote-search">Search</Label>
+            <div className="flex gap-2">
+              <Input
+                id="quote-search"
+                value={searchDraft}
+                placeholder="Search by name"
+                onChange={(e) => setSearchDraft(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") setSearchTerm(searchDraft);
+                }}
+                className="lg:w-48"
+              />
+              <Button type="button" onClick={() => setSearchTerm(searchDraft)}>
+                <Search className="h-4 w-4 mr-1.5" /> Search
+              </Button>
+              {filtersActive && (
+                <Button type="button" variant="ghost" onClick={clearFilters} aria-label="Clear filters">
+                  <X className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
         <div className="max-h-80 overflow-y-auto divide-y divide-border">
-          {items.map((i) => (
+           {filteredItems.length === 0 && (
+            <p className="px-4 sm:px-5 py-6 text-sm text-muted-foreground">No equipment matches these filters.</p>
+          )}
+          {filteredItems.map((i) => (
             <div key={i.id} className="px-4 sm:px-5 py-2.5 flex items-center gap-4">
               <span className="flex-1 text-sm truncate">{i.name}</span>
               <span className="text-xs text-muted-foreground whitespace-nowrap">
