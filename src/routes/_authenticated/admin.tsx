@@ -97,7 +97,7 @@ function AdminPage() {
               title="Recent Frames"
               description="Featured highlights on the homepage."
               orderBy="sort_order"
-              defaults={{ published: true, sort_order: 1, subtitle: "" }}
+              defaults={{ published: true, sort_order: 0, subtitle: "" }}
               columns={[
                 { key: "title", label: "Title" },
                 { key: "subtitle", label: "Subtitle" },

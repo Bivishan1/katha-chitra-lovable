@@ -360,6 +360,13 @@ const togglePrices = useMutation({
               {qty[i.id]} × {i.name} — {npr(Number(i.price_day ?? 0) * (qty[i.id] ?? 0))} / day
             </p>
           ))}
+           {selected.length > 0 && (
+            <div className="pt-1">
+              <Button type="button" variant="ghost" size="sm" onClick={() => setQty({})}>
+                <X className="h-4 w-4 mr-1.5" /> Clear order values
+              </Button>
+            </div>
+          )}
           <p className="pt-2 text-sm">
             Total per day:{" "}
             <strong style={{ fontFamily: "var(--font-display)" }} className="text-accent text-lg">

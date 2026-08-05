@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import SiteHeader from "../components/SiteHeader";
 import  SiteFooter  from "../components/SiteFooter";
 import { WorkTile } from "../components/WorkTile";
-import { useProjects } from "@/lib/cms";
+import { useFrames, useProjects } from "@/lib/cms";
 import { PageHero } from "../components/PageHero";
 import workHero from "../assets/work-mustang.jpg";
 
@@ -66,6 +66,20 @@ export default function Work() {
   }, []);
 
   const { data: projects = [], isLoading } = useProjects();
+  const { data: frames = [] } = useFrames();
+  // Newly added frames stack first; projects already represented by a frame are not repeated.
+  const frameTitles = new Set(frames.map((f) => f.title.trim().toLowerCase()));
+  const tiles = [
+    ...frames.map((f) => ({
+      id: f.id,
+      title: f.title,
+      category: f.subtitle,
+      image_url: f.image_url,
+      video_url: f.video_url,
+      aspect: "wide" as const,
+    })),
+    ...projects.filter((p) => !frameTitles.has(p.title.trim().toLowerCase())),
+  ];
 
   return (
     <div className="min-h-screen">
@@ -90,7 +104,7 @@ export default function Work() {
           <p className="max-w-7xl mx-auto text-xs uppercase tracking-widest text-muted-foreground">Loading work…</p>
         )}
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-12 md:gap-x-8 md:gap-y-24">
-          {projects.map((p, idx) => (
+          {tiles.map((p, idx) => (
             <div key={p.id} className={idx % 2 === 1 ? "md:mt-32" : ""}>
               <WorkTile project={p} />
             </div>

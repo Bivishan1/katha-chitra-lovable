@@ -1,0 +1,1 @@
+CREATE POLICY "Read cms-media bucket" ON storage.buckets FOR SELECT TO anon, authenticated USING (id = 'cms-media');

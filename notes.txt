@@ -16,6 +16,15 @@ create new migration if you need to modify in sql, and then run following to upd
 `npx supabase projects list` = project details
 
 kathaChitra_$admin#
+taskkill /PID 12345 /F
+
 
 types.ts, routetree.gen.ts
 
+-- to kill the used ports
+Windows (PowerShell / CMD)Check: Find the Process ID (PID) using the port (replace 3000 with your port):cmdnetstat -ano | findstr :5173
+Use code with caution.Delete: Kill the process using the PID found at the far right of the netstat output (e.g., 12345):cmdtaskkill /PID 12345 /F
+
+-- to run sql file in local vscode:
+1. npx supabase start
+2. npx supabase db query --file supabase/seed-frames.sql (run this fter a while)

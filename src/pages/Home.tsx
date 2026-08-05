@@ -47,7 +47,7 @@ export default function Home() {
           aspect: "wide" as const,
         }))
       : projects
-  ).slice(0, 3);
+  ).slice(0, 4);
   
    const scrollToCapabilities = () => {
     const el = document.getElementById("capabilities");
@@ -197,10 +197,10 @@ export default function Home() {
           </Reveal>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-6">
+        <div className="relative grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-6">
           {featured[0] && (
            
-            <div className="md:col-span-8">
+            <div className="md:col-span-7">
                <Reveal direction="left" delay={250}>
               <WorkTile project={featured[0]} />
               </Reveal>
@@ -208,7 +208,7 @@ export default function Home() {
           )}
 
           {featured[1] && (
-            <div className="md:col-span-4 md:mt-24  md:sticky md:top-24 md:self-start">
+            <div className="md:col-span-5 md:mt-24  md:sticky md:top-24 md:self-start z-10 pb-11">
               <Reveal direction="right" delay={300}>
               <WorkTile project={featured[1]} />
               </Reveal>
@@ -216,9 +216,17 @@ export default function Home() {
           )}
 
           {featured[2] && (
-            <div className="md:col-span-5 md:-mt-12">
+            <div className="md:col-span-6 md:mt-2">
               <Reveal direction="fade" delay={350}>
                 <WorkTile project={featured[2]} />
+              </Reveal>
+            </div>
+          )}
+
+          {featured[3] && (
+            <div className="md:col-span-6 md:mt-2 z-20">
+              <Reveal direction="fade" delay={350}>
+                <WorkTile project={featured[3]} />
               </Reveal>
             </div>
           )}

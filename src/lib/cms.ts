@@ -14,6 +14,7 @@ export type CmsProject = {
   aspect: "wide" | "portrait" | "square";
   sort_order: number;
   published: boolean;
+  created_at? : string;
 };
 
 export type CmsFrame = {
@@ -162,7 +163,8 @@ export function useFrames() {
         .from("frames")
         .select("*")
         .eq("published", true)
-        .order("sort_order", { ascending: true });
+        .order("sort_order", { ascending: true })
+        .order("created_at", { ascending: false });
       if (error) throw error;
       return (data ?? []) as unknown as CmsFrame[];
     },
