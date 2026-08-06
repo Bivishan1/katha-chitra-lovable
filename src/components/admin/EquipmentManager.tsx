@@ -353,7 +353,7 @@ const togglePrices = useMutation({
           ))}
         </div>
         <div className="border-t border-border mt-6">
-          <div style={{background: "oklch(0.68 0.13 55)"}} className=" py-4 border border-border text-center">
+          <div style={{background: "oklch(0.68 0.13 55)"}} className="flex items-center justify-between px-4 sm:px-5 py-3 border-b border-border">
             <h4 className="uppercase tracking-tight text-4xl">
               Selected Items
             </h4>

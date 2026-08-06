@@ -5,7 +5,7 @@ export default function ScrollToTop() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    // युआरएल (path) परिवर्तन हुने बित्तिकै स्क्रोललाई टपमा लैजाने
+    // scroll to top when url changes
     window.scrollTo(0, 0);
   }, [pathname]);
 
