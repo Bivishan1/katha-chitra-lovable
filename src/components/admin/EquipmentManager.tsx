@@ -457,7 +457,9 @@ const togglePrices = useMutation({
               <tfoot className="border-t-2 border-border bg-muted/40">
                 <tr className="font-medium">
                   <td className="py-3 pr-3 border border-gray-800">
-                    <div className="text-xs uppercase ">
+                   
+                    <div className="text-xs uppercase text-center font-bold ">
+                       {/* <p>Total =     </p> */}
                       Count : {selected.length} || Day :{" "}
                       {selected.reduce((sum, i) => sum + (days[i.id] ?? 0), 0)}
                     </div>
