@@ -232,5 +232,5 @@ export function useActiveProposal() {
 }
 
 export function npr(n: number) {
-  return `NPR ${Number(n).toLocaleString("en-IN")}`;
+  return `Rs. ${Number(n).toLocaleString("en-IN")}`;
 }

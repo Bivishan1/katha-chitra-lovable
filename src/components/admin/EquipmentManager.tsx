@@ -16,7 +16,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Check, ChevronsUpDown, Search, X } from "lucide-react";
+import { Check, ChevronsUpDown, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -98,16 +98,40 @@ export function EquipmentManager() {
   const categories = useMemo(() => data?.categories ?? [], [data?.categories]);
   const items = useMemo(() => data?.items ?? [], [data?.items]);
 
+// new priced toggle for CMS
+const togglePrices = useMutation({
+    mutationFn: async (next: boolean) => {
+      if (settings?.id) {
+        const { error } = await supabase
+          .from("site_settings")
+          .update({ show_equipment_prices: next } as never)
+          .eq("id", settings.id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from("site_settings")
+          .insert({ show_equipment_prices: next } as never);
+        if (error) throw error;
+      }
+    },
+    onSuccess: (_d, next) => {
+      toast.success(next ? "Prices are now visible on the website" : "Prices are hidden from the website");
+      qc.invalidateQueries({ queryKey: ["cms"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
 
   const [categoryId, setCategoryId] = useState<string>("");
   const active = categoryId || categories[0]?.id || "";
-  const [qty, setQty] = useState<Record<string, number>>({});
+  const [days, setDays] = useState<Record<string, number>>({});
+  const [discount, setDiscount] = useState<Record<string, number>>({});
+  // const [qty, setQty] = useState<Record<string, number>>({});
 
 // Quote calculator filters
   const [filterItemId, setFilterItemId] = useState("");
   const [filterCategoryId, setFilterCategoryId] = useState("");
   const [filterCatItemId, setFilterCatItemId] = useState("");
-  const [searchDraft, setSearchDraft] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
   const categoryOptions = useMemo(
@@ -141,52 +165,29 @@ export function EquipmentManager() {
     setFilterItemId("");
     setFilterCategoryId("");
     setFilterCatItemId("");
-    setSearchDraft("");
+    // setSearchDraft("");
     setSearchTerm("");
   };
 
-
-
-  // new priced toggle for CMS
-const togglePrices = useMutation({
-    mutationFn: async (next: boolean) => {
-      if (settings?.id) {
-        const { error } = await supabase
-          .from("site_settings")
-          .update({ show_equipment_prices: next } as never)
-          .eq("id", settings.id);
-        if (error) throw error;
-      } else {
-        const { error } = await supabase
-          .from("site_settings")
-          .insert({ show_equipment_prices: next } as never);
-        if (error) throw error;
-      }
-    },
-    onSuccess: (_d, next) => {
-      toast.success(next ? "Prices are now visible on the website" : "Prices are hidden from the website");
-      qc.invalidateQueries({ queryKey: ["cms"] });
-    },
-    onError: (e: Error) => toast.error(e.message),
-  });
 
   // cms close
 
   const total = useMemo(() => {
     return items.reduce(
       (acc, i) => {
-        const q = qty[i.id] ?? 0;
+        const q = days[i.id] ?? 0;
+        const weekCost = 7 * Number(i.price_day ?? 0);
         return {
           day: acc.day + q * Number(i.price_day ?? 0),
-          week: acc.week + q * Number(i.price_week ?? 0),
+          week: acc.week + q * weekCost,
         };
       },
       { day: 0, week: 0 },
     );
-  }, [items, qty]);
+  }, [items, days]);
 
-  const selected = items.filter((i) => (qty[i.id] ?? 0) > 0);
-
+  const selected = items.filter((i) => (days[i.id] ?? 0) > 0);
+  const totalDiscount = Object.values(discount).reduce((sum, disc) => sum + disc, 0);
   return (
     <div className="space-y-8">
       {/* CMS price toggle hide UI */}
@@ -315,17 +316,11 @@ const togglePrices = useMutation({
             <div className="flex gap-2">
               <Input
                 id="quote-search"
-                value={searchDraft}
+                value={searchTerm}
                 placeholder="Search by name"
-                onChange={(e) => setSearchDraft(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") setSearchTerm(searchDraft);
-                }}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="lg:w-48"
               />
-              <Button type="button" onClick={() => setSearchTerm(searchDraft)}>
-                <Search className="h-4 w-4 mr-1.5" /> Search
-              </Button>
               {filtersActive && (
                 <Button type="button" variant="ghost" onClick={clearFilters} aria-label="Clear filters">
                   <X className="h-4 w-4" />
@@ -344,25 +339,165 @@ const togglePrices = useMutation({
               <span className="text-xs text-muted-foreground whitespace-nowrap">
                 {npr(Number(i.price_day ?? 0))} / day
               </span>
-              <Input
-                type="number"
-                min={0}
-                className="w-20"
-                value={qty[i.id] ?? 0}
-                onChange={(e) => setQty((q) => ({ ...q, [i.id]: Number(e.target.value) }))}
-              />
+              <div className="flex flex-col items-end gap-1">
+                <Label className="text-[10px] uppercase tracking-wider text-muted-foreground">Days</Label>
+                <Input
+                  type="number"
+                  min={0}
+                  className="w-20"
+                  value={days[i.id] ?? 0}
+                  onChange={(e) => setDays((d) => ({ ...d, [i.id]: Number(e.target.value) }))}
+                />
+              </div>
             </div>
           ))}
         </div>
-        <div className="px-4 sm:px-5 py-4 border-t border-border space-y-1">
-          {selected.map((i) => (
-            <p key={i.id} className="text-xs text-muted-foreground">
-              {qty[i.id]} × {i.name} — {npr(Number(i.price_day ?? 0) * (qty[i.id] ?? 0))} / day
-            </p>
-          ))}
+        <div className="border-t border-border mt-6">
+          <div style={{background: "oklch(0.68 0.13 55)"}} className=" py-4 border border-border text-center">
+            <h4 className="uppercase tracking-tight text-4xl">
+              Selected Items
+            </h4>
+            {selected.length > 0 && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setDays({});
+                  setDiscount({});
+                }}
+              >
+                <X className="h-4 w-4 mr-1.5" /> Clear all
+              </Button>
+            )}
+          </div>
+        <div className=" py-1 border-t border-border space-y-1">
+          {/* new table design added */}
+          <div className="overflow-x-auto">
+            <table className="w-full bg-amber-200 text-black border border-border text-sm">
+              <thead>
+                <tr className="border-b border-border text-center text-xs uppercase tracking-wider">
+                  <th className="py-2 pr-3 border border-gray-800">Items</th>
+                  <th className="py-2 pr-3 text-right border border-gray-800">Per day</th>
+                  <th className="py-2 pr-3 text-right border border-gray-800">Per week</th>
+                  <th className="py-2 pr-3 text-right border border-gray-800">Discount (%)</th>
+                  <th className="py-2 pr-3 text-right border border-gray-800">After discount (per day)</th>
+                  <th className="py-2 text-right border border-gray-800">After discount (per week)</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {selected.map((i, index) => {
+                  const d = days[i.id] ?? 0;
+                  const disc = discount[i.id] ?? 0;
+                  const day = d * Number(i.price_day ?? 0);
+                  const week = d * 7 * Number(i.price_day ?? 0);
+                  const factor = day - (day * (disc / 100));
+                  return (
+                    <tr key={i.id} className="group border border-gray-800">
+                      <td className="py-2 pr-3 align-middle border border-gray-800">
+                        <div className="flex items-center gap-2">
+                          <span
+                            className="inline-flex items-center justify-center w-7 h-7 rounded-sm bg-amber-800 text-xs font-semibold shrink-0"
+                            style={{ fontFamily: "var(--font-display)" }}
+                          >
+                            {index + 1}
+                          </span>
+                          <span className="text-sm">
+                            {d} x {i.name}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setDays((prev) => {
+                                const next = { ...prev };
+                                delete next[i.id];
+                                return next;
+                              });
+                              setDiscount((prev) => {
+                                const next = { ...prev };
+                                delete next[i.id];
+                                return next;
+                              });
+                            }}
+                            className="ml-auto opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive transition-opacity"
+                            aria-label="Remove item"
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        </div>
+                      </td>
+                      <td className="py-2 pr-3 text-right align-middle border border-gray-800">{npr(day)}</td>
+                      <td className="py-2 pr-3 text-right align-middle border border-gray-800">{npr(week)}</td>
+                      <td className="py-2 pr-3 text-right align-middle border border-gray-800">
+                        <Input
+                          type="number"
+                          min={0}
+                          max={100}
+                          step={0.01}
+                          className="w-20 ml-auto text-right bg-amber-300"
+                          value={disc}
+                          onChange={(e) =>
+                            setDiscount((prev) => ({ ...prev, [i.id]: Number(e.target.value) }))
+                          }
+                        />
+                      </td>
+                      <td className="py-2 pr-3 text-center align-middle border border-gray-800">{npr(factor)}</td>
+                      <td className="py-2 text-center align-middle border border-gray-800">{npr(week - (week * (disc / 100)))}</td>
+                    </tr>
+                  );
+                })}
+                {selected.length === 0 && (
+                  <tr>
+                    <td colSpan={6} className="py-6 text-sm text-muted-foreground">
+                      No items selected. Enter days above to build a quote.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+              <tfoot className="border-t-2 border-border bg-muted/40">
+                <tr className="font-medium">
+                  <td className="py-3 pr-3 border border-gray-800">
+                    <div className="text-xs uppercase ">
+                      Count : {selected.length} || Day :{" "}
+                      {selected.reduce((sum, i) => sum + (days[i.id] ?? 0), 0)}
+                    </div>
+                  </td>
+                  <td className="py-3 pr-3 text-center text-sm uppercase border border-gray-800 ">
+                     {npr(total.day)}
+                  </td>
+                  <td className="py-3 pr-3 text-center align-middle font-semibold border border-gray-800">
+                    {npr(total.week)}
+                  </td>
+                  <td id = 'totalDiscount' className="py-3 pr-3 text-center align-middle border border-gray-800">
+                   { // total discount
+                   }
+                  {totalDiscount + '%'}
+                  </td>
+                  <td className="py-3 pr-3 text-center align-middle font-semibold border border-gray-800">
+                    {npr(
+                      selected.reduce((sum, i) => {
+                        const d = days[i.id] ?? 0;
+                        const disc = discount[i.id] ?? 0;
+                        return sum + d * Number(i.price_day ?? 0) * (1 - disc / 100);
+                      }, 0),
+                    )}
+                  </td>
+                  <td className="py-3 text-center align-middle font-semibold border border-gray-800">
+                    {npr(
+                      selected.reduce((sum, i) => {
+                        const d = days[i.id] ?? 0;
+                        const disc = discount[i.id] ?? 0;
+                        return sum + d * 7 * Number(i.price_day ?? 0) * (1 - disc / 100);
+                      }, 0),
+                    )}
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
            {selected.length > 0 && (
             <div className="pt-1">
-              <Button type="button" variant="ghost" size="sm" onClick={() => setQty({})}>
+              <Button type="button" variant="ghost" size="sm" onClick={() => { setDays({}); setDiscount({}); }}>
                 <X className="h-4 w-4 mr-1.5" /> Clear order values
               </Button>
             </div>
@@ -379,6 +514,7 @@ const togglePrices = useMutation({
               {npr(total.week)}
             </strong>
           </p>
+        </div>
         </div>
       </section>
     </div>

@@ -35,6 +35,7 @@ function AdminPage() {
     return <main className="min-h-screen grid place-items-center text-sm text-muted-foreground">Checking access…</main>;
   }
 
+
   if (!data?.isAdmin) {
     return (
       <main className="min-h-screen grid place-items-center px-4 text-center">
