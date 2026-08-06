@@ -7,6 +7,7 @@ import founderImage from "../assets/team-founder.jpeg";
 import btsSet from "../assets/bts-set.jpg";
 import btsMonitor from "../assets/bts-monitor.jpg";
 import { PageHero } from "../components/PageHero";
+import { useContactDetails } from "@/lib/cms";
 // import { supabase } from "../../supabase/client";
 
 
@@ -60,7 +61,7 @@ export default function About() {
 
 //     testConnection();
 //   }, []);
-
+  const { data: contact } = useContactDetails();
 
 
   useEffect(() => {
@@ -136,7 +137,7 @@ export default function About() {
            <div className="md:col-span-8 space-y-6 sm:space-y-8 text-base sm:text-lg leading-relaxed text-foreground/80">
             <p>
               Katha Chitra is a full-service film and media production company
-              headquartered in Lalitpur, Nepal. We're a small, senior team of
+              headquartered in {contact?.address}. We're a small, senior team of
               directors, cinematographers, editors and producers — built lean on
               purpose.
             </p>
