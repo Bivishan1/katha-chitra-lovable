@@ -353,7 +353,7 @@ const togglePrices = useMutation({
           ))}
         </div>
         <div className="border-t border-border mt-6">
-          <div style={{background: "oklch(0.68 0.13 55)"}} className="flex items-center justify-between px-4 sm:px-5 py-3 border-b border-border">
+          <div style={{background: "oklch(0.68 0.13 55)"}} className="flex justify-center px-4 sm:px-5 py-3 border-b border-border">
             <h4 className="uppercase tracking-tight text-4xl">
               Selected Items
             </h4>
@@ -504,18 +504,6 @@ const togglePrices = useMutation({
               </Button>
             </div>
           )}
-          <p className="pt-2 text-sm">
-            Total per day:{" "}
-            <strong style={{ fontFamily: "var(--font-display)" }} className="text-accent text-lg">
-              {npr(total.day)}
-            </strong>
-          </p>
-          <p className="text-sm">
-            Total per week:{" "}
-            <strong style={{ fontFamily: "var(--font-display)" }} className="text-accent text-lg">
-              {npr(total.week)}
-            </strong>
-          </p>
         </div>
         </div>
       </section>

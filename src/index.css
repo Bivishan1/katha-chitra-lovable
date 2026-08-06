@@ -154,6 +154,10 @@ html {
   scroll-behavior: smooth;
 }
 
+ Button, .btn, .button, button {
+    cursor: pointer;
+  }
+
 @keyframes slideInLeft {
   from { opacity: 0; transform: translateX(-40px); }
   to { opacity: 1; transform: translateX(0); }
