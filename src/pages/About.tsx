@@ -8,6 +8,9 @@ import btsSet from "../assets/bts-set.jpg";
 import btsMonitor from "../assets/bts-monitor.jpg";
 import { PageHero } from "../components/PageHero";
 import { useContactDetails } from "@/lib/cms";
+import btsMustang from "@/assets/work-mustang.jpg";
+import btsDoc from "@/assets/work-documentary.jpg";
+import { useBtsFrames } from "@/lib/cms";
 // import { supabase } from "../../supabase/client";
 
 
@@ -44,6 +47,8 @@ function setMetaTag(selector: string, attribute: string, content: string) {
 // console.log(data);
 // console.log(error);
 
+const BTS_FALLBACKS = [btsSet, btsMonitor, btsMustang, btsDoc]
+
 export default function About() {
 
   // onlysupabase testing
@@ -61,6 +66,7 @@ export default function About() {
 
 //     testConnection();
 //   }, []);
+  const { data: btsFrames = [] } = useBtsFrames();
   const { data: contact } = useContactDetails();
 
 
@@ -280,23 +286,22 @@ export default function About() {
             <p className="text-xs uppercase tracking-widest text-muted-foreground">Frames from recent shoots</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-            <img
-              src={btsSet}
-              alt="Camera operators silhouetted against copper sunset on a Kathmandu set"
-              width={1600}
-              height={1024}
-              loading="lazy"
-              className="md:col-span-8 w-full aspect-16/10 object-cover outline-1 -outline-offset-1 outline-white/5"
-            />
-            <img
-              src={btsMonitor}
-              alt="Cinematographers reviewing footage on a field monitor in a neon-lit alley"
-              width={1280}
-              height={1280}
-              loading="lazy"
-              className="md:col-span-4 w-full aspect-square object-cover outline-1 -outline-offset-1 outline-white/5"
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {btsFrames.map((f, i) => (
+              <figure key={f.id} className="group">
+                <img
+                  src={f.image_url || BTS_FALLBACKS[i % BTS_FALLBACKS.length]}
+                  alt={f.alt || f.caption || "Behind the scenes on a Katha Chitra production"}
+                  loading="lazy"
+                  className="w-full aspect-[16/10] object-cover outline outline-1 -outline-offset-1 outline-white/5"
+                />
+                {f.caption && (
+                  <figcaption className="mt-3 text-[10px] uppercase tracking-widest text-muted-foreground">
+                    {f.caption}
+                  </figcaption>
+                )}
+              </figure>
+            ))}
           </div>
         </div>
       </section>

@@ -14,7 +14,7 @@ export type CmsProject = {
   aspect: "wide" | "portrait" | "square";
   sort_order: number;
   published: boolean;
-  created_at? : string;
+  created_at?: string;
 };
 
 export type CmsFrame = {
@@ -25,6 +25,7 @@ export type CmsFrame = {
   video_url: string | null;
   sort_order: number;
   published: boolean;
+  created_at?: string;
 };
 
 export type CmsCategory = {
@@ -73,6 +74,16 @@ export type CmsProposal = {
   created_at: string;
 };
 
+export type CmsBtsFrame = {
+  id: string;
+  caption: string;
+  alt: string;
+  image_url: string | null;
+  sort_order: number;
+  published: boolean;
+  created_at?: string;
+};
+
 export type CmsSiteSettings = {
   id: string;
   show_equipment_prices: boolean;
@@ -88,6 +99,7 @@ export const CMS_TABLES = [
   "contact_details",
   "social_links",
   "site_settings",
+  "bts_frames",
 ] as const;
 
 /**
@@ -99,9 +111,13 @@ export function useCmsRealtime() {
   useEffect(() => {
     const channel = supabase.channel("cms-live");
     for (const table of CMS_TABLES) {
-      channel.on("postgres_changes", { event: "*", schema: "public", table }, () => {
-        qc.invalidateQueries({ queryKey: ["cms"] });
-      });
+      channel.on(
+        "postgres_changes",
+        { event: "*", schema: "public", table },
+        () => {
+          qc.invalidateQueries({ queryKey: ["cms"] });
+        },
+      );
     }
     channel.subscribe();
     return () => {
@@ -114,13 +130,16 @@ export function useSiteSettings() {
   return useQuery({
     queryKey: ["cms", "settings"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("site_settings").select("*").limit(1).maybeSingle();
+      const { data, error } = await supabase
+        .from("site_settings")
+        .select("*")
+        .limit(1)
+        .maybeSingle();
       if (error) throw error;
       return (data ?? null) as unknown as CmsSiteSettings | null;
     },
   });
 }
-
 
 export const MEDIA_BUCKET = "cms-media";
 
@@ -128,15 +147,18 @@ export const MEDIA_BUCKET = "cms-media";
 export async function uploadMedia(file: File, folder: string) {
   const ext = file.name.split(".").pop() ?? "bin";
   const path = `${folder}/${crypto.randomUUID()}.${ext}`;
-  const { error } = await supabase.storage.from(MEDIA_BUCKET).upload(path, file, {
-    cacheControl: "3600",
-    upsert: false,
-  });
+  const { error } = await supabase.storage
+    .from(MEDIA_BUCKET)
+    .upload(path, file, {
+      cacheControl: "3600",
+      upsert: false,
+    });
   if (error) throw error;
   const { data, error: signErr } = await supabase.storage
     .from(MEDIA_BUCKET)
     .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
-  if (signErr || !data) throw signErr ?? new Error("Could not create media URL");
+  if (signErr || !data)
+    throw signErr ?? new Error("Could not create media URL");
   return data.signedUrl;
 }
 
@@ -180,7 +202,10 @@ export function useEquipment(withPrices = false) {
         supabase.from("equipment_categories").select("*").order("sort_order"),
         withPrices
           ? supabase.from("equipment_items").select("*").order("sort_order")
-          : supabase.from("equipment_items_public").select("*").order("sort_order"),
+          : supabase
+              .from("equipment_items_public")
+              .select("*")
+              .order("sort_order"),
       ]);
       if (cats.error) throw cats.error;
       if (items.error) throw items.error;
@@ -192,11 +217,31 @@ export function useEquipment(withPrices = false) {
   });
 }
 
+/** Behind-the-scenes frames shown on the About page. */
+export function useBtsFrames() {
+  return useQuery({
+    queryKey: ["cms", "bts-frames"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("bts_frames")
+        .select("*")
+        .eq("published", true)
+        .order("sort_order", { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as unknown as CmsBtsFrame[];
+    },
+  });
+}
+
 export function useContactDetails() {
   return useQuery({
     queryKey: ["cms", "contact"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("contact_details").select("*").limit(1).maybeSingle();
+      const { data, error } = await supabase
+        .from("contact_details")
+        .select("*")
+        .limit(1)
+        .maybeSingle();
       if (error) throw error;
       return (data ?? null) as unknown as CmsContact | null;
     },
@@ -207,7 +252,10 @@ export function useSocialLinks() {
   return useQuery({
     queryKey: ["cms", "social"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("social_links").select("*").order("sort_order");
+      const { data, error } = await supabase
+        .from("social_links")
+        .select("*")
+        .order("sort_order");
       if (error) throw error;
       return (data ?? []) as unknown as CmsSocialLink[];
     },

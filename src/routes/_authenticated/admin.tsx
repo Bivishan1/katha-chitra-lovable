@@ -83,6 +83,7 @@ function AdminPage() {
           <TabsList className="flex flex-wrap h-auto">
             <TabsTrigger value="equipment">Equipment</TabsTrigger>
             <TabsTrigger value="frames">Frames</TabsTrigger>
+            <TabsTrigger value="bts">Behind the Scenes</TabsTrigger>
             <TabsTrigger value="projects">Projects</TabsTrigger>
             <TabsTrigger value="proposals">Proposals</TabsTrigger>
             <TabsTrigger value="contact">Contact & Social</TabsTrigger>
@@ -109,6 +110,29 @@ function AdminPage() {
                 { key: "subtitle", label: "Subtitle", type: "text" },
                 { key: "image_url", label: "Image", type: "image" },
                 { key: "video_url", label: "Video link (YouTube etc.)", type: "text" },
+                { key: "sort_order", label: "Sort order", type: "number" },
+                { key: "published", label: "Published", type: "boolean" },
+              ]}
+            />
+          </TabsContent>
+
+          {/* new bts */}
+           <TabsContent value="bts" className="mt-6">
+            <ResourceManager
+              table="bts_frames"
+              title="Behind the Scenes"
+              description="On-set frames shown in the Behind the Scenes section of the About page."
+              orderBy="sort_order"
+              defaults={{ published: true, sort_order: 0, caption: "", alt: "" }}
+              columns={[
+                { key: "caption", label: "Caption" },
+                { key: "sort_order", label: "Order" },
+                { key: "published", label: "Published", render: (r) => (r.published ? "Yes" : "No") },
+              ]}
+              fields={[
+                { key: "caption", label: "Caption", type: "text" },
+                { key: "alt", label: "Image description (alt text)", type: "text" },
+                { key: "image_url", label: "Image", type: "image" },
                 { key: "sort_order", label: "Sort order", type: "number" },
                 { key: "published", label: "Published", type: "boolean" },
               ]}

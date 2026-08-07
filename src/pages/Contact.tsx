@@ -3,8 +3,12 @@ import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import SiteHeader from "../components/SiteHeader";
 import { PageHero } from "../components/PageHero";
+import {toast } from "sonner";
+import {Loader2} from "lucide-react";
 import contactHero from "../assets/bts-set.jpg";
 import { useContactDetails, useSocialLinks } from "@/lib/cms";
+
+
 
 
 
@@ -52,6 +56,7 @@ export default function Contact() {
   const { data: contact } = useContactDetails();
   const { data: socials } = useSocialLinks();
   const email = contact?.email || "kathachitra5@gmail.com";
+  const [sending, setSending] = useState(false);
 
   useEffect(() => {
     document.title = "Contact — Katha Chitra";
@@ -91,49 +96,64 @@ export default function Contact() {
 
   // new web3forms form template
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
-          name: form.name,
-          company: form.company,
-          email: form.email,
-          budget: form.budget,
-          type: form.type,
-          message: form.message,
+  setSending(true);
 
-          subject: `[${form.type}] ${form.name} — ${form.company || "Inquiry"}`,
-        }),
+  try {
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
+        name: form.name,
+        company: form.company,
+        email: form.email,
+        budget: form.budget,
+        type: form.type,
+        message: form.message,
+        subject: `[${form.type}] ${form.name} — ${form.company || "Inquiry"}`,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      toast.success("Enquiry sent successfully", {
+        description:
+          "Our production team will get back to you within 24–48 hours.",
       });
 
-      const result = await response.json();
+      window.scrollTo({ top: 0, behavior: "smooth" });
 
-      if (result.success) {
-        alert("Inquiry sent successfully!");
-
-        setForm({
-          name: "",
-          company: "",
-          email: "",
-          budget: "",
-          type: projectTypes[0],
-          message: "",
-        });
-      } else {
-        alert("Failed to send inquiry.");
-      }
-    } catch (error) {
-      console.error(error);
-      alert("Something went wrong.");
+      setForm({
+        name: "",
+        company: "",
+        email: "",
+        budget: "",
+        type: projectTypes[0],
+        message: "",
+      });
+    } else {
+      toast.error("Failed to send enquiry", {
+        description:
+          result.message || "Please try again in a few moments.",
+      });
     }
-  };
+  } catch (error) {
+    console.error(error);
+
+    toast.error("Something went wrong", {
+      description:
+        "Unable to send your enquiry. Please try again later.",
+    });
+  } finally {
+    setSending(false);
+  }
+};
 
   return (
     <div className="min-h-screen">
@@ -230,7 +250,7 @@ export default function Contact() {
             onSubmit={onSubmit}
             className="md:col-span-8 space-y-6 sm:space-y-8"
           >
-          <div className="h-captcha" data-captcha="true"></div>
+          
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
               <Field
                 label="Name"
@@ -297,20 +317,22 @@ export default function Contact() {
                 className="w-full bg-transparent border border-border px-4 py-3 text-foreground focus:outline-none focus:border-accent transition-colors"
               />
             </div>
-            <input
-              type="checkbox"
-              name="botcheck"
-              className="hidden"
-              style={{ display: "none" }}
-            />
+            <div className="h-captcha" data-captcha="true"></div>
 
             <button
-              type="submit"
-              style={{ fontFamily: "var(--font-display)" }}
-              className="group inline-flex items-center gap-3 text-xl sm:text-2xl md:text-3xl uppercase tracking-tight text-accent border-b border-accent pb-2 hover:gap-6 transition-all"
-            >
-              Send inquiry <span aria-hidden="true">→</span>
-            </button>
+  type="submit"
+  disabled={sending}
+  className="lex items-center gap-3 text-xl sm:text-2xl md:text-3xl uppercase tracking-tight text-accent border-b border-accent pb-2 hover:gap-6 transition-all disabled:opacity-60 disabled:hover:gap-3"
+>
+  {sending ? (
+    <>
+      Sending
+      <Loader2 className="h-5 w-5 animate-spin" aria-hidden />
+    </>
+  ) : (
+    "Send Enquiry →"
+  )}
+</button>
           </form>
         </div>
       </section>
