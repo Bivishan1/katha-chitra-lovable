@@ -293,7 +293,7 @@ export default function About() {
                   src={f.image_url || BTS_FALLBACKS[i % BTS_FALLBACKS.length]}
                   alt={f.alt || f.caption || "Behind the scenes on a Katha Chitra production"}
                   loading="lazy"
-                  className="w-full aspect-[16/10] object-cover outline outline-1 -outline-offset-1 outline-white/5"
+                  className="w-full aspect-16/10 object-cover outline -outline-offset-1 outline-white/5"
                 />
                 {f.caption && (
                   <figcaption className="mt-3 text-[10px] uppercase tracking-widest text-muted-foreground">
