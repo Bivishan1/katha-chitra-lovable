@@ -230,6 +230,7 @@ export default function Contact() {
             onSubmit={onSubmit}
             className="md:col-span-8 space-y-6 sm:space-y-8"
           >
+          <div className="h-captcha" data-captcha="true"></div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
               <Field
                 label="Name"
