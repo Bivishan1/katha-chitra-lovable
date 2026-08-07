@@ -317,7 +317,6 @@ export default function Contact() {
                 className="w-full bg-transparent border border-border px-4 py-3 text-foreground focus:outline-none focus:border-accent transition-colors"
               />
             </div>
-            <div className="h-captcha" data-captcha="true"></div>
 
             <button
   type="submit"
