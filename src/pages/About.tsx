@@ -3,14 +3,13 @@ import { Link } from "@tanstack/react-router";
 import aboutImage from "../assets/about-studio.jpg";
 import  SiteHeader from "../components/SiteHeader";
 import  SiteFooter  from "../components/SiteFooter";
-import founderImage from "../assets/team-founder.jpeg";
+import defaultFounderImage from "../assets/team-founder.jpeg";
 import btsSet from "../assets/bts-set.jpg";
 import btsMonitor from "../assets/bts-monitor.jpg";
 import { PageHero } from "../components/PageHero";
-import { useContactDetails } from "@/lib/cms";
+import { useContactDetails,useBtsFrames, useFounderProfile, useTeamMembers} from "@/lib/cms";
 import btsMustang from "@/assets/work-mustang.jpg";
 import btsDoc from "@/assets/work-documentary.jpg";
-import { useBtsFrames } from "@/lib/cms";
 // import { supabase } from "../../supabase/client";
 
 
@@ -68,6 +67,9 @@ export default function About() {
 //   }, []);
   const { data: btsFrames = [] } = useBtsFrames();
   const { data: contact } = useContactDetails();
+    const { data: founder } = useFounderProfile();
+      const { data: team = [] } = useTeamMembers();
+    const founderImage = founder?.image_url ?? defaultFounderImage;
 
 
   useEffect(() => {
@@ -191,7 +193,7 @@ export default function About() {
             <div className="md:col-span-5">
               <img
                 src={founderImage}
-                alt="Aarav Shrestha, founder and creative director of Katha Chitra"
+                alt={founder?.name || "Saugat Dhital, founder and creative director of Katha Chitra"}
                 width={1024}
                 height={1280}
                 loading="lazy"
@@ -199,26 +201,21 @@ export default function About() {
               />
             </div>
             <div className="md:col-span-7 flex flex-col justify-center">
-              <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-3">Founder & Creative Director</p>
+              <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-3">{founder?.role || "Founder & Creative Director" }</p>
               <h3 style={{ fontFamily: "var(--font-display)" }} className="text-4xl sm:text-5xl md:text-6xl uppercase tracking-tight mb-6">
-                Saugat <span className="italic font-light text-accent">Dhital</span>
+                {founder?.name || "Saugat"} <span className="italic font-light text-accent">{founder?.name_accent}</span>
               </h3>
               <p className="text-foreground/80 leading-relaxed mb-4">
-                A decade behind the lens — from independent documentary work across Mustang and Humla to broadcast commercials for South Asian brands.
+                {founder?.bio_primary || "A decade behind the lens — from independent documentary work across Mustang and Humla to broadcast commercials for South Asian brands."}
               </p>
               <p className="text-foreground/70 leading-relaxed">
-                Aarav leads a senior bench of cinematographers, producers, sound designers and colorists. Every project is touched by people who have shipped hundreds of hours of work, not interns chasing a portfolio.
+                {founder?.name || "Saugat"} {founder?.bio_secondary }
               </p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 sm:mt-20">
-            {[
-              { name: "Pranisha Karki", role: "Head of Production" },
-              { name: "Bibek Lama", role: "Director of Photography" },
-              { name: "Mira Tamang", role: "Editor & Colorist" },
-              { name: "Sujan Rai", role: "Sound Designer" },
-            ].map((m) => (
+            {team.map((m) => (
               <div key={m.name} className="border-t border-border pt-4">
                 <p style={{ fontFamily: "var(--font-display)" }} className="text-lg sm:text-xl uppercase tracking-tight">{m.name}</p>
                 <p className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">{m.role}</p>

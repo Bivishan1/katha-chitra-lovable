@@ -6,6 +6,8 @@ import { useAdmin } from "@/hooks/use-admin";
 import { ResourceManager } from "@/components/admin/ResourceManager";
 import { EquipmentManager } from "@/components/admin/EquipmentManager";
 import { ContactManager } from "@/components/admin/ContactManager";
+import { SiteSettingsManager } from "@/components/admin/SiteSettingsManager";
+import { AboutContentManager } from "@/components/admin/AboutContentManager";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { ShieldAlert, LogOut } from "lucide-react";
@@ -86,6 +88,8 @@ function AdminPage() {
             <TabsTrigger value="bts">Behind the Scenes</TabsTrigger>
             <TabsTrigger value="projects">Projects</TabsTrigger>
             <TabsTrigger value="proposals">Proposals</TabsTrigger>
+            <TabsTrigger value="site">Site & SEO</TabsTrigger>
+            <TabsTrigger value="about-content">About Page</TabsTrigger>
             <TabsTrigger value="contact">Contact & Social</TabsTrigger>
           </TabsList>
 
@@ -197,6 +201,14 @@ function AdminPage() {
                 { key: "is_active", label: "Active (offered for download)", type: "boolean" },
               ]}
             />
+          </TabsContent>
+
+          <TabsContent value="site" className="mt-6">
+            <SiteSettingsManager />
+          </TabsContent>
+
+          <TabsContent value="about-content" className="mt-6">
+            <AboutContentManager />
           </TabsContent>
 
           <TabsContent value="contact" className="mt-6">

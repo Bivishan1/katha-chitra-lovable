@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import logo from "../assets/logo.png";
+import defaultLogo from "../assets/logo.png";
+import { useSiteSettings } from "@/lib/cms";
 
 const links = [
   { to: "/work", label: "Work" },
@@ -12,6 +13,8 @@ const links = [
 ] as const;
 
 export default function SiteHeader() {
+  const { data: settings } = useSiteSettings();
+  const logo = settings?.logo_url ?? defaultLogo;
   const [open, setOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);

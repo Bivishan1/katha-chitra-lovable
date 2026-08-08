@@ -87,6 +87,27 @@ export type CmsBtsFrame = {
 export type CmsSiteSettings = {
   id: string;
   show_equipment_prices: boolean;
+  logo_url: string | null;
+};
+
+export type CmsFounderProfile = {
+  id: string;
+  name: string;
+  name_accent: string | null;
+  role: string;
+  bio_primary: string;
+  bio_secondary: string;
+  image_url: string | null;
+  image_alt: string | null;
+};
+
+export type CmsTeamMember = {
+  id: string;
+  name: string;
+  role: string;
+  image_url: string | null;
+  sort_order: number;
+  published: boolean;
 };
 
 /** Tables that drive public site content. */
@@ -100,6 +121,9 @@ export const CMS_TABLES = [
   "social_links",
   "site_settings",
   "bts_frames",
+  "page_meta",
+  "founder_profile",
+  "team_members",
 ] as const;
 
 /**
@@ -275,6 +299,36 @@ export function useActiveProposal() {
         .maybeSingle();
       if (error) throw error;
       return (data ?? null) as unknown as CmsProposal | null;
+    },
+  });
+}
+
+export function useFounderProfile() {
+  return useQuery({
+    queryKey: ["cms", "founder"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("founder_profile")
+        .select("*")
+        .limit(1)
+        .maybeSingle();
+      if (error) throw error;
+      return (data ?? null) as unknown as CmsFounderProfile | null;
+    },
+  });
+}
+
+export function useTeamMembers() {
+  return useQuery({
+    queryKey: ["cms", "team"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("team_members")
+        .select("*")
+        .eq("published", true)
+        .order("sort_order", { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as unknown as CmsTeamMember[];
     },
   });
 }
