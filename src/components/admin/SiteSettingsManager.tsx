@@ -147,7 +147,8 @@ function PageMetaEditor() {
     mutationFn: async (slug: PageMetaSlug) => {
       const payload = forms[slug];
       if (!payload) return;
-      const { slug: _slug, ...rest } = payload;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { slug: _label, ...rest } = payload;
       const existing = rows.find((r) => r.slug === slug);
       if (existing) {
         const { error } = await supabase.from("page_meta").update(rest).eq("slug", slug);
