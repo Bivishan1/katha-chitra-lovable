@@ -135,7 +135,7 @@ function PageMetaEditor() {
 
   useEffect(() => {
     const next: Record<string, CmsPageMeta> = {};
-    for (const { slug, label } of PAGE_META_SLUGS) {
+    for (const { slug } of PAGE_META_SLUGS) {
       const row = rows.find((r) => r.slug === slug);
       next[slug] = row ?? PAGE_META_DEFAULTS[slug as PageMetaSlug];
     }
