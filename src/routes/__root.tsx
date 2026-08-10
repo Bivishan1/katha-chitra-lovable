@@ -10,6 +10,7 @@ import {
 import { Toaster } from "@/components/ui/sooner";
 import { supabase } from "@/integrations/supabase/client";
 import { CmsRealtime } from "@/components/CmsRealtime";
+import { useFavicon } from "@/hooks/useFavicon";
 
 
 function NotFoundComponent() {
@@ -84,7 +85,13 @@ function ErrorComponent({
   );
 }
 
+function FaviconSync() {
+  useFavicon();
+  return null;
+}
+
 function RootComponent() {
+  // useFavicon();
   const { queryClient } = Route.useRouteContext();
 
   const router = useRouter();
@@ -111,6 +118,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <FaviconSync />
             <CmsRealtime />
       <Outlet />
       <Toaster position="bottom-right" />

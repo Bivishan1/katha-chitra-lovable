@@ -88,6 +88,7 @@ export type CmsSiteSettings = {
   id: string;
   show_equipment_prices: boolean;
   logo_url: string | null;
+  favicon_url: string | null;
 };
 
 export type CmsFounderProfile = {
