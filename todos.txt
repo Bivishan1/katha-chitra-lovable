@@ -1,2 +1,11 @@
 -- add better way to display price (NPR) of the equipments in the rental-equipments page
 -- add full background image in the relevants equipments section in the rental-equipments page. E.g. in first 'cinema cameras' section add full width cinema camers image on that section.
+
+8/30/2026 updates to do :
+1. add a feature to display each equipment photo to the client, so for this design properly and responsively.
+2. allow to view equipments image or photo to the client and update through admin
+3. make perfectly align that equipment items list when price is hidden
+4. add `go to top` button when page start to scroll down from the top height
+
+9/1/2026:
+fix that day count or order item price in table...

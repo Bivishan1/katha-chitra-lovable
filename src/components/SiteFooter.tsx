@@ -50,11 +50,8 @@ export default function SiteFooter() {
         })) ?? [],
     },
   ];
-
-
-
   return (
-    <footer className="border-t border-border px-4 py-20 sm:px-6 sm:py-15 lg:px-10">
+     <footer className="border-t border-border px-4 py-20 sm:px-6 sm:py-15 lg:px-10">
       <div className="mx-auto max-w-7xl">
         <p className="mb-8 text-[10px] uppercase tracking-[0.28em] text-muted-foreground sm:mb-10 sm:text-[11px] sm:tracking-[0.4em]">
           Ready to tell your story?

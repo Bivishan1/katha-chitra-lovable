@@ -41,6 +41,7 @@ export type CmsEquipmentItem = {
   category_id: string;
   name: string;
   note: string | null;
+  image_url: string | null;
   sort_order: number;
   price_day?: number | null;
   price_week?: number | null;

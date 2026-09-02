@@ -4,8 +4,9 @@ npx supabase gen types typescript \ --linked \ > src/integrations/supabase/types
 Generated route tree (esp. in tanstack router):
 src/routeTree.gen.ts
 npx tsr generate
+Note : don't forget to run `npm run dev` while running npx tsr generate on another terminal tab.
 
-create new migration if you need to modify in sql, and then run following to update and push the migration:
+create new migration if you modify, created new file in sql, and then run following to update and push the migration:
 `npx supabase db push`
 
 `npx supabase status` = 

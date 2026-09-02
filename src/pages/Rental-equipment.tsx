@@ -3,6 +3,8 @@ import SiteHeader from "../components/SiteHeader";
 import  SiteFooter  from "../components/SiteFooter";
 import { PageHero } from "../components/PageHero";
 import { useEquipment, useSiteSettings, npr } from "@/lib/cms";
+import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import rentalHero from "../assets/bts-monitor.jpg";
 import camerasBg from "../assets/cameras.jpg";
 import lensesBg from "../assets/lenses.jpg";
@@ -25,6 +27,8 @@ export default function RentalEquipmentPage() {
   const categories = equipment?.categories ?? [];
   const items = equipment?.items ?? [];
   const showPrices = Boolean(settings?.show_equipment_prices);
+  const [preview, setPreview] = useState<{ url: string; name: string } | null>(null);
+
 
   return (
     <div className="min-h-screen">
@@ -85,13 +89,16 @@ export default function RentalEquipmentPage() {
               {/* Price table */}
               <div className="col-span-12 md:col-span-7 md:pl-8">
                 <div className="backdrop-blur-md bg-background/40 border border-border/60 rounded-sm">
-                  <div className="hidden sm:grid grid-cols-12 px-5 py-3 border-b border-border/60 text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-                    <div className={showPrices ? "col-span-6" : "col-span-12"}>Item</div>
-                    {showPrices && (
+                   <div className="hidden sm:flex items-center gap-4 px-5 py-3 border-b border-border/60 text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+                    <div className="w-14 shrink-0">Photo</div>
+                    <div className="flex-1 min-w-0">Item</div>
+                    {showPrices ? (
                       <>
-                        <div className="col-span-3 text-right">Per day</div>
-                        <div className="col-span-3 text-right">Per week</div>
+                        <div className="w-28 text-right shrink-0">Per day</div>
+                        <div className="w-28 text-right shrink-0">Per week</div>
                       </>
+                       ) : (
+                      <div className="w-40 text-right shrink-0">Availability</div>
                     )}
                   </div>
                   <ul className="divide-y divide-border/60">
@@ -101,41 +108,62 @@ export default function RentalEquipmentPage() {
                     {catItems.map((i) => (
                      <li
                         key={i.id}
-                        className="grid grid-cols-12 gap-2 px-5 py-4 items-baseline hover:bg-accent/5 transition-colors"
+                        className="flex items-center gap-4 px-5 py-4 hover:bg-accent/5 transition-colors"
                       >
-                        <div className={`col-span-12 text-sm sm:text-[15px] text-foreground ${showPrices ? "sm:col-span-6" : ""}`}>
+                        <button
+                          type="button"
+                          onClick={() => i.image_url && setPreview({ url: i.image_url, name: i.name })}
+                          disabled={!i.image_url}
+                          aria-label={i.image_url ? `View photo of ${i.name}` : `${i.name} photo unavailable`}
+                          className="w-14 h-14 shrink-0 rounded-sm overflow-hidden border border-border/60 bg-muted/30 flex items-center justify-center group/thumb disabled:cursor-default"
+                        >
+                          {i.image_url ? (
+                            <img
+                              src={i.image_url}
+                              alt={`${i.name} — available for rent in Kathmandu`}
+                              loading="lazy"
+                              width={112}
+                              height={112}
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover/thumb:scale-110"
+                            />
+                          ) : (
+                            <span className="text-[9px] uppercase tracking-widest text-muted-foreground">Kit</span>
+                          )}
+                        </button>
+
+                        <div className="flex-1 min-w-0 text-sm sm:text-[15px] text-foreground">
                           {i.name}
                         </div>
-                        {i.note ? (
-                          <div className="col-span-12 sm:col-span-6 text-right text-xs uppercase tracking-widest text-accent">
-                            {i.note}
+                         {showPrices ? (
+                       i.note ? (
+                            <div className="w-56 text-right shrink-0 text-xs uppercase tracking-widest text-accent">
+                              {i.note}
+                            </div>
+                          ) : (
+                            <>
+                              <div className="w-20 sm:w-28 text-right shrink-0">
+                                <span
+                                  style={{ fontFamily: "var(--font-display)" }}
+                                  className="text-base sm:text-lg tracking-tight text-foreground"
+                                >
+                                  {npr(Number(i.price_day ?? 0))}
+                                </span>
+                              </div>
+                              <div className="hidden sm:block w-28 text-right shrink-0">
+                                <span
+                                  style={{ fontFamily: "var(--font-display)" }}
+                                  className="text-base sm:text-lg tracking-tight text-accent"
+                                >
+                                  {npr(Number(i.price_week ?? 0))}
+                                </span>
+                              </div>
+                            </>
+                          )
+                        ) : (
+                          <div className="w-28 sm:w-40 text-right shrink-0 text-[10px] sm:text-xs uppercase tracking-widest text-accent">
+                            {i.note || "On request"}
                           </div>
-                        ) : showPrices ? (
-                          <>
-                            <div className="col-span-6 sm:col-span-3 text-left sm:text-right">
-                              <span className="sm:hidden text-[10px] uppercase tracking-widest text-muted-foreground mr-2">
-                                Day
-                              </span>
-                              <span
-                                style={{ fontFamily: "var(--font-display)" }}
-                                className="text-base sm:text-lg tracking-tight text-foreground"
-                              >
-                                 {npr(Number(i.price_day ?? 0))}
-                              </span>
-                            </div>
-                            <div className="col-span-6 sm:col-span-3 text-right">
-                              <span className="sm:hidden text-[10px] uppercase tracking-widest text-muted-foreground mr-2">
-                                Week
-                              </span>
-                              <span
-                                style={{ fontFamily: "var(--font-display)" }}
-                                className="text-base sm:text-lg tracking-tight text-accent"
-                              >
-                                 {npr(Number(i.price_week ?? 0))}
-                              </span>
-                            </div>
-                          </>
-                        ) : null}
+                       )}
                       </li>
                     ))}
                   </ul>
@@ -214,6 +242,27 @@ export default function RentalEquipmentPage() {
           </div>
         </div>
       </section>
+
+      <Dialog open={!!preview} onOpenChange={(o) => !o && setPreview(null)}>
+        <DialogContent className="max-w-3xl">
+          <DialogHeader>
+            <DialogTitle
+              style={{ fontFamily: "var(--font-display)" }}
+              className="uppercase tracking-tight text-xl"
+            >
+              {preview?.name}
+            </DialogTitle>
+          </DialogHeader>
+          {preview && (
+            <img
+              src={preview.url}
+              alt={`${preview.name} — rental equipment from Katha Chitra`}
+              className="w-full max-h-[70vh] object-contain rounded-sm bg-muted/30"
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+
       <SiteFooter />
     </div>
   );

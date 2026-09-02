@@ -256,6 +256,7 @@ const togglePrices = useMutation({
             ]}
             fields={[
               { key: "name", label: "Item name", type: "text", required: true },
+              { key: "image_url", label: "Equipment photo", type: "image" },
               { key: "price_day", label: "Price per day (NPR)", type: "number" },
               { key: "price_week", label: "Price per week (NPR)", type: "number" },
               { key: "note", label: "Note (e.g. Quoted per shoot)", type: "text" },
@@ -378,11 +379,11 @@ const togglePrices = useMutation({
               <thead>
                 <tr className="border-b border-border text-center text-xs uppercase tracking-wider">
                   <th className="py-2 pr-3 border border-gray-800">Items</th>
-                  <th className="py-2 pr-3 text-right border border-gray-800">Per day</th>
-                  <th className="py-2 pr-3 text-right border border-gray-800">Per week</th>
+                  <th className="py-2 pr-3 text-right border border-gray-800">Day Total </th>
+                  <th className="py-2 pr-3 text-right border border-gray-800">Week Total</th>
                   <th className="py-2 pr-3 text-right border border-gray-800">Discount (%)</th>
-                  <th className="py-2 pr-3 text-right border border-gray-800">After discount (per day)</th>
-                  <th className="py-2 text-right border border-gray-800">After discount (per week)</th>
+                  <th className="py-2 pr-3 text-right border border-gray-800">After discount (day total)</th>
+                  <th className="py-2 text-right border border-gray-800">After discount (week total)</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">

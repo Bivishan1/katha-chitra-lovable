@@ -11,6 +11,7 @@ import { Toaster } from "@/components/ui/sooner";
 import { supabase } from "@/integrations/supabase/client";
 import { CmsRealtime } from "@/components/CmsRealtime";
 import { useFavicon } from "@/hooks/useFavicon";
+import { BackToTop } from "@/components/BackToTop";
 
 
 function NotFoundComponent() {
@@ -121,6 +122,7 @@ function RootComponent() {
       <FaviconSync />
             <CmsRealtime />
       <Outlet />
+      <BackToTop/>
       <Toaster position="bottom-right" />
     </QueryClientProvider>
   );
