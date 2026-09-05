@@ -36,12 +36,17 @@ export type CmsCategory = {
   sort_order: number;
 };
 
+export type CmsEquipmentSubItem = { name: string; image_url?: string | null };
+
 export type CmsEquipmentItem = {
   id: string;
   category_id: string;
   name: string;
   note: string | null;
   image_url: string | null;
+    description?: string | null;
+  images?: string[] | null;
+  sub_items?: CmsEquipmentSubItem[] | null;
   sort_order: number;
   price_day?: number | null;
   price_week?: number | null;

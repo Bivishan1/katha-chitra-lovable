@@ -2,9 +2,10 @@ import { Link } from "@tanstack/react-router";
 import SiteHeader from "../components/SiteHeader";
 import  SiteFooter  from "../components/SiteFooter";
 import { PageHero } from "../components/PageHero";
-import { useEquipment, useSiteSettings, npr } from "@/lib/cms";
+import { EquipmentDetailDialog } from "../components/EqupmentDetailDialog";
+import { useEquipment, useSiteSettings, npr, type CmsEquipmentItem } from "@/lib/cms";
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+// import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import rentalHero from "../assets/bts-monitor.jpg";
 import camerasBg from "../assets/cameras.jpg";
 import lensesBg from "../assets/lenses.jpg";
@@ -27,7 +28,9 @@ export default function RentalEquipmentPage() {
   const categories = equipment?.categories ?? [];
   const items = equipment?.items ?? [];
   const showPrices = Boolean(settings?.show_equipment_prices);
-  const [preview, setPreview] = useState<{ url: string; name: string } | null>(null);
+  // const [preview, setPreview] = useState<{ url: string; name: string } | null>(null);
+    const [detail, setDetail] = useState<CmsEquipmentItem | null>(null);
+
 
 
   return (
@@ -108,14 +111,15 @@ export default function RentalEquipmentPage() {
                     {catItems.map((i) => (
                      <li
                         key={i.id}
-                        className="flex items-center gap-4 px-5 py-4 hover:bg-accent/5 transition-colors"
+                        onClick={() => setDetail(i)}
+                        // className="flex items-center gap-4 px-5 py-4 hover:bg-accent/5 transition-colors"
+                        className="flex items-center gap-4 px-5 py-4 hover:bg-accent/5 transition-colors cursor-pointer"
                       >
                         <button
                           type="button"
-                          onClick={() => i.image_url && setPreview({ url: i.image_url, name: i.name })}
-                          disabled={!i.image_url}
-                          aria-label={i.image_url ? `View photo of ${i.name}` : `${i.name} photo unavailable`}
-                          className="w-14 h-14 shrink-0 rounded-sm overflow-hidden border border-border/60 bg-muted/30 flex items-center justify-center group/thumb disabled:cursor-default"
+                          onClick={() => setDetail(i)}
+                          aria-label={`View details for ${i.name}`}
+                          className="w-14 h-14 shrink-0 rounded-sm overflow-hidden border border-border/60 bg-muted/30 flex items-center justify-center group/thumb"
                         >
                           {i.image_url ? (
                             <img
@@ -132,7 +136,10 @@ export default function RentalEquipmentPage() {
                         </button>
 
                         <div className="flex-1 min-w-0 text-sm sm:text-[15px] text-foreground">
-                          {i.name}
+                           <span className="group-hover:text-accent transition-colors">{i.name}</span>
+                          <span className="block text-[10px] uppercase tracking-widest text-muted-foreground mt-0.5">
+                            View details
+                          </span>
                         </div>
                          {showPrices ? (
                        i.note ? (
@@ -243,25 +250,11 @@ export default function RentalEquipmentPage() {
         </div>
       </section>
 
-      <Dialog open={!!preview} onOpenChange={(o) => !o && setPreview(null)}>
-        <DialogContent className="max-w-3xl">
-          <DialogHeader>
-            <DialogTitle
-              style={{ fontFamily: "var(--font-display)" }}
-              className="uppercase tracking-tight text-xl"
-            >
-              {preview?.name}
-            </DialogTitle>
-          </DialogHeader>
-          {preview && (
-            <img
-              src={preview.url}
-              alt={`${preview.name} — rental equipment from Katha Chitra`}
-              className="w-full max-h-[70vh] object-contain rounded-sm bg-muted/30"
-            />
-          )}
-        </DialogContent>
-      </Dialog>
+       <EquipmentDetailDialog
+        item={detail}
+        showPrices={showPrices}
+        onOpenChange={(o) => !o && setDetail(null)}
+      />
 
       <SiteFooter />
     </div>

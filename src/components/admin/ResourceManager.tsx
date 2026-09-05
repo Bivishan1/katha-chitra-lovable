@@ -14,11 +14,175 @@ import { Pencil, Trash2, Plus, Loader2 } from "lucide-react";
 export type FieldDef = {
   key: string;
   label: string;
-  type: "text" | "textarea" | "number" | "boolean" | "image" | "file" | "select";
+  type: "text" | "textarea" | "number" | "boolean" | "image" | "file" | "select" | "gallery" | "subitems";
   options?: { value: string; label: string }[];
   required?: boolean;
   help?: string;
 };
+
+
+type SubItem = { name: string; image_url: string };
+
+function toList<T>(value: unknown): T[] {
+  if (Array.isArray(value)) return value as T[];
+  if (typeof value === "string" && value.trim()) {
+    try {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed) ? (parsed as T[]) : [];
+    } catch {
+      return [];
+    }
+  }
+  return [];
+}
+
+function GalleryField({
+  value,
+  onChange,
+  upload,
+}: {
+  value: unknown;
+  onChange: (next: string[]) => void;
+  upload: (file: File) => Promise<string>;
+}) {
+  const list = toList<string>(value);
+  const [busy, setBusy] = useState(false);
+
+  const addFiles = async (files: FileList) => {
+    setBusy(true);
+    try {
+      const urls: string[] = [];
+      for (const file of Array.from(files)) urls.push(await upload(file));
+      onChange([...list, ...urls]);
+    } catch (e) {
+      toast.error((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const move = (from: number, to: number) => {
+    if (to < 0 || to >= list.length) return;
+    const next = [...list];
+    const [row] = next.splice(from, 1);
+    next.splice(to, 0, row);
+    onChange(next);
+  };
+
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center gap-2">
+        <Input
+          type="file"
+          accept="image/*"
+          multiple
+          disabled={busy}
+          onChange={(e) => {
+            if (e.target.files?.length) addFiles(e.target.files);
+            e.target.value = "";
+          }}
+        />
+        {busy && <Loader2 className="w-4 h-4 animate-spin shrink-0" />}
+      </div>
+      {list.length > 0 && (
+        <ul className="grid grid-cols-4 gap-2">
+          {list.map((url, idx) => (
+            <li key={`${url}-${idx}`} className="relative group">
+              <img src={url} alt="" className="h-16 w-full object-cover rounded-sm border border-border" />
+              <div className="absolute inset-x-0 bottom-0 flex justify-between opacity-0 group-hover:opacity-100 transition-opacity">
+                <button
+                  type="button"
+                  aria-label="Move left"
+                  className="px-1 text-xs bg-background/80"
+                  onClick={() => move(idx, idx - 1)}
+                >
+                  ←
+                </button>
+                <button
+                  type="button"
+                  aria-label="Remove image"
+                  className="px-1 text-xs bg-background/80 text-destructive"
+                  onClick={() => onChange(list.filter((_, i) => i !== idx))}
+                >
+                  ✕
+                </button>
+                <button
+                  type="button"
+                  aria-label="Move right"
+                  className="px-1 text-xs bg-background/80"
+                  onClick={() => move(idx, idx + 1)}
+                >
+                  →
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function SubItemsField({
+  value,
+  onChange,
+  upload,
+}: {
+  value: unknown;
+  onChange: (next: SubItem[]) => void;
+  upload: (file: File) => Promise<string>;
+}) {
+  const list = toList<SubItem>(value);
+  const set = (idx: number, patch: Partial<SubItem>) =>
+    onChange(list.map((row, i) => (i === idx ? { ...row, ...patch } : row)));
+
+  return (
+    <div className="space-y-3">
+      {list.map((row, idx) => (
+        <div key={idx} className="flex items-start gap-2 border border-border rounded-sm p-2">
+          {row.image_url ? (
+            <img src={row.image_url} alt="" className="h-12 w-12 object-cover rounded-sm shrink-0" />
+          ) : (
+            <div className="h-12 w-12 rounded-sm bg-muted shrink-0" />
+          )}
+          <div className="flex-1 space-y-2 min-w-0">
+            <Input
+              value={row.name ?? ""}
+              placeholder="Item name (e.g. Sony GM 24mm F1.4)"
+              onChange={(e) => set(idx, { name: e.target.value })}
+            />
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                e.target.value = "";
+                if (!file) return;
+                try {
+                  set(idx, { image_url: await upload(file) });
+                } catch (err) {
+                  toast.error((err as Error).message);
+                }
+              }}
+            />
+          </div>
+          <Button
+            type="button"
+            size="icon"
+            variant="ghost"
+            aria-label="Remove included item"
+            onClick={() => onChange(list.filter((_, i) => i !== idx))}
+          >
+            <Trash2 className="w-4 h-4 text-destructive" />
+          </Button>
+        </div>
+      ))}
+      <Button type="button" size="sm" variant="outline" onClick={() => onChange([...list, { name: "", image_url: "" }])}>
+        <Plus className="w-4 h-4 mr-1" /> Add included item
+      </Button>
+    </div>
+  );
+}
 
 type Row = Record<string, unknown>;
 
@@ -197,7 +361,7 @@ export function ResourceManager({
             <DialogTitle>{editing?.id ? `Edit ${title}` : `New ${title}`}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
-            {fields.map((f) => {
+            {fields.map((f: FieldDef) => {
               const value = editing?.[f.key];
               return (
                 <div key={f.key} className="space-y-1.5">
@@ -220,6 +384,18 @@ export function ResourceManager({
                         <option key={o.value} value={o.value}>{o.label}</option>
                       ))}
                     </select>
+                    ) : f.type === "gallery" ? (
+                    <GalleryField
+                      value={value}
+                      onChange={(next) => setValue(f.key, next)}
+                      upload={(file) => uploadMedia(file, table)}
+                    />
+                  ) : f.type === "subitems" ? (
+                    <SubItemsField
+                      value={value}
+                      onChange={(next) => setValue(f.key, next)}
+                      upload={(file) => uploadMedia(file, table)}
+                    />
                   ) : f.type === "image" || f.type === "file" ? (
                     <div className="space-y-2">
                       <Input

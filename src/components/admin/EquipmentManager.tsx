@@ -256,7 +256,25 @@ const togglePrices = useMutation({
             ]}
             fields={[
               { key: "name", label: "Item name", type: "text", required: true },
-              { key: "image_url", label: "Equipment photo", type: "image" },
+              { key: "image_url", label: "Main photo", type: "image" },
+              {
+                key: "images",
+                label: "More photos (gallery)",
+                type: "gallery",
+                help: "Shown as a slider with thumbnails on the public page.",
+              },
+              {
+                key: "description",
+                label: "Description / product details",
+                type: "textarea",
+                help: "Optional. Use new lines for bullet points (Output: 1200W LED, etc.).",
+              },
+              {
+                key: "sub_items",
+                label: "Included items (kit contents)",
+                type: "subitems",
+                help: "Optional. Use this for sets/bundles — each item can have its own photo.",
+              },
               { key: "price_day", label: "Price per day (NPR)", type: "number" },
               { key: "price_week", label: "Price per week (NPR)", type: "number" },
               { key: "note", label: "Note (e.g. Quoted per shoot)", type: "text" },

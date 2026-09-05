@@ -75,10 +75,9 @@ export default function SiteHeader() {
           <img
             src={logo}
             alt="Katha Chitra Logo"
-            className="block w-24 sm:w-28 md:w-36 lg:w-40 h-auto object-contain"
+            className="block w-24 sm:w-28 md:w-36 lg:w-40 h-15 object-contain"
           />
         </Link>
-
         {/* Empty spacer so nav stays aligned */}
         <div className="w-24 sm:w-28 md:w-36 lg:w-40" />
 

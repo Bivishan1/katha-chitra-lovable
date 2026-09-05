@@ -1,3 +1,6 @@
+create new migration if you modify, created new file/ schema in sql, and then run following to update and push the migration:
+`npx supabase db push`
+
 Run this whenever you change the database schema :
 npx supabase gen types typescript \ --linked \ > src/integrations/supabase/types.ts
 
@@ -6,8 +9,6 @@ src/routeTree.gen.ts
 npx tsr generate
 Note : don't forget to run `npm run dev` while running npx tsr generate on another terminal tab.
 
-create new migration if you modify, created new file in sql, and then run following to update and push the migration:
-`npx supabase db push`
 
 `npx supabase status` = 
 
