@@ -55,7 +55,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    document.title = "Katha Chitra Production — Nepali Video Production House";
+    document.title = "Story Painters Production — Nepali Video Production House";
 
     setMetaTag(
       'meta[name="description"]',
@@ -66,7 +66,7 @@ export default function Home() {
     setMetaTag(
       'meta[property="og:title"]',
       "content",
-      "Katha Chitra — Nepali Video Production House"
+      "Story Painters — Nepali Video Production House"
     );
 
     setMetaTag(
@@ -102,7 +102,7 @@ export default function Home() {
     schema.textContent = JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Organization",
-      name: "Katha Chitra",
+      name: "Story Painters",
       url: "/",
       description:
         "Nepali full-service film and media production company specializing in commercials, branded content, music videos, documentaries, and digital campaigns.",
@@ -131,7 +131,7 @@ export default function Home() {
           playsInline
           preload="metadata"
           poster=''
-          aria-label="Katha Chitra showreel"
+          aria-label="Story Painters showreel"
           className="absolute inset-0 w-full h-full object-cover opacity-80"
         >
           <source

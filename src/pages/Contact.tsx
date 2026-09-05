@@ -59,18 +59,18 @@ export default function Contact() {
   const [sending, setSending] = useState(false);
 
   useEffect(() => {
-    document.title = "Contact — Katha Chitra";
+    document.title = "Contact — Story Painters";
 
     setMetaTag(
       'meta[name="description"]',
       "content",
-      "Start a project with Katha Chitra. Reach our Kathmandu studio for commercials, branded content, music videos, documentaries and digital campaigns.",
+      "Start a project with Story Painters. Reach our Kathmandu studio for commercials, branded content, music videos, documentaries and digital campaigns.",
     );
 
     setMetaTag(
       'meta[property="og:title"]',
       "content",
-      "Contact — Katha Chitra",
+      "Contact — Story Painters",
     );
 
     setMetaTag(

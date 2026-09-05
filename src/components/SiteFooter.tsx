@@ -92,8 +92,8 @@ export default function SiteFooter() {
         </div>
         <div className="copyright text-center  tracking-widest text-muted-foreground sm:text-[11px] lg:mt-10">
           <p className="mb-2 text-foreground/60">© 2025</p>
-          <p>Katha Chitra Films</p>
-          <p style={{ fontFamily: "var(--font-nepali)" }}>कथा चित्र</p>
+          <p>Story Painter Films</p>
+          <p style={{ fontFamily: "var(--font-nepali)" }}>Story Painters</p>
         </div>
         <div className="flex items-center justify-between text-[10px] uppercase ">
           {/* make this link to a center */}

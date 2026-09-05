@@ -47,7 +47,7 @@ function AdminPage() {
             Not authorised
           </h1>
           <p className="mt-3 text-sm text-muted-foreground">
-            This account does not have administrator access to the Katha Chitra content manager.
+            This account does not have administrator access to the Story Painters content manager.
           </p>
           <div className="mt-6 flex gap-3 justify-center">
             <Button variant="outline" onClick={signOut}>Sign out</Button>
@@ -64,7 +64,7 @@ function AdminPage() {
     <main className="min-h-screen bg-background">
       <header className="border-b border-border px-4 sm:px-6 md:px-10 py-5 flex flex-wrap gap-3 items-center justify-between">
         <div>
-          <p className="text-[10px] uppercase tracking-[0.3em] text-accent">Katha Chitra</p>
+          <p className="text-[10px] uppercase tracking-[0.3em] text-accent">Story Painters</p>
           <h1 style={{ fontFamily: "var(--font-display)" }} className="text-2xl uppercase tracking-tight">
             Content Manager
           </h1>

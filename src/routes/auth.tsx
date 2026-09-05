@@ -12,11 +12,11 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
   head: () => ({
     meta: [
-      { title: "Admin Sign In — Katha Chitra" },
-      { name: "description", content: "Secure sign-in for Katha Chitra administrators managing site content, equipment and projects." },
+      { title: "Admin Sign In — Story Painters" },
+      { name: "description", content: "Secure sign-in for Story Painters administrators managing site content, equipment and projects." },
       { name: "robots", content: "noindex, nofollow" },
-      { property: "og:title", content: "Admin Sign In — Katha Chitra" },
-      { property: "og:description", content: "Secure administrator access to the Katha Chitra content manager." },
+      { property: "og:title", content: "Admin Sign In — Story Painters" },
+      { property: "og:description", content: "Secure administrator access to the Story Painters content manager." },
     ],
   }),
 });

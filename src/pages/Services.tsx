@@ -72,7 +72,7 @@ function setMetaTag(selector: string, attribute: string, content: string) {
 
 export default function Services() {
   useEffect(() => {
-    document.title = "Services — Katha Chitra";
+    document.title = "Services — Story Painters";
 
     setMetaTag(
       'meta[name="description"]',
@@ -83,7 +83,7 @@ export default function Services() {
     setMetaTag(
       'meta[property="og:title"]',
       "content",
-      "Services — Katha Chitra"
+      "Services — Story Painters"
     );
 
     setMetaTag(

@@ -69,12 +69,12 @@ export default function SiteHeader() {
         <Link
           to="/"
           onClick={() => setOpen(false)}
-          aria-label="Katha Chitra Home"
+          aria-label="Story Painters Home"
           className="absolute left-4 sm:left-6 md:left-10 top-1/2 -translate-y-1/2 z-10"
         >
           <img
             src={logo}
-            alt="Katha Chitra Logo"
+            alt="Story Painters Logo"
             className="block w-24 sm:w-28 md:w-36 lg:w-40 h-15 object-contain"
           />
         </Link>

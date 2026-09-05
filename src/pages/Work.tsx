@@ -30,24 +30,24 @@ function setMetaTag(selector: string, attribute: string, content: string) {
 
 export default function Work() {
   useEffect(() => {
-    document.title = "Work — Katha Chitra";
+    document.title = "Work — Story Painters";
 
     setMetaTag(
       'meta[name="description"]',
       "content",
-      "Selected films, commercials, documentaries and music videos produced by Katha Chitra in Kathmandu."
+      "Selected films, commercials, documentaries and music videos produced by Story Painters in Kathmandu."
     );
 
     setMetaTag(
       'meta[property="og:title"]',
       "content",
-      "Work — Katha Chitra"
+      "Work — Story Painters"
     );
 
     setMetaTag(
       'meta[property="og:description"]',
       "content",
-      "A selected archive of Katha Chitra's cinematic work."
+      "A selected archive of Story Painters' cinematic work."
     );
 
     setMetaTag('meta[property="og:url"]', "content", "/work");

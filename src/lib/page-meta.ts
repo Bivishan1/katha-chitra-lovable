@@ -33,64 +33,64 @@ export const PAGE_META_SLUGS: { slug: PageMetaSlug; label: string }[] = [
 export const PAGE_META_DEFAULTS: Record<PageMetaSlug, CmsPageMeta> = {
   home: {
     slug: "home",
-    title: "Katha Chitra Production — Nepali Video Production House",
+    title: "Story Painters Production — Nepali Video Production House",
     description:
       "Nepal Kathmandu-based film and media production company crafting commercials, branded content, music videos, documentaries, and digital campaigns.",
-    og_title: "Katha Chitra — Nepali Video Production House",
+    og_title: "Story Painters — Nepali Video Production House",
     og_description: "Cinematic storytelling from the heart of the Himalayas Nepal.",
     canonical_path: "/",
   },
   about: {
     slug: "about",
-    title: "About — Katha Chitra",
+    title: "About — Story Painters",
     description:
-      "Katha Chitra is a Kathmandu-based production house blending cinematic craft with cultural depth.",
-    og_title: "About — Katha Chitra",
+      "Story Painters is a Kathmandu-based production house blending cinematic craft with cultural depth.",
+    og_title: "About — Story Painters",
     og_description: "Inside the studio. Cinematic storytelling from the Himalayas.",
     canonical_path: "/about",
   },
   work: {
     slug: "work",
-    title: "Work — Katha Chitra",
-    description: "Selected films, commercials and branded content from Katha Chitra.",
-    og_title: "Work — Katha Chitra",
+    title: "Work — Story Painters",
+    description: "Selected films, commercials and branded content from Story Painters.",
+    og_title: "Work — Story Painters",
     og_description: "Portfolio of cinematic work from Kathmandu.",
     canonical_path: "/work",
   },
   services: {
     slug: "services",
-    title: "Services — Katha Chitra",
+    title: "Services — Story Painters",
     description:
       "Commercial production, branded content, music videos, documentaries and post-production in Nepal.",
-    og_title: "Services — Katha Chitra",
+    og_title: "Services — Story Painters",
     og_description: "Full-service film and media production in Kathmandu.",
     canonical_path: "/services",
   },
   contact: {
     slug: "contact",
-    title: "Contact — Katha Chitra",
+    title: "Contact — Story Painters",
     description:
-      "Get in touch with Katha Chitra for production enquiries, rentals and collaborations.",
-    og_title: "Contact — Katha Chitra",
-    og_description: "Reach the Katha Chitra team in Kathmandu.",
+      "Get in touch with Story Painters for production enquiries, rentals and collaborations.",
+    og_title: "Contact — Story Painters",
+    og_description: "Reach the Story Painters team in Kathmandu.",
     canonical_path: "/contact",
   },
   "rental-equipment": {
     slug: "rental-equipment",
-    title: "Equipment Rentals — Katha Chitra",
+    title: "Equipment Rentals — Story Painters",
     description:
-      "Rent cinema cameras, lenses, lighting, grip, sound and drones from Katha Chitra in Kathmandu.",
-    og_title: "Equipment Rentals — Katha Chitra",
+      "Rent cinema cameras, lenses, lighting, grip, sound and drones from Story Painters in Kathmandu.",
+    og_title: "Equipment Rentals — Story Painters",
     og_description:
       "Professional production gear available for daily and weekly rental in Nepal.",
     canonical_path: "/rental-equipment",
   },
   international_support: {
     slug: "international_support",
-    title: "International Production Support — Katha Chitra",
+    title: "International Production Support — Story Painters",
     description:
       "Fixer, location scouting and production support for international crews filming in Nepal.",
-    og_title: "International Production Support — Katha Chitra",
+    og_title: "International Production Support — Story Painters",
     og_description: "On-the-ground production support for international teams in Nepal.",
     canonical_path: "/international_support",
   },

@@ -73,18 +73,18 @@ export default function About() {
 
 
   useEffect(() => {
-    document.title = "About — Katha Chitra";
+    document.title = "About — Story Painters";
 
     setMetaTag(
       'meta[name="description"]',
       "content",
-      "Katha Chitra is a Kathmandu-based production house blending cinematic craft with cultural depth."
+      "Story Painters is a Kathmandu-based production house blending cinematic craft with cultural depth."
     );
 
     setMetaTag(
       'meta[property="og:title"]',
       "content",
-      "About — Katha Chitra"
+      "About — Story Painters"
     );
 
     setMetaTag(
@@ -114,7 +114,7 @@ export default function About() {
 
            <PageHero
         image={aboutImage}
-        alt="Katha Chitra crew on a Kathmandu rooftop at dusk"
+        alt="Story Painters crew on a Kathmandu rooftop at dusk"
         eyebrow="Studio"
         caption="Est. Kathmandu · MMXIV"
       >
@@ -127,7 +127,7 @@ export default function About() {
         <div className="max-w-7xl mx-auto">
           <img
             src={btsSet}
-            alt="Katha Chitra crew on a Kathmandu rooftop at dusk"
+            alt="Story Painters crew on a Kathmandu rooftop at dusk"
             width={1280}
             height={896}
             loading="lazy"
@@ -144,7 +144,7 @@ export default function About() {
 
            <div className="md:col-span-8 space-y-6 sm:space-y-8 text-base sm:text-lg leading-relaxed text-foreground/80">
             <p>
-              Katha Chitra is a full-service film and media production company
+              Story Painters is a full-service film and media production company
               headquartered in {contact?.address}. We're a small, senior team of
               directors, cinematographers, editors and producers — built lean on
               purpose.
@@ -193,7 +193,7 @@ export default function About() {
             <div className="md:col-span-5">
               <img
                 src={founderImage}
-                alt={founder?.name || "Saugat Dhital, founder and creative director of Katha Chitra"}
+                alt={founder?.name || "Saugat Dhital, founder and creative director of Story Painters"}
                 width={1024}
                 height={1280}
                 loading="lazy"
@@ -288,7 +288,7 @@ export default function About() {
               <figure key={f.id} className="group">
                 <img
                   src={f.image_url || BTS_FALLBACKS[i % BTS_FALLBACKS.length]}
-                  alt={f.alt || f.caption || "Behind the scenes on a Katha Chitra production"}
+                  alt={f.alt || f.caption || "Behind the scenes on a Story Painters production"}
                   loading="lazy"
                   className="w-full aspect-16/10 object-cover outline -outline-offset-1 outline-white/5"
                 />
