@@ -282,7 +282,7 @@ export default function Home() {
       <section className="relative z-30 bg-background py-20 sm:py-24 md:py-16 px-4 sm:px-6 md:px-10 shadow-[0_-30px_60px_-20px_rgba(0,0,0,0.6)]">
         <div className="max-w-4xl mx-auto text-center">
           <Reveal direction = "fade" delay ={200}>
-          <p style={{ fontFamily: "var(--font-nepali)" }} className="text-xl sm:text-2xl text-accent mb-4 sm:mb-6">कथा चित्र</p>
+          <p style={{ fontFamily: "var(--font-nepali)" }} className="text-xl sm:text-2xl text-accent mb-4 sm:mb-6">कथा चित्रकार</p>
           </Reveal>
             <Reveal direction = "left" delay ={290}>
           <p style={{ fontFamily: "var(--font-display)" }} className="text-2xl sm:text-3xl md:text-5xl uppercase leading-tight tracking-tight text-balance">
