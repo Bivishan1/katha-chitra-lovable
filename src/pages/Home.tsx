@@ -341,7 +341,7 @@ export default function Home() {
             </Reveal>
         </div>
       </section>
-<section id= "capabilities" className="sticky top-0 h-screen z-10 overflow-hidden bg-secondary text-secondary-foreground flex items-center px-4 sm:px-6 md:px-10 scroll-mt-24">
+<section id= "capabilities" className="sticky top-0 z-10 overflow-hidden bg-secondary text-secondary-foreground flex items-center px-4 sm:px-6 md:px-10 scroll-mt-24">
       <SiteFooter />
     </section>
     </div>

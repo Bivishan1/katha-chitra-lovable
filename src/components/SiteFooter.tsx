@@ -99,10 +99,22 @@ export default function SiteFooter() {
           {/* make this link to a center */}
           <Link
             to="/rental-equipment"
-            className="block mt-2 hover:text-accent pb-20"
+            className="block mt-2 hover:text-accent"
           >
             Rent Equipment →
           </Link>
+         <div className="flex items-center justify-center gap-2 text-[10px]">
+  <span>Designed & developed with ❤️ by</span>
+  <a
+    href="https://linktr.ee/bivishan"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="font-semibold text-gray-700 hover:text-blue-600 transition-colors"
+  >
+    Bivishan Sapkota
+  </a>
+</div>
+
         </div>
       </div>
     </footer>
