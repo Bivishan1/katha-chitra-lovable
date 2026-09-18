@@ -13,10 +13,6 @@ export type TileProject = {
   aspect?: "wide" | "portrait" | "square" | null;
 };
 
-const aspectClass: Record<string, string> = {
-  wide: "aspect-[16/10]",
-  portrait: "aspect-[4/5]",
-}
 
 
 function getYouTubeId(url: string): string | null {
@@ -43,9 +39,7 @@ export function WorkTile({ project, eager = false }: { project: TileProject; eag
   return (
     <div className="group">
        <div
-        className={`relative overflow-hidden bg-card outline -outline-offset-1 outline-white/5 ${
-          aspectClass[project.aspect ?? "wide"] ?? aspectClass.wide
-        }`}
+        className={`relative overflow-hidden bg-card outline -outline-offset-1 outline-white/5 h-100`}
       >
         {thumb && (
           <img

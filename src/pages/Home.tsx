@@ -175,7 +175,7 @@ export default function Home() {
         </div>
 
          <div className="absolute bottom-4 sm:bottom-8 right-4 sm:right-6 md:right-10 z-10 text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-foreground/60">
-          Showreel · 2025 →
+          Showreel · 2026 →
         </div>
       </section>
       {/* </div> */}
@@ -197,18 +197,18 @@ export default function Home() {
           </Reveal>
         </div>
 
-        <div className="relative grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-6">
+        <div className="relative grid grid-cols-1 md:grid-cols-12 md:gap-6">
           {featured[0] && (
            
-            <div className="md:col-span-7">
-               <Reveal direction="left" delay={250}>
-              <WorkTile project={featured[0]} />
+            <div className="md:col-span-6 aspect-[0]">
+               <Reveal direction="left" delay={250} className="">
+              <WorkTile project={featured[0]}  />
               </Reveal>
             </div>
           )}
 
           {featured[1] && (
-            <div className="md:col-span-5 md:mt-24  md:sticky md:top-24 md:self-start z-10 pb-11">
+            <div className="md:col-span-6  md:sticky md:top-24 md:self-start z-10 pb-11 aspect-[0]">
               <Reveal direction="right" delay={300}>
               <WorkTile project={featured[1]} />
               </Reveal>
@@ -216,7 +216,7 @@ export default function Home() {
           )}
 
           {featured[2] && (
-            <div className="md:col-span-6 md:mt-2">
+            <div className="md:col-span-6 aspect-[0]">
               <Reveal direction="fade" delay={350}>
                 <WorkTile project={featured[2]} />
               </Reveal>

@@ -104,8 +104,8 @@ export default function Work() {
           <p className="max-w-7xl mx-auto text-xs uppercase tracking-widest text-muted-foreground">Loading work…</p>
         )}
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-12 md:gap-x-8 md:gap-y-24">
-          {tiles.map((p, idx) => (
-            <div key={p.id} className={idx % 2 === 1 ? "md:mt-32" : ""}>
+          {tiles.map((p) => (
+            <div key={p.id}>
               <WorkTile project={p} />
             </div>
           ))}
