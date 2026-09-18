@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Maximize2, X } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import type { CmsEquipmentItem, CmsEquipmentSubItem } from "@/lib/cms";
 import { npr } from "@/lib/cms";
@@ -27,6 +27,7 @@ export function EquipmentDetailDialog({
   onOpenChange: (open: boolean) => void;
 }) {
   const [index, setIndex] = useState(0);
+  const [zoom, setZoom] = useState(false);
 
   const subItems = useMemo(
     () => (item ? asArray<CmsEquipmentSubItem>(item.sub_items).filter((s) => s?.name) : []),
@@ -100,11 +101,22 @@ export function EquipmentDetailDialog({
             <div>
               <div className="relative bg-muted/30 rounded-sm overflow-hidden">
                 {gallery.length > 0 ? (
+                  <>
                   <img
-                    src={gallery[index].url}
-                    alt={`${gallery[index].label} — photo ${index + 1}`}
-                    className="w-full h-60 sm:h-90 object-contain"
-                  />
+                      src={gallery[index].url}
+                      alt={`${gallery[index].label} — photo ${index + 1}`}
+                      onClick={() => setZoom(true)}
+                      className="w-full h-60 sm:h-90 object-contain cursor-zoom-in"
+                    />
+                    <button
+                      type="button"
+                      aria-label="View photo full screen"
+                      onClick={() => setZoom(true)}
+                      className="absolute top-2 right-2 h-9 w-9 rounded-full bg-background/80 border border-border flex items-center justify-center hover:bg-background transition-colors"
+                    >
+                      <Maximize2 className="w-4 h-4" />
+                    </button>
+                  </>
                 ) : (
                   <div className="w-full h-60 sm:h-90 flex items-center justify-center text-xs uppercase tracking-widest text-muted-foreground">
                     Photo coming soon
@@ -235,6 +247,52 @@ export function EquipmentDetailDialog({
             </div>
           </div>
         )}
+
+         {zoom && gallery.length > 0 && (
+          <div
+            className="fixed inset-0 z-100 bg-background/95 backdrop-blur-sm flex items-center justify-center p-4"
+            onClick={() => setZoom(false)}
+          >
+            <img
+              src={gallery[index].url}
+              alt={gallery[index].label}
+              onClick={(e) => e.stopPropagation()}
+              className="max-h-[88vh] max-w-[92vw] object-contain"
+            />
+            <button
+              type="button"
+              aria-label="Close full screen"
+              onClick={() => setZoom(false)}
+              className="absolute top-4 right-4 h-10 w-10 rounded-full bg-background/80 border border-border flex items-center justify-center hover:bg-background"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            {gallery.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  aria-label="Previous photo"
+                  onClick={(e) => { e.stopPropagation(); step(-1); }}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 h-11 w-11 rounded-full bg-background/80 border border-border flex items-center justify-center hover:bg-background"
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+                <button
+                  type="button"
+                  aria-label="Next photo"
+                  onClick={(e) => { e.stopPropagation(); step(1); }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 h-11 w-11 rounded-full bg-background/80 border border-border flex items-center justify-center hover:bg-background"
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
+                <p className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+                  {index + 1} / {gallery.length} · {gallery[index].label}
+                </p>
+              </>
+            )}
+          </div>
+        )}
+
       </DialogContent>
     </Dialog>
   );

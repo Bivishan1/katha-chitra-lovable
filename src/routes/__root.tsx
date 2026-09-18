@@ -12,6 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { CmsRealtime } from "@/components/CmsRealtime";
 import { useFavicon } from "@/hooks/useFavicon";
 import { BackToTop } from "@/components/BackToTop";
+import { WhatsAppButton } from "@/components/WhatsappButton";
 
 
 function NotFoundComponent() {
@@ -123,6 +124,7 @@ function RootComponent() {
             <CmsRealtime />
       <Outlet />
       <BackToTop/>
+      <WhatsAppButton/>
       <Toaster position="bottom-right" />
     </QueryClientProvider>
   );

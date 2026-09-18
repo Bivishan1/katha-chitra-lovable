@@ -87,6 +87,7 @@ function AdminPage() {
             <TabsTrigger value="frames">Frames</TabsTrigger>
             <TabsTrigger value="bts">Behind the Scenes</TabsTrigger>
             <TabsTrigger value="projects">Projects</TabsTrigger>
+            <TabsTrigger value="blog">Blog</TabsTrigger>
             <TabsTrigger value="proposals">Proposals</TabsTrigger>
             <TabsTrigger value="site">Site & SEO</TabsTrigger>
             <TabsTrigger value="about-content">About Page</TabsTrigger>
@@ -96,7 +97,7 @@ function AdminPage() {
           <TabsContent value="equipment" className="mt-6">
             <EquipmentManager />
           </TabsContent>
-
+          
           <TabsContent value="frames" className="mt-6">
             <ResourceManager
               table="frames"
@@ -205,6 +206,44 @@ function AdminPage() {
 
           <TabsContent value="site" className="mt-6">
             <SiteSettingsManager />
+          </TabsContent>
+
+            <TabsContent value="blog" className="mt-6">
+            <ResourceManager
+              table="blog_posts"
+              title="Blog Posts"
+              description="Stories shown on the Blog page. Each post gets its own page on the site."
+              orderBy="sort_order"
+              defaults={{
+                published: true,
+                sort_order: 0,
+                category: "General",
+                author_name: "Digbijaya Bharati",
+                author_role: "Founder & Managing Director",
+                read_time: "5 min read",
+                tags: ["General"],
+              }}
+              columns={[
+                { key: "title", label: "Title" },
+                { key: "category", label: "Category" },
+                { key: "published", label: "Published", render: (r) => (r.published ? "Yes" : "No") },
+              ]}
+              fields={[
+                { key: "title", label: "Title", type: "text", required: true },
+                { key: "slug", label: "Web address (slug)", type: "text", required: true, help: "Lowercase with dashes — e.g. dit-data-backup-workflow" },
+                { key: "category", label: "Category label", type: "text" },
+                { key: "excerpt", label: "Short summary (card preview)", type: "textarea" },
+                { key: "cover_image_url", label: "Cover photo", type: "image" },
+                { key: "content", label: "Full story", type: "textarea", help: "One paragraph per line. Start a line with '- ' for a bullet point." },
+                { key: "author_name", label: "Author name", type: "text" },
+                { key: "author_role", label: "Author role", type: "text" },
+                { key: "author_image_url", label: "Author photo", type: "image" },
+                { key: "read_time", label: "Read time", type: "text" },
+                { key: "published_at", label: "Publish date", type: "text", help: "Format: 2026-08-28" },
+                { key: "sort_order", label: "Sort order", type: "number" },
+                { key: "published", label: "Published", type: "boolean" },
+              ]}
+            />
           </TabsContent>
 
           <TabsContent value="about-content" className="mt-6">

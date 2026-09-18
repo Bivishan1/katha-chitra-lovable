@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
+
 export type CmsProject = {
   id: string;
   slug: string;
@@ -117,6 +118,7 @@ export type CmsTeamMember = {
   published: boolean;
 };
 
+
 /** Tables that drive public site content. */
 export const CMS_TABLES = [
   "equipment_categories",
@@ -127,6 +129,7 @@ export const CMS_TABLES = [
   "contact_details",
   "social_links",
   "site_settings",
+  "blog_posts",
   "bts_frames",
   "page_meta",
   "founder_profile",
@@ -171,6 +174,59 @@ export function useSiteSettings() {
     },
   });
 }
+
+// blog data helpers
+export type CmsBlogPost = {
+  id: string;
+  slug: string;
+  title: string;
+  category: string;
+  excerpt: string;
+  content: string;
+  cover_image_url: string | null;
+  author_name: string;
+  author_role: string;
+  author_image_url: string | null;
+  tags: string[] | null;
+  read_time: string;
+  published: boolean;
+  published_at: string;
+  sort_order: number;
+};
+
+/** Published journal posts, newest first. */
+export function useBlogPosts() {
+  return useQuery({
+    queryKey: ["cms", "blog"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("blog_posts")
+        .select("*")
+        .eq("published", true)
+        .order("sort_order", { ascending: true })
+        .order("published_at", { ascending: false });
+      if (error) throw error;
+      return (data ?? []) as unknown as CmsBlogPost[];
+    },
+  });
+}
+
+export function useBlogPost(slug: string) {
+  return useQuery({
+    queryKey: ["cms", "blog", slug],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("blog_posts")
+        .select("*")
+        .eq("slug", slug)
+        .eq("published", true)
+        .maybeSingle();
+      if (error) throw error;
+      return (data ?? null) as unknown as CmsBlogPost | null;
+    },
+  });
+}
+// blog data helpers close
 
 export const MEDIA_BUCKET = "cms-media";
 
