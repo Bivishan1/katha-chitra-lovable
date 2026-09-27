@@ -109,7 +109,7 @@ export default function About() {
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-hidden">
       <SiteHeader />
 
            <PageHero

@@ -34,7 +34,7 @@ export default function RentalEquipmentPage() {
 
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-hidden">
       <SiteHeader />
       {/* Hero */}
        <PageHero

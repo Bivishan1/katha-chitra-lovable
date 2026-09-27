@@ -145,7 +145,7 @@ export default function Services() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-service-surface font-studio">
+    <div className="min-h-screen overflow-hidden bg-service-surface font-studio">
       <SiteHeader />
 
       <PageHero

@@ -54,7 +54,7 @@ function BlogPostPage() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-hidden">
       <SiteHeader />
 
       <main className="px-4 sm:px-6 md:px-10 pt-28 sm:pt-36 pb-20">

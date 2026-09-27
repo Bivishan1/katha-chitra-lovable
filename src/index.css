@@ -158,8 +158,9 @@
   }
 }
 
-html {
+html,body {
   scroll-behavior: smooth;
+
 }
 
 Button,

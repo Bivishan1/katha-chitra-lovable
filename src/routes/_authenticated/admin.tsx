@@ -40,7 +40,7 @@ function AdminPage() {
 
   if (!data?.isAdmin) {
     return (
-      <main className="min-h-screen grid place-items-center px-4 text-center">
+      <main className="min-h-screen overflow-hidden grid place-items-center px-4 text-center">
         <div className="max-w-md">
           <ShieldAlert className="w-8 h-8 mx-auto text-destructive" />
           <h1 style={{ fontFamily: "var(--font-display)" }} className="mt-4 text-2xl uppercase tracking-tight">
@@ -61,7 +61,7 @@ function AdminPage() {
   }
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen overflow-hidden bg-background">
       <header className="border-b border-border px-4 sm:px-6 md:px-10 py-5 flex flex-wrap gap-3 items-center justify-between">
         <div>
           <p className="text-[10px] uppercase tracking-[0.3em] text-accent">Story Painters</p>

@@ -9,7 +9,7 @@ import {
 export default function SiteFooter() {
   const { data: contact } = useContactDetails();
   const { data: socials } = useSocialLinks();
-  const email = contact?.email || "kathachitra5@gmail.com";
+  const email = contact?.email || "storypaintersnp@gmail.com";
 
   const footerLinks = [
     {

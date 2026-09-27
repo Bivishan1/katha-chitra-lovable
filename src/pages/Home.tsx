@@ -112,7 +112,7 @@ export default function Home() {
         addressRegion: "Bagmati",
         addressCountry: "NP",
       },
-      email: "hello@kathachitra.com",
+      email: "storypaintsnp@gmail.com",
     });
   }, []);
 

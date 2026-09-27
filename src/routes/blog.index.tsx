@@ -36,7 +36,7 @@ function BlogPage() {
   const { data: posts = [], isLoading } = useBlogPosts();
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-hidden">
       <SiteHeader />
 
       <PageHero

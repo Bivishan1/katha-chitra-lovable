@@ -41,7 +41,7 @@ const offerings = [
 export default function International() {
   
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen overflow-hidden">
       <SiteHeader />
 
       {/* Hero */}

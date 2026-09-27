@@ -69,7 +69,7 @@ function AuthPage() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-4 py-16 bg-background">
+    <main className="min-h-screen overflow-hidden flex items-center justify-center px-4 py-16 bg-background">
       <div className="w-full max-w-sm">
         <Link to="/" className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground hover:text-accent">
           ← Back to site
