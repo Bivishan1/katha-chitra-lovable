@@ -52,7 +52,7 @@ export default function SiteFooter() {
   ];
   return (
      <footer className="border-t border-border px-4 py-20 sm:px-6 sm:py-15 lg:px-10">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-7xl py-4">
         <p className="mb-8 text-[10px] uppercase tracking-[0.28em] text-muted-foreground sm:mb-10 sm:text-[11px] sm:tracking-[0.4em]">
           Ready to tell your story?
         </p>
@@ -60,7 +60,7 @@ export default function SiteFooter() {
         <Link
           to="/contact"
           style={{ fontFamily: "var(--font-display)" }}
-          className="block w-full text-[clamp(4.25rem,14vw,11rem)] font-normal uppercase leading-[0.85] tracking-tighter text-foreground transition-colors duration-500 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+          className="block w-full text-[clamp(.25rem,14vw,11rem)] font-normal uppercase leading-[0.85] tracking-tighter text-foreground transition-colors duration-500 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-background"
         >
           <span className="block sm:inline">Let's</span>{" "}
           <span className="wrap-break-word">Collaborate</span>
@@ -95,7 +95,7 @@ export default function SiteFooter() {
           <p>Story Painter Films</p>
           <p style={{ fontFamily: "var(--font-nepali)" }}>Story Painters</p>
         </div>
-        <div className="flex items-center justify-between text-[10px] uppercase ">
+        <div className="flex flex-col  items-center justify-center py-4 gap-4 md:py-0 md:gap-0 md:flex md:flex-row md:items-center md:justify-between text-[10px] sm:uppercase ">
           {/* make this link to a center */}
           <Link
             to="/rental-equipment"
@@ -103,7 +103,7 @@ export default function SiteFooter() {
           >
             Rent Equipment →
           </Link>
-         <div className="flex items-center justify-center gap-2 text-[10px]">
+         <div className="sm:flex items-center justify-center gap-2 text-[10px]">
   <span>Designed & developed with ❤️ by</span>
   <a
     href="https://linktr.ee/bivishan"

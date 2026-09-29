@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import type { FormEvent } from "react";
 import SiteHeader from "../components/SiteHeader";
 import { PageHero } from "../components/PageHero";
@@ -7,6 +7,8 @@ import { toast } from "sonner";
 import { AtSign, ExternalLink, Loader2, MapPin } from "lucide-react";
 import contactHero from "../assets/bts-set.jpg";
 import { useContactDetails, useSocialLinks } from "@/lib/cms";
+import { supabase } from "@/integrations/supabase/client";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const projectTypes = [
   "Commercial",
@@ -41,6 +43,9 @@ function setMetaTag(selector: string, attribute: string, content: string) {
 }
 
 export default function Contact() {
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const recaptchaSiteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [form, setForm] = useState({
     name: "",
     company: "",
@@ -52,7 +57,7 @@ export default function Contact() {
   });
   const { data: contact } = useContactDetails();
   const { data: socials } = useSocialLinks();
-  const phone = contact?.phone || "+977 9801040899";
+  const phone = contact?.phone || "+977 9841004524";
   // const address = contact?.address || "Kathmandu, Nepal";
   const email = contact?.email || "storypaintersnp@gmail.com";
   const [sending, setSending] = useState(false);
@@ -100,59 +105,67 @@ export default function Contact() {
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!recaptchaSiteKey) {
+      toast.error("Contact form verification is not configured", {
+        description: "Please contact us by email instead.",
+      });
+      return;
+    }
+
+    if (!recaptchaToken) {
+      toast.error("Please complete the reCAPTCHA verification");
+      return;
+    }
+
     setSending(true);
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
+      const { data, error } = await supabase.functions.invoke<{
+        success: boolean;
+        message?: string;
+      }>("contact-form", {
+        body: {
+          ...form,
+          recaptchaToken,
         },
-        body: JSON.stringify({
-          access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
-          name: form.name,
-          company: form.company,
-          phone: form.phone,
-          email: form.email,
-          budget: form.budget,
-          type: form.type,
-          message: form.message,
-          subject: `[${form.type}] ${form.name} — ${form.company || "Inquiry"}`,
-        }),
       });
 
-      const result = await response.json();
-
-      if (result.success) {
-        toast.success("Enquiry sent successfully", {
-          description:
-            "Our production team will get back to you within 24–48 hours.",
-        });
-
-        window.scrollTo({ top: 0, behavior: "smooth" });
-
-        setForm({
-          name: "",
-          company: "",
-          email: "",
-          phone: "",
-          budget: "",
-          type: projectTypes[0],
-          message: "",
-        });
-      } else {
-        toast.error("Failed to send enquiry", {
-          description: result.message || "Please try again in a few moments.",
-        });
+      if (error) {
+        throw error;
       }
+
+      if (!data?.success) {
+        throw new Error(data?.message || "Please try again in a few moments.");
+      }
+
+      toast.success("Enquiry sent successfully", {
+        description:
+          "Our production team will get back to you within 24–48 hours.",
+      });
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      setForm({
+        name: "",
+        company: "",
+        email: "",
+        phone: "",
+        budget: "",
+        type: projectTypes[0],
+        message: "",
+      });
     } catch (error) {
       console.error(error);
 
-      toast.error("Something went wrong", {
-        description: "Unable to send your enquiry. Please try again later.",
+      toast.error("Failed to send enquiry", {
+        description:
+          error instanceof Error
+            ? error.message
+            : "Unable to send your enquiry. Please try again later.",
       });
     } finally {
+      recaptchaRef.current?.reset();
+      setRecaptchaToken(null);
       setSending(false);
     }
   };
@@ -375,10 +388,25 @@ export default function Contact() {
                   className="w-full rounded-lg bg-background/60 border border-border px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent transition-colors"
                 />
               </div>
-
+              {recaptchaSiteKey ? (
+                <div>
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey={recaptchaSiteKey}
+                    onChange={setRecaptchaToken}
+                    onExpired={() => setRecaptchaToken(null)}
+                    onErrored={() => setRecaptchaToken(null)}
+                  />
+                </div>
+              ) : (
+                <p role="alert" className="text-sm text-destructive">
+                  Contact form verification is not configured. Please email us
+                  directly.
+                </p>
+              )}
               <button
                 type="submit"
-                disabled={sending}
+                disabled={sending || !recaptchaSiteKey}
                 className="w-full inline-flex items-center justify-center gap-3 rounded-lg bg-accent text-accent-foreground py-4 text-xs uppercase tracking-[0.3em] shadow-[0_10px_40px_-12px_hsl(var(--accent))] hover:opacity-90 transition-opacity disabled:opacity-60"
               >
                 {sending ? (

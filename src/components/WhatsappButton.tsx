@@ -3,7 +3,7 @@ import { useContactDetails } from "@/lib/cms";
 /** Floating, softly glowing WhatsApp contact button (bottom-right). */
 export function WhatsAppButton() {
   const { data: contact } = useContactDetails();
-  const raw = contact?.whatsapp || contact?.phone || "+9779801040899";
+  const raw = contact?.whatsapp || contact?.phone || "+9779841004524";
   const number = raw.replace(/[^\d]/g, "");
   if (!number) return null;
 

@@ -55,7 +55,7 @@ export default function SiteHeader() {
   const serviceSectionActive =
     pathname === "/services" ||
     serviceLinks.some((item) => item.to === pathname);
-  const phone = contact?.phone || "+977 9801040899";
+  const phone = contact?.phone || "+977 9841004524";
 
   const openServices = () => {
     if (dropdownTimer.current) clearTimeout(dropdownTimer.current);

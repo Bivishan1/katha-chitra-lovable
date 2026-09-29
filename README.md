@@ -1,5 +1,26 @@
 # React + TypeScript + Vite
 
+## Contact form reCAPTCHA
+
+The contact form uses the Google reCAPTCHA v2 Checkbox. Register the production
+domain (and `localhost` for local development) in the Google reCAPTCHA Admin
+Console, then configure:
+
+- `VITE_RECAPTCHA_SITE_KEY` in the frontend build environment.
+- `RECAPTCHA_SECRET_KEY` and `WEB3FORMS_ACCESS_KEY` as Supabase Edge Function
+  secrets.
+
+Deploy the server-side verifier with:
+
+```sh
+supabase secrets set RECAPTCHA_SECRET_KEY=your-secret-key WEB3FORMS_ACCESS_KEY=your-web3forms-access-key
+supabase functions deploy contact-form
+```
+
+The function verifies each reCAPTCHA token with Google before forwarding the
+inquiry to Web3Forms. Keep the reCAPTCHA secret and Web3Forms access key out of
+the frontend environment.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
