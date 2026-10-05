@@ -3,7 +3,7 @@ import SiteHeader from "../components/SiteHeader";
 import  SiteFooter  from "../components/SiteFooter";
 import { PageHero } from "../components/PageHero";
 import { EquipmentDetailDialog } from "../components/EqupmentDetailDialog";
-import { useEquipment, useSiteSettings, npr, type CmsEquipmentItem } from "@/lib/cms";
+import { useEquipment, useSiteSettings, npr, stockStatus, type CmsEquipmentItem } from "@/lib/cms";
 import { useState } from "react";
 // import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import rentalHero from "../assets/bts-monitor.jpg";
@@ -23,7 +23,7 @@ const perks = [
   { title: "Fully insured", body: "All equipment insured. Damage waivers and certificates of insurance on request." },
 ];
 export default function RentalEquipmentPage() {
-  const { data: equipment } = useEquipment();
+    const { data: equipment, isLoading } = useEquipment();
   const { data: settings } = useSiteSettings();
   const categories = equipment?.categories ?? [];
   const items = equipment?.items ?? [];
@@ -54,6 +54,22 @@ export default function RentalEquipmentPage() {
           A working kit room in Kathmandu — cameras, lenses, lighting, grip, sound and drones. Daily and weekly rentals, with delivery, on-set support and full insurance.
         </p>
       </PageHero>
+
+      {isLoading && (
+        <section className="border-t border-border" aria-busy="true">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 py-24 sm:py-32 flex flex-col items-center justify-center gap-7">
+            <div className="relative h-12 w-12" role="status" aria-label="Loading equipment">
+              <span className="absolute inset-0 rounded-full border border-border" aria-hidden="true" />
+              <span className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-accent border-r-accent" aria-hidden="true" />
+            </div>
+            <p className="text-[11px] sm:text-xs uppercase tracking-[0.35em] text-muted-foreground text-center">
+              Loading equipment
+            </p>
+          </div>
+        </section>
+      )}
+
+
       {/* Categories */}
       {/* Categories — full-bleed image bands with price table */}
       <div>
@@ -140,6 +156,25 @@ export default function RentalEquipmentPage() {
                           <span className="block text-[10px] uppercase tracking-widest text-muted-foreground mt-0.5">
                             View details
                           </span>
+                          {(() => {
+                            const s = stockStatus(i);
+                            if (s.tone === "muted") return null;
+                            return (
+                              <span
+                                className={`inline-flex items-center gap-1.5 mt-1.5 text-[10px] uppercase tracking-widest ${
+                                  s.tone === "out" ? "text-destructive" : s.tone === "low" ? "text-accent" : "text-foreground/70"
+                                }`}
+                              >
+                                <span
+                                  className={`h-1.5 w-1.5 rounded-full ${
+                                    s.tone === "out" ? "bg-destructive" : "bg-accent"
+                                  }`}
+                                />
+                                {s.label}
+                              </span>
+                            );
+                          })()}
+
                         </div>
                          {showPrices ? (
                        i.note ? (
@@ -168,7 +203,7 @@ export default function RentalEquipmentPage() {
                           )
                         ) : (
                           <div className="w-28 sm:w-40 text-right shrink-0 text-[10px] sm:text-xs uppercase tracking-widest text-accent">
-                            {i.note || "On request"}
+                            {i.note || stockStatus(i).label}
                           </div>
                        )}
                       </li>

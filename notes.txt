@@ -36,3 +36,28 @@ Use code with caution.Delete: Kill the process using the PID found at the far ri
 1. first remove from tracking : git rm --cached .env
 2. open .gitignore, type .env (or .env.local, whatever you have) on a new line. Save the file.
 3. Run `git add .gitignore` and git commit -m "Stop tracking .env file" to save the changes.
+
+# useEffect uses with settime unique:
+ // useEffect(()=> setMounted(true), []); == yesko lagi talako, 
+
+/// yo
+      useEffect(() => {
+        const t = setTimeout(() => setMounted(true), 0);
+        return () => clearTimeout(t);
+      }, []);
+
+
+
+
+  // useEffect(() => {
+  //   if (!item) closeFullscreen();
+  // }, [item]); ---- yesko lagi 
+
+// yo 
+   useEffect(() => {
+  const t = setTimeout(() => {
+    if (!item) closeFullscreen();
+  }, 0);
+
+  return () => clearTimeout(t);
+}, [item]);

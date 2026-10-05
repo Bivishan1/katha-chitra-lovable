@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import aboutImage from "../assets/about-studio.jpg";
 import  SiteHeader from "../components/SiteHeader";
@@ -10,6 +10,7 @@ import { PageHero } from "../components/PageHero";
 import { useContactDetails,useBtsFrames, useFounderProfile, useTeamMembers} from "@/lib/cms";
 import btsMustang from "@/assets/work-mustang.jpg";
 import btsDoc from "@/assets/work-documentary.jpg";
+
 // import { supabase } from "../../supabase/client";
 
 
@@ -93,7 +94,8 @@ export default function About() {
       "Inside the studio. Cinematic storytelling from the Himalayas."
     );
 
-    setMetaTag('meta[property="og:url"]', "content", "/about");
+    setMetaTag('meta[property="og:type"]', "content", "website");
+    setMetaTag('meta[property="twitter:card"]', "content", "summary_large_image");
 
     let canonical = document.head.querySelector(
       'link[rel="canonical"]'
@@ -169,15 +171,13 @@ export default function About() {
       <section className="bg-secondary text-secondary-foreground px-4 sm:px-6 md:px-10 py-16 sm:py-24">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
           {[
-            { k: "10+", v: "Years in production" },
-            { k: "120", v: "Films delivered" },
-            { k: "18", v: "Countries reached" },
-            { k: "07", v: "Awards & honors" },
+            { k: 10, suffix: "+", v: "Years in production" },
+            { k: 120, suffix: "", v: "Films delivered" },
+            { k: 18, suffix: "", v: "Countries reached" },
+            { k: 7, suffix: "", v: "Awards & honors", pad: true },
           ].map((stat) => (
             <div key={stat.v}>
-               <p style={{ fontFamily: "var(--font-display)" }} className="text-4xl sm:text-5xl md:text-7xl text-accent">
-                {stat.k}
-              </p>
+                            <AnimatedCount value={stat.k} suffix={stat.suffix} pad={stat.pad} />
 
                <p className="mt-2 sm:mt-3 text-[10px] sm:text-[11px] uppercase tracking-widest text-muted-foreground">{stat.v}</p>
             </div>
@@ -306,5 +306,38 @@ export default function About() {
 
       <SiteFooter />
     </div>
+  );
+}
+
+function AnimatedCount({ value, suffix, pad = false }: { value: number; suffix: string; pad?: boolean }) {
+  const element = useRef<HTMLParagraphElement>(null);
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    const node = element.current;
+    if (!node) return;
+    let frame = 0;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      observer.disconnect();
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        setCount(value);
+        return;
+      }
+      const start = performance.now();
+      const animate = (now: number) => {
+        const progress = Math.min((now - start) / 1400, 1);
+        setCount(Math.round(value * (1 - Math.pow(1 - progress, 3))));
+        if (progress < 1) frame = requestAnimationFrame(animate);
+      };
+      frame = requestAnimationFrame(animate);
+    }, { threshold: 0.3 });
+    observer.observe(node);
+    return () => { observer.disconnect(); cancelAnimationFrame(frame); };
+  }, [value]);
+
+  return (
+    <p ref={element} style={{ fontFamily: "var(--font-display)" }} className="text-4xl sm:text-5xl md:text-7xl text-accent tabular-nums" aria-label={`${pad ? String(value).padStart(2, "0") : value}${suffix}`}>
+      <span aria-hidden="true">{pad ? String(count).padStart(2, "0") : count}{suffix}</span>
+    </p>
   );
 }

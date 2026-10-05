@@ -187,6 +187,33 @@ const togglePrices = useMutation({
   }, [items, days]);
 
   const selected = items.filter((i) => (days[i.id] ?? 0) > 0);
+  
+  /** Books one unit of each selected item and reduces the available stock. */
+  const book = useMutation({
+    mutationFn: async () => {
+      const blocked = selected.filter(
+        (i) => Number(i.total_stock ?? 0) - Number(i.booked_stock ?? 0) <= 0,
+      );
+      if (blocked.length) {
+        throw new Error(`Out of stock: ${blocked.map((i) => i.name).join(", ")}`);
+      }
+      for (const i of selected) {
+        const { error } = await supabase
+          .from("equipment_items")
+          .update({ booked_stock: Number(i.booked_stock ?? 0) + 1 } as never)
+          .eq("id", i.id);
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => {
+      toast.success(`Booked ${selected.length} item${selected.length === 1 ? "" : "s"} — stock updated`);
+      setDays({});
+      setDiscount({});
+      qc.invalidateQueries({ queryKey: ["cms"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
   const totalDiscount = Object.values(discount).reduce((sum, disc) => sum + disc, 0);
   return (
     <div className="space-y-8">
@@ -251,6 +278,12 @@ const togglePrices = useMutation({
             defaults={{ price_day: 0, price_week: 0, sort_order: 1 }}
             columns={[
               { key: "name", label: "Item" },
+              {
+                key: "total_stock",
+                label: "Stock",
+                render: (r) =>
+                  `${Math.max(Number(r.total_stock ?? 0) - Number(r.booked_stock ?? 0), 0)} / ${Number(r.total_stock ?? 0)}`,
+              },
               { key: "price_day", label: "Per day", render: (row: EquipmentItemRow) => npr(Number(row.price_day)) },
               { key: "price_week", label: "Per week", render: (row: EquipmentItemRow) => npr(Number(row.price_week)) },
             ]}
@@ -274,6 +307,18 @@ const togglePrices = useMutation({
                 label: "Included items (kit contents)",
                 type: "subitems",
                 help: "Optional. Use this for sets/bundles — each item can have its own photo.",
+              },
+              {
+                key: "total_stock",
+                label: "Total stock available",
+                type: "number",
+                help: "How many units of this item you own. 0 means availability shows as 'On request'.",
+              },
+              {
+                key: "booked_stock",
+                label: "Currently booked",
+                type: "number",
+                help: "Units out on a booking. Public page shows the remaining count.",
               },
               { key: "price_day", label: "Price per day (NPR)", type: "number" },
               { key: "price_week", label: "Price per week (NPR)", type: "number" },
@@ -377,17 +422,27 @@ const togglePrices = useMutation({
               Selected Items
             </h4>
             {selected.length > 0 && (
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  setDays({});
-                  setDiscount({});
-                }}
-              >
-                <X className="h-4 w-4 mr-1.5" /> Clear all
-              </Button>
+               <div className="flex items-center gap-2">
+                <Button
+                  type="button"
+                  size="sm"
+                  disabled={book.isPending}
+                  onClick={() => book.mutate()}
+                >
+                  {book.isPending ? "Booking…" : "Book & reduce stock"}
+                </Button>
+                 <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setDays({});
+                    setDiscount({});
+                  }}
+                >
+                  <X className="h-4 w-4 mr-1.5" /> Clear all
+                </Button>
+              </div>
             )}
           </div>
         <div className=" py-1 border-t border-border space-y-1">

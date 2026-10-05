@@ -139,7 +139,7 @@ export default function SiteHeader() {
           </Link>
 
           <div className="hidden min-w-0 flex-1 items-center justify-center lg:flex">
-            <div className="flex items-center rounded-full border border-border bg-secondary/55 p-1 text-xs font-semibold text-muted-foreground">
+            <div className="flex items-center rounded-full border border-border bg-secondary/55 p-1  font-semibold text-muted-foreground ml-40">
               <Link
                 to="/"
                 activeOptions={{ exact: true }}

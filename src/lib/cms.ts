@@ -51,7 +51,22 @@ export type CmsEquipmentItem = {
   sort_order: number;
   price_day?: number | null;
   price_week?: number | null;
+  total_stock?: number | null;
+  booked_stock?: number | null;
 };
+
+/** Availability label for an equipment item based on stock numbers. */
+export function stockStatus(item: { total_stock?: number | null; booked_stock?: number | null }) {
+  const total = Number(item.total_stock ?? 0);
+  const booked = Number(item.booked_stock ?? 0);
+  const available = Math.max(total - booked, 0);
+  if (total <= 0) return { total, booked, available, label: "On request", tone: "muted" as const };
+  if (available <= 0) return { total, booked, available, label: "Out of stock", tone: "out" as const };
+  if (booked > 0)
+    return { total, booked, available, label: `${available} left · ${booked} booked`, tone: "low" as const };
+  return { total, booked, available, label: `${available} in stock`, tone: "in" as const };
+}
+
 
 export type CmsContact = {
   id: string;
