@@ -62,82 +62,61 @@
   --color-service-panel: var(--service-panel);
   --color-service-line: var(--service-line);
   --color-service-ember: var(--service-ember);
+  --color-whatsapp: var(--whatsapp);
+    --color-projector: var(--projector);
+  --color-whatsapp-foreground: var(--whatsapp-foreground);
+  --shadow-elevated: 0 24px 70px -28px
+    color-mix(in oklab, var(--background) 90%, transparent);
+  --shadow-accent: 0 14px 38px -18px
+    color-mix(in oklab, var(--accent) 58%, transparent);
 }
 
 :root {
   --radius: 0.625rem;
-  /* Cinematic Noir — deep black bg, cream fg, copper accent */
-  --background: oklch(0.14 0 0);
-  --foreground: oklch(0.96 0.005 80);
-  --card: oklch(0.18 0.005 50);
-  --card-foreground: oklch(0.96 0.005 80);
-  --popover: oklch(0.18 0.005 50);
-  --popover-foreground: oklch(0.96 0.005 80);
-  --primary: oklch(0.96 0.005 80);
-  --primary-foreground: oklch(0.14 0 0);
-  --secondary: oklch(0.22 0.005 50);
-  --secondary-foreground: oklch(0.96 0.005 80);
-  --muted: oklch(0.22 0.005 50);
-  --muted-foreground: oklch(0.65 0.02 70);
-  --accent: oklch(0.68 0.13 55);
-  --accent-foreground: oklch(0.14 0 0);
+  /* Cinematic Azure — soft blacks, cool neutrals, restrained production blue */
+  --background: oklch(0.145 0.014 255);
+  --foreground: oklch(0.965 0.005 255);
+  --card: oklch(0.205 0.018 255);
+  --card-foreground: oklch(0.965 0.005 255);
+  --popover: oklch(0.185 0.018 255);
+  --popover-foreground: oklch(0.965 0.005 255);
+  --primary: oklch(0.965 0.005 255);
+  --primary-foreground: oklch(0.145 0.014 255);
+  --secondary: oklch(0.245 0.02 255);
+  --secondary-foreground: oklch(0.965 0.005 255);
+  --muted: oklch(0.245 0.02 255);
+  --muted-foreground: oklch(0.735 0.022 255);
+  --accent: oklch(0.64 0.16 242);
+  --accent-foreground: oklch(0.985 0.003 255);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.68 0.13 55);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.18 0.005 50);
-  --sidebar-foreground: oklch(0.96 0.005 80);
-  --sidebar-primary: oklch(0.68 0.13 55);
-  --sidebar-primary-foreground: oklch(0.14 0 0);
-  --sidebar-accent: oklch(0.22 0.005 50);
-  --sidebar-accent-foreground: oklch(0.96 0.005 80);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.68 0.13 55);
-    --service-surface: oklch(0.218 0 0);
-  --service-panel: oklch(0.298 0 0);
-  --service-line: oklch(0.397 0 0);
-  --service-ember: oklch(0.66 0.18 35);
+  --border: oklch(0.965 0.005 255 / 13%);
+  --input: oklch(0.965 0.005 255 / 16%);
+  --ring: oklch(0.64 0.16 242);
+  --chart-1: oklch(0.64 0.16 242);
+  --chart-2: oklch(0.72 0.11 205);
+  --chart-3: oklch(0.76 0.12 155);
+  --chart-4: oklch(0.78 0.13 85);
+  --chart-5: oklch(0.68 0.16 18);
+  --sidebar: oklch(0.185 0.018 255);
+  --sidebar-foreground: oklch(0.965 0.005 255);
+  --sidebar-primary: oklch(0.64 0.16 242);
+  --sidebar-primary-foreground: oklch(0.985 0.003 255);
+  --sidebar-accent: oklch(0.245 0.02 255);
+  --sidebar-accent-foreground: oklch(0.965 0.005 255);
+  --sidebar-border: oklch(0.965 0.005 255 / 13%);
+  --sidebar-ring: oklch(0.64 0.16 242);
+  --service-surface: oklch(0.16 0.016 255);
+  --service-panel: oklch(0.205 0.018 255);
+  --service-line: oklch(0.965 0.005 255 / 14%);
+  --service-ember: oklch(0.64 0.16 242);
+  --whatsapp: oklch(0.72 0.19 145);
+  --whatsapp-foreground: oklch(0.985 0 0);
+  --projector: oklch(0.62 0.16 263.42);
 }
 
 .dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  color-scheme: dark;
 }
 
 @layer base {
@@ -158,9 +137,9 @@
   }
 }
 
-html,body {
+html,
+body {
   scroll-behavior: smooth;
-
 }
 
 Button,
@@ -201,6 +180,73 @@ button {
   }
 }
 
+
+@keyframes caretBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes characterIgnition {
+  0% { color: var(--color-projector); text-shadow: 0 0 4px var(--color-projector), 0 0 16px color-mix(in oklab, var(--projector) 75%, transparent); }
+  55% { color: var(--color-foreground); text-shadow: 0 0 7px color-mix(in oklab, var(--projector) 55%, transparent); }
+  100% { color: inherit; text-shadow: none; }
+}
+
+@keyframes projectorSweep {
+  0%, 100% { transform: translate3d(-16%, 0, 0) skewX(-9deg); opacity: 0.42; }
+  48% { transform: translate3d(9%, 0, 0) skewX(-4deg); opacity: 0.68; }
+  52% { transform: translate3d(10%, 0, 0) skewX(-4deg); opacity: 0.48; }
+}
+
+@keyframes projectorFlicker {
+  0%, 19%, 23%, 62%, 66%, 100% { opacity: 0.55; }
+  20% { opacity: 0.38; }
+  64% { opacity: 0.72; }
+}
+
+@keyframes filmGrainShift {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  25% { transform: translate3d(2%, -4%, 0); }
+  50% { transform: translate3d(-3%, 3%, 0); }
+  75% { transform: translate3d(4%, 2%, 0); }
+}
+
+@utility typewriter-ignition {
+  animation: characterIgnition 420ms ease-out both;
+}
+
+@utility typewriter-caret {
+  animation: caretBlink 0.9s step-end infinite;
+  box-shadow: 0 0 5px var(--color-projector), 0 0 14px color-mix(in oklab, var(--projector) 60%, transparent);
+}
+
+@utility projector-field {
+  opacity: 0.72;
+  background: linear-gradient(98deg, transparent 0%, color-mix(in oklab, var(--projector) 5%, transparent) 35%, color-mix(in oklab, var(--projector) 15%, transparent) 58%, transparent 88%);
+  filter: blur(7px);
+  animation: projectorSweep 5.8s ease-in-out infinite, projectorFlicker 3.4s steps(1, end) infinite;
+  mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+}
+
+@utility projector-grain {
+  background-image: radial-gradient(circle at 20% 30%, color-mix(in oklab, var(--projector) 38%, transparent) 0 0.7px, transparent 0.9px), radial-gradient(circle at 72% 65%, color-mix(in oklab, var(--foreground) 24%, transparent) 0 0.6px, transparent 0.8px);
+  background-size: 7px 9px, 11px 13px;
+  animation: filmGrainShift 550ms steps(2, end) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .typewriter-ignition,
+  .projector-field,
+  .projector-grain {
+    animation: none;
+  }
+
+  .projector-field {
+    opacity: 0.42;
+  }
+}
+
+
 @keyframes heroDrift {
   0% {
     transform: scale(1.1) translate3d(0, 0, 0);
@@ -214,12 +260,13 @@ button {
   0%,
   100% {
     box-shadow:
-      0 0 0 0 rgba(37, 211, 102, 0.55),
-      0 0 18px 2px rgba(37, 211, 102, 0.45);
+      0 0 0 0 color-mix(in oklab, var(--whatsapp) 55%, transparent),
+      0 0 18px 2px color-mix(in oklab, var(--whatsapp) 45%, transparent);
   }
   50% {
     box-shadow:
-      0 0 0 14px rgba(37, 211, 102, 0),
-      0 0 26px 6px rgba(37, 211, 102, 0.6);
+      0 0 0 14px transparent,
+      0 0 26px 6px color-mix(in oklab, var(--whatsapp) 60%, transparent);
   }
 }
+

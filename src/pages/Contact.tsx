@@ -407,7 +407,7 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={sending || !recaptchaSiteKey}
-                className="w-full inline-flex items-center justify-center gap-3 rounded-lg bg-accent text-accent-foreground py-4 text-xs uppercase tracking-[0.3em] shadow-[0_10px_40px_-12px_hsl(var(--accent))] hover:opacity-90 transition-opacity disabled:opacity-60"
+                className="w-full inline-flex items-center justify-center gap-3 rounded-lg bg-accent text-accent-foreground py-4 text-xs uppercase tracking-[0.3em] shadow-accent hover:opacity-90 transition-opacity disabled:opacity-60"
               >
                 {sending ? (
                   <>
