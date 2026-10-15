@@ -6,7 +6,7 @@ import SiteFooter from "../components/SiteFooter";
 import { WorkTile } from "../components/WorkTile";
 import { useFrames, useProjects, useActiveProposal } from "@/lib/cms";
 import { Aperture, Clapperboard, Film, Megaphone, MonitorPlay, Music2 } from "lucide-react";
-import capabilitiesImage from "@/assets/bts-set.jpg";
+import capabilitiesImage from "@/assets/bts-set.webp";
 
 // import { projects } from "../data/projects";
 import { Link } from "@tanstack/react-router";
@@ -87,7 +87,7 @@ export default function Home() {
 
   const scrollToCapabilities = () => {
     const el = document.getElementById("capabilities");
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+        if (el) requestAnimationFrame(() => el.scrollIntoView({ behavior: "smooth", block: "start" }));
   };
 
   useEffect(() => {
@@ -223,7 +223,7 @@ export default function Home() {
           alt="Katha Chitra crew working on a film production set"
           width={1920}
           height={1080}
-          loading="eager"
+          loading="lazy"
           decoding="async"
           className="absolute inset-0 -z-20 h-full w-full object-cover opacity-35"
         />

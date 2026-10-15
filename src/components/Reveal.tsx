@@ -54,7 +54,7 @@ export function Reveal({
     opacity: shown ? 1 : 0,
     transform: shown ? "translate(0,0)" : offsets[direction],
     transition: `opacity 900ms cubic-bezier(0.22,1,0.36,1) ${delay}ms, transform 900ms cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
-    willChange: "opacity, transform",
+    willChange: shown ? "auto" : "opacity, transform",
   };
   return (
     <Tag ref={ref as never} className={className} style={style}>

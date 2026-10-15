@@ -5,7 +5,7 @@ import SiteHeader from "../components/SiteHeader";
 import { PageHero } from "../components/PageHero";
 import { toast } from "sonner";
 import { AtSign, ExternalLink, Loader2, MapPin } from "lucide-react";
-import contactHero from "../assets/bts-set.jpg";
+import contactHero from "../assets/bts-set.webp";
 import { useContactDetails, useSocialLinks } from "@/lib/cms";
 import { supabase } from "@/integrations/supabase/client";
 import ReCAPTCHA from "react-google-recaptcha";

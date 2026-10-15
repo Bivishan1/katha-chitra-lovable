@@ -4,7 +4,7 @@ import aboutImage from "../assets/about-studio.jpg";
 import  SiteHeader from "../components/SiteHeader";
 import  SiteFooter  from "../components/SiteFooter";
 import defaultFounderImage from "../assets/team-founder.jpeg";
-import btsSet from "../assets/bts-set.jpg";
+import btsSet from "../assets/bts-set.webp";
 import btsMonitor from "../assets/bts-monitor.jpg";
 import { PageHero } from "../components/PageHero";
 import { useContactDetails,useBtsFrames, useFounderProfile, useTeamMembers} from "@/lib/cms";

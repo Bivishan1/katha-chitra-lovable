@@ -68,7 +68,15 @@ export default function SiteHeader() {
   };
 
   useEffect(() => {
+    let frame = 0;
     const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        handle();
+      });
+    };
+    const handle = () => {
       const currentY = window.scrollY;
       setScrolled(currentY > 10);
       if (open) return;
@@ -93,6 +101,7 @@ export default function SiteHeader() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
       if (scrollTimer.current) clearTimeout(scrollTimer.current);
     };
   }, [open]);
